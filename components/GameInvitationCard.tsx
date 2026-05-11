@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: Colors.error,
+    borderColor: '#fffdfa',
   },
   acceptButtonContainer: {
     flex: 1,
@@ -265,7 +265,8 @@ const styles = StyleSheet.create({
   declineText: {
     fontSize: 15,
     fontWeight: '600',
-    color: Colors.error,
+    // color: Colors.error,
+    color:'#fffdfa'
   },
   acceptText: {
     fontSize: 15,
