@@ -891,7 +891,7 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
         <View style={[kc.card]}>
 
           {/* Full background image for image-based kits */}
-          {(kit.name === 'Golden Bushido' || kit.name === 'Chaos Theory' || kit.name === 'Starlight Prowler' || kit.name === 'Liquid Metal Candy') && (
+          {(kit.name === 'Golden Bushido' || kit.name === 'Chaos Theory' || kit.name === 'Starlight Prowler' || kit.name === 'Liquid Metal Candy' || kit.name === 'Phantom Void' || kit.name === 'Stellar' || kit.name === 'Neon Pulse' || kit.name === 'Obsidian Gold' || kit.name === 'Prismatic') && (
             <>
               <Image
                 source={kit.name === 'Golden Bushido'
@@ -900,6 +900,16 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
                   ? require('@/assets/images/ChaosTheory.jpeg')
                   : kit.name === 'Starlight Prowler'
                   ? require('@/assets/images/StarlightProwler.jpeg')
+                  : kit.name === 'Phantom Void'
+                  ? require('@/assets/images/PhantomVoid.jpg')
+                  : kit.name === 'Stellar'
+                  ? require('@/assets/images/Stellar.jpg')
+                  : kit.name === 'Neon Pulse'
+                  ? require('@/assets/images/NeonPulse.jpg')
+                  : kit.name === 'Obsidian Gold'
+                  ? require('@/assets/images/ObsidianGold.jpg')
+                  : kit.name === 'Prismatic'
+                  ? require('@/assets/images/Prismatic.jpg')
                   : require('@/assets/images/LiquidMetalProfile.jpeg')}
                 style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%', borderRadius: 24 }}
                 resizeMode="cover"
@@ -925,6 +935,16 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
               ) : kit.name === 'Golden Bushido' ? (
                 <View style={StyleSheet.absoluteFill} />
               ) : kit.name === 'Chaos Theory' ? (
+                <View style={StyleSheet.absoluteFill} />
+              ) : kit.name === 'Phantom Void' ? (
+                <View style={StyleSheet.absoluteFill} />
+              ) : kit.name === 'Stellar' ? (
+                <View style={StyleSheet.absoluteFill} />
+              ) : kit.name === 'Neon Pulse' ? (
+                <View style={StyleSheet.absoluteFill} />
+              ) : kit.name === 'Obsidian Gold' ? (
+                <View style={StyleSheet.absoluteFill} />
+              ) : kit.name === 'Prismatic' ? (
                 <View style={StyleSheet.absoluteFill} />
               ) : (
                 <LinearGradient

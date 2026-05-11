@@ -231,6 +231,16 @@ function KitApplicationModal({ visible, kit, userHouses = [], loadingHouses: ext
                     <Image source={require('@/assets/images/GoldenBushido.jpeg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
                   ) : kit.name === 'Chaos Theory' ? (
                     <Image source={require('@/assets/images/ChaosTheory.jpeg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
+                  ) : kit.name === 'Phantom Void' ? (
+                    <Image source={require('@/assets/images/PhantomVoid.jpg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
+                  ) : kit.name === 'Stellar' ? (
+                    <Image source={require('@/assets/images/Stellar.jpg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
+                  ) : kit.name === 'Neon Pulse' ? (
+                    <Image source={require('@/assets/images/NeonPulse.jpg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
+                  ) : kit.name === 'Obsidian Gold' ? (
+                    <Image source={require('@/assets/images/ObsidianGold.jpg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
+                  ) : kit.name === 'Prismatic' ? (
+                    <Image source={require('@/assets/images/Prismatic.jpg')} style={{ width: '100%', height: 100 }} resizeMode="cover" />
                   ) : (
                     <LinearGradient
                       colors={kit.color_scheme.length >= 2

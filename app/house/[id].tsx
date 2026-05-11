@@ -1210,6 +1210,46 @@ export default function HouseDetailScreen() {
           resizeMode="cover"
         />
       )}
+      {/* Phantom Void — full screen background */}
+      {kitName === 'Phantom Void' && (
+        <Image
+          source={require('@/assets/images/PhantomVoid.jpg')}
+          style={[StyleSheet.absoluteFill, { opacity: 0.18, width: '100%', height: '100%' }]}
+          resizeMode="cover"
+        />
+      )}
+      {/* Stellar — full screen background */}
+      {kitName === 'Stellar' && (
+        <Image
+          source={require('@/assets/images/Stellar.jpg')}
+          style={[StyleSheet.absoluteFill, { opacity: 0.18, width: '100%', height: '100%' }]}
+          resizeMode="cover"
+        />
+      )}
+      {/* Neon Pulse — full screen background */}
+      {kitName === 'Neon Pulse' && (
+        <Image
+          source={require('@/assets/images/NeonPulse.jpg')}
+          style={[StyleSheet.absoluteFill, { opacity: 0.18, width: '100%', height: '100%' }]}
+          resizeMode="cover"
+        />
+      )}
+      {/* Obsidian Gold — full screen background */}
+      {kitName === 'Obsidian Gold' && (
+        <Image
+          source={require('@/assets/images/ObsidianGold.jpg')}
+          style={[StyleSheet.absoluteFill, { opacity: 0.18, width: '100%', height: '100%' }]}
+          resizeMode="cover"
+        />
+      )}
+      {/* Prismatic — full screen background */}
+      {kitName === 'Prismatic' && (
+        <Image
+          source={require('@/assets/images/Prismatic.jpg')}
+          style={[StyleSheet.absoluteFill, { opacity: 0.18, width: '100%', height: '100%' }]}
+          resizeMode="cover"
+        />
+      )}
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: 140 }}
@@ -1341,6 +1381,41 @@ export default function HouseDetailScreen() {
             {kitName === 'Chaos Theory' && (
               <Image
                 source={require('@/assets/images/ChaosTheory.jpeg')}
+                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                resizeMode="cover"
+              />
+            )}
+            {kitName === 'Phantom Void' && (
+              <Image
+                source={require('@/assets/images/PhantomVoid.jpg')}
+                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                resizeMode="cover"
+              />
+            )}
+            {kitName === 'Stellar' && (
+              <Image
+                source={require('@/assets/images/Stellar.jpg')}
+                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                resizeMode="cover"
+              />
+            )}
+            {kitName === 'Neon Pulse' && (
+              <Image
+                source={require('@/assets/images/NeonPulse.jpg')}
+                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                resizeMode="cover"
+              />
+            )}
+            {kitName === 'Obsidian Gold' && (
+              <Image
+                source={require('@/assets/images/ObsidianGold.jpg')}
+                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                resizeMode="cover"
+              />
+            )}
+            {kitName === 'Prismatic' && (
+              <Image
+                source={require('@/assets/images/Prismatic.jpg')}
                 style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
                 resizeMode="cover"
               />

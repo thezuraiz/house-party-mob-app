@@ -343,7 +343,7 @@ export default function ProfileScreen() {
   const initials = (profileDisplayName || profile?.username || 'U').charAt(0).toUpperCase();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.scroll, (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory') && { backgroundColor: '#000000' }, activeKit?.name === 'Golden Bushido' && { backgroundColor: 'transparent' }]} style={(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory') ? { backgroundColor: 'transparent', zIndex: 3 } : undefined}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.scroll, (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory') && { backgroundColor: '#000000' }, (activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent' }]} style={(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') ? { backgroundColor: 'transparent', zIndex: 3 } : undefined}>
       <SafeAreaView style={s.root} edges={[]}>
         {/* <StatusBar barStyle="light-content" backgroundColor="#000000" /> */}
         {/* Liquid Metal Candy — image directly in banner, not absolute */}
@@ -402,6 +402,81 @@ export default function ProfileScreen() {
             resizeMode="stretch"
           />
         )}
+        {/* Phantom Void — full screen background image */}
+        {activeKit?.name === 'Phantom Void' && (
+          <>
+            <Image
+              source={require('@/assets/images/PhantomVoid.jpg')}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              resizeMode="cover"
+            />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
+              locations={[0, 0.4, 0.65, 1]}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
+        )}
+        {/* Stellar — full screen background image */}
+        {activeKit?.name === 'Stellar' && (
+          <>
+            <Image
+              source={require('@/assets/images/Stellar.jpg')}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              resizeMode="cover"
+            />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
+              locations={[0, 0.4, 0.65, 1]}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
+        )}
+        {/* Neon Pulse — full screen background image */}
+        {activeKit?.name === 'Neon Pulse' && (
+          <>
+            <Image
+              source={require('@/assets/images/NeonPulse.jpg')}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              resizeMode="cover"
+            />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
+              locations={[0, 0.4, 0.65, 1]}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
+        )}
+        {/* Obsidian Gold — full screen background image */}
+        {activeKit?.name === 'Obsidian Gold' && (
+          <>
+            <Image
+              source={require('@/assets/images/ObsidianGold.jpg')}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              resizeMode="cover"
+            />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
+              locations={[0, 0.4, 0.65, 1]}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
+        )}
+        {/* Prismatic — full screen background image */}
+        {activeKit?.name === 'Prismatic' && (
+          <>
+            <Image
+              source={require('@/assets/images/Prismatic.jpg')}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              resizeMode="cover"
+            />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
+              locations={[0, 0.4, 0.65, 1]}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
+        )}
 
 
         {/* AVATAR HERO — header merged into banner */}
@@ -414,14 +489,14 @@ export default function ProfileScreen() {
               overflow: 'visible',
               height: Platform.OS === 'android' ? 260 + (StatusBar.currentHeight || 24) : 260,
             },
-            activeKit?.name === 'Golden Bushido' && {
+            (activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && {
               backgroundColor: 'transparent',
               overflow: 'visible',
               height: Platform.OS === 'android' ? 250 + (StatusBar.currentHeight || 24) : 250,
             }
           ]}>
             {activeKit ? (
-              activeKit.name === 'Neon Rift Loadout' || activeKit.name === 'Ironclad Vanguard' || activeKit.name === 'Phantom Echo Set' || activeKit.name === 'Liquid Metal Candy' || activeKit.name === 'Starlight Prowler' || activeKit.name === 'Golden Bushido' || activeKit.name === 'Chaos Theory' ? (
+              activeKit.name === 'Neon Rift Loadout' || activeKit.name === 'Ironclad Vanguard' || activeKit.name === 'Phantom Echo Set' || activeKit.name === 'Liquid Metal Candy' || activeKit.name === 'Starlight Prowler' || activeKit.name === 'Golden Bushido' || activeKit.name === 'Chaos Theory' || activeKit.name === 'Phantom Void' || activeKit.name === 'Stellar' || activeKit.name === 'Neon Pulse' || activeKit.name === 'Obsidian Gold' || activeKit.name === 'Prismatic' ? (
                 <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]}>
                   {activeKit.name === 'Liquid Metal Candy' && (
                     <>
@@ -445,6 +520,21 @@ export default function ProfileScreen() {
                       <Image source={require('@/assets/images/ChaosTheory.jpeg')}
                         style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
                     </>
+                  )}
+                  {activeKit.name === 'Phantom Void' && (
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} />
+                  )}
+                  {activeKit.name === 'Stellar' && (
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} />
+                  )}
+                  {activeKit.name === 'Neon Pulse' && (
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} />
+                  )}
+                  {activeKit.name === 'Obsidian Gold' && (
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} />
+                  )}
+                  {activeKit.name === 'Prismatic' && (
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} />
                   )}
                 </View>
               ) : (
@@ -476,7 +566,7 @@ export default function ProfileScreen() {
                 flexDirection: 'row', alignItems: 'center', gap: 8,
                 zIndex: 10,
               }}>
-                {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory') && (
+                {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && (
                   isPremium ? (
                     <View style={s.lmcPremiumBtn}>
                       <Ionicons name="diamond" size={18} color="#FFD700" />
@@ -495,7 +585,7 @@ export default function ProfileScreen() {
           </View>
 
           {/* LMC & Starlight Prowler & Golden Bushido — special card layout */}
-          {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory') ? (
+          {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') ? (
             <>
               {/* Golden Bushido — dark curved container wrapping card + pill */}
               {activeKit?.name === 'Golden Bushido' ? (
@@ -560,6 +650,326 @@ export default function ProfileScreen() {
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
                     }]}>
                       <Text style={[s.lmcPillTxt, { color: '#C9A227' }]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Phantom Void' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: 'transparent',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(0,206,209,0.35)',
+                    marginTop: 0,
+                    backgroundColor: 'transparent',
+                    overflow: 'hidden',
+                    shadowColor: '#00CED1',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <LinearGradient
+                      colors={['rgba(0,206,209,0.12)', 'transparent', 'rgba(0,206,209,0.08)']}
+                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
+                    />
+                    <View style={s.lmcAvatarBox}>
+                      <View style={s.lmcAvatarOuter}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,206,209,0.15)' }]}>
+                            <Text style={s.avatarInitial}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color="#FFFFFF" />
+                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: 'rgba(0,206,209,0.5)', borderWidth: 1.5,
+                      backgroundColor: 'transparent',
+                      shadowColor: '#00CED1', shadowOpacity: 0.4, shadowRadius: 10,
+                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: '#00CED1' }]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Stellar' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: 'transparent',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(192,192,192,0.35)',
+                    marginTop: 0,
+                    backgroundColor: 'transparent',
+                    overflow: 'hidden',
+                    shadowColor: '#C0C0C0',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <LinearGradient
+                      colors={['rgba(192,192,192,0.12)', 'transparent', 'rgba(192,192,192,0.08)']}
+                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
+                    />
+                    <View style={s.lmcAvatarBox}>
+                      <View style={s.lmcAvatarOuter}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(192,192,192,0.15)' }]}>
+                            <Text style={s.avatarInitial}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color="#FFFFFF" />
+                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: 'rgba(192,192,192,0.5)', borderWidth: 1.5,
+                      backgroundColor: 'transparent',
+                      shadowColor: '#C0C0C0', shadowOpacity: 0.4, shadowRadius: 10,
+                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: '#C0C0C0' }]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Neon Pulse' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: 'transparent',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(0,255,255,0.35)',
+                    marginTop: 0,
+                    backgroundColor: 'transparent',
+                    overflow: 'hidden',
+                    shadowColor: '#00FFFF',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <LinearGradient
+                      colors={['rgba(0,255,255,0.12)', 'transparent', 'rgba(0,255,255,0.08)']}
+                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
+                    />
+                    <View style={s.lmcAvatarBox}>
+                      <View style={s.lmcAvatarOuter}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,255,255,0.15)' }]}>
+                            <Text style={s.avatarInitial}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color="#FFFFFF" />
+                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: 'rgba(0,255,255,0.5)', borderWidth: 1.5,
+                      backgroundColor: 'transparent',
+                      shadowColor: '#00FFFF', shadowOpacity: 0.4, shadowRadius: 10,
+                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: '#00FFFF' }]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Obsidian Gold' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: 'transparent',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(255,215,0,0.35)',
+                    marginTop: 0,
+                    backgroundColor: 'transparent',
+                    overflow: 'hidden',
+                    shadowColor: '#FFD700',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <LinearGradient
+                      colors={['rgba(255,215,0,0.12)', 'transparent', 'rgba(255,215,0,0.08)']}
+                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
+                    />
+                    <View style={s.lmcAvatarBox}>
+                      <View style={s.lmcAvatarOuter}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(255,215,0,0.15)' }]}>
+                            <Text style={s.avatarInitial}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color="#FFFFFF" />
+                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: 'rgba(255,215,0,0.5)', borderWidth: 1.5,
+                      backgroundColor: 'transparent',
+                      shadowColor: '#FFD700', shadowOpacity: 0.4, shadowRadius: 10,
+                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: '#FFD700' }]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Prismatic' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: 'transparent',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(157,0,255,0.35)',
+                    marginTop: 0,
+                    backgroundColor: 'transparent',
+                    overflow: 'hidden',
+                    shadowColor: '#9D00FF',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <LinearGradient
+                      colors={['rgba(157,0,255,0.12)', 'transparent', 'rgba(157,0,255,0.08)']}
+                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
+                    />
+                    <View style={s.lmcAvatarBox}>
+                      <View style={s.lmcAvatarOuter}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(157,0,255,0.15)' }]}>
+                            <Text style={s.avatarInitial}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color="#FFFFFF" />
+                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: 'rgba(157,0,255,0.5)', borderWidth: 1.5,
+                      backgroundColor: 'transparent',
+                      shadowColor: '#9D00FF', shadowOpacity: 0.4, shadowRadius: 10,
+                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: '#9D00FF' }]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -747,6 +1157,146 @@ export default function ProfileScreen() {
               ))}
             </View>
           </View>
+        ) : activeKit?.name === 'Phantom Void' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: 'transparent',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => (
+                <View key={i} style={[s.statCard, {
+                  borderColor: 'rgba(0,206,209,0.3)',
+                  borderWidth: 1,
+                  backgroundColor: 'transparent',
+                }]}>
+                  <Ionicons name={st.icon} size={22} color="#00CED1" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : activeKit?.name === 'Stellar' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: 'transparent',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => (
+                <View key={i} style={[s.statCard, {
+                  borderColor: 'rgba(192,192,192,0.3)',
+                  borderWidth: 1,
+                  backgroundColor: 'transparent',
+                }]}>
+                  <Ionicons name={st.icon} size={22} color="#C0C0C0" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : activeKit?.name === 'Neon Pulse' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: 'transparent',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => (
+                <View key={i} style={[s.statCard, {
+                  borderColor: 'rgba(0,255,255,0.3)',
+                  borderWidth: 1,
+                  backgroundColor: 'transparent',
+                }]}>
+                  <Ionicons name={st.icon} size={22} color="#00FFFF" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : activeKit?.name === 'Obsidian Gold' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: 'transparent',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => (
+                <View key={i} style={[s.statCard, {
+                  borderColor: 'rgba(255,215,0,0.3)',
+                  borderWidth: 1,
+                  backgroundColor: 'transparent',
+                }]}>
+                  <Ionicons name={st.icon} size={22} color="#FFD700" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : activeKit?.name === 'Prismatic' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: 'transparent',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => (
+                <View key={i} style={[s.statCard, {
+                  borderColor: 'rgba(157,0,255,0.3)',
+                  borderWidth: 1,
+                  backgroundColor: 'transparent',
+                }]}>
+                  <Ionicons name={st.icon} size={22} color="#9D00FF" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
         ) : (
           <View style={s.statGrid}>
             {[
@@ -769,7 +1319,7 @@ export default function ProfileScreen() {
                   backgroundColor: '#0D0D0D',
                   overflow: 'hidden',
                 },
-                activeKit && activeKit.name !== 'Liquid Metal Candy' && activeKit.name !== 'Starlight Prowler' && activeKit.name !== 'Chaos Theory' && activeKit.name !== 'Golden Bushido' && i === 0 && { borderColor: activeKit.colors[activeKit.colors.length - 1] + '44' }
+                activeKit && activeKit.name !== 'Liquid Metal Candy' && activeKit.name !== 'Starlight Prowler' && activeKit.name !== 'Chaos Theory' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Phantom Void' && i === 0 && { borderColor: activeKit.colors[activeKit.colors.length - 1] + '44' }
               ]}>
                 {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler') && (
                   <>
@@ -836,13 +1386,17 @@ export default function ProfileScreen() {
             </View>
             <View style={s.gap}>
               {gameHistory.map((game) => (
-                <View key={game.id} style={[s.historyRow, game.isWinner && s.historyWin]}>
-                  <View style={s.historyEmojiBg}>
+                <View key={game.id} style={[s.historyRow, game.isWinner && s.historyWin,
+                  (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+                ]}>
+                  <View style={[s.historyEmojiBg,
+                    (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.2)' }
+                  ]}>
                     <Text style={{ fontSize: 22 }}>{game.gameEmoji}</Text>
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={s.historyGame}>{game.gameName}</Text>
-                    <Text style={s.historyHouse}>{game.houseName}</Text>
+                    <Text style={s.historyGame} numberOfLines={1}>{game.gameName}</Text>
+                    <Text style={s.historyHouse} numberOfLines={1}>{game.houseName}</Text>
                   </View>
                   <View style={{ alignItems: 'flex-end', gap: 4 }}>
                     {game.isWinner && (
@@ -851,7 +1405,7 @@ export default function ProfileScreen() {
                         <Text style={s.winTagText}>Win</Text>
                       </View>
                     )}
-                    <Text style={s.historyScore}>
+                    <Text style={s.historyScore} numberOfLines={1}>
                       {formatScore(game.score, game.scoringType, {
                         hits: game.accuracyHits,
                         attempts: game.accuracyAttempts,
@@ -875,7 +1429,9 @@ export default function ProfileScreen() {
             </View>
             <View style={s.gap}>
               {leaderboard.map((entry, i) => (
-                <View key={entry.id} style={s.lbRow}>
+                <View key={entry.id} style={[s.lbRow,
+                  (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+                ]}>
                   <View style={[s.lbRank, i === 0 && s.lbGold, i === 1 && s.lbSilver, i === 2 && s.lbBronze]}>
                     <Text style={s.lbRankText}>{i + 1}</Text>
                   </View>
@@ -887,8 +1443,8 @@ export default function ProfileScreen() {
                     )}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={s.lbName}>{entry.username}</Text>
-                    <Text style={s.lbSub}>{entry.wins} wins · {entry.winRate.toFixed(0)}% WR</Text>
+                    <Text style={s.lbName} numberOfLines={1}>{entry.username}</Text>
+                    <Text style={s.lbSub} numberOfLines={1}>{entry.wins} wins · {entry.winRate.toFixed(0)}% WR</Text>
                   </View>
                   {i < 3 && <Text style={{ fontSize: 20 }}>{['🥇', '🥈', '🥉'][i]}</Text>}
                 </View>
@@ -902,7 +1458,9 @@ export default function ProfileScreen() {
 
         {/* MENU */}
         <View style={s.section}>
-          <View style={s.menuCard}>
+          <View style={[s.menuCard,
+            (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+          ]}>
             {[
               { icon: 'settings-outline', label: 'Profile Settings', sub: 'Edit name, photo & kit', onPress: () => router.push('/profile-settings') },
               { icon: 'document-text-outline', label: 'Legal & Policies', sub: 'Terms, privacy & refunds', onPress: () => router.push('/legal') },
