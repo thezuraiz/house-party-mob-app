@@ -75,15 +75,12 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
       <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
         <View style={styles.overlay}>
           <View style={styles.modalContainer}>
-
-            {/* Close button */}
-            <Pressable style={styles.closeButton} onPress={onClose}>
-              <Ionicons name="close" size={18} color="rgba(255,255,255,0.6)" />
-            </Pressable>
-
-            {isPremium ? (
-              /* ── Already Premium view ── */
-              <View style={styles.alreadyPremiumContainer}>
+            {[
+              <Pressable key="close" style={styles.closeButton} onPress={onClose}>
+                <Ionicons name="close" size={18} color="rgba(255,255,255,0.6)" />
+              </Pressable>,
+              isPremium ? (
+              <View key="premium" style={styles.alreadyPremiumContainer}>
                 <View style={styles.alreadyPremiumIcon}>
                   <Ionicons name="diamond" size={40} color="#FFD700" />
                 </View>
@@ -107,6 +104,7 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
               </View>
             ) : (
             <ScrollView
+              key="purchase"
               showsVerticalScrollIndicator={false}
               bounces={false}
               contentContainerStyle={styles.scrollContent}
@@ -172,7 +170,8 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
 
               <Text style={styles.disclaimer}>Secure payment processed by YOCO</Text>
             </ScrollView>
-            )} {/* end isPremium conditional */}
+            ),
+            ]}
           </View>
         </View>
       </Modal>
