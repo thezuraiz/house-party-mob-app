@@ -1,18 +1,16 @@
-import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, Share, RefreshControl, Alert, Platform, StatusBar, ScrollView, Image, Modal } from 'react-native';
-import React, { useEffect, useState, useCallback } from 'react';
-import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import BannerRenderer from '@/components/BannerRenderer';
-import KitBorder from '@/components/KitBorder';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
 import HouseLimitModal from '@/components/HouseLimitModal';
-import { safeArrayFromColors, isLightGradient } from '@/lib/colorUtils';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCoachMarkTarget } from '@/hooks/useCoachMarkTarget';
+import KitBorder from '@/components/KitBorder';
+import { useAuth } from '@/contexts/AuthContext';
 import { useCoachMarkContext } from '@/contexts/CoachMarkContext';
+import { useCoachMarkTarget } from '@/hooks/useCoachMarkTarget';
+import { isLightGradient, safeArrayFromColors } from '@/lib/colorUtils';
+import { supabase } from '@/lib/supabase';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useQueryClient } from '@tanstack/react-query';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, FlatList, Image, Modal, Platform, Pressable, RefreshControl, ScrollView, Share, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Game = {
   id: string;
@@ -80,7 +78,7 @@ export default function HouseDetailScreen() {
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
   const [selectedStatType, setSelectedStatType] = useState<LeaderboardStatType>('most_wins');
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ visible: boolean; gameName: string; onConfirm: () => void }>({ visible: false, gameName: '', onConfirm: () => {} });
+  const [deleteConfirm, setDeleteConfirm] = useState<{ visible: boolean; gameName: string; onConfirm: () => void }>({ visible: false, gameName: '', onConfirm: () => { } });
   const { user } = useAuth();
   const router = useRouter();
   const { startFlow, userProgress } = useCoachMarkContext();
@@ -1066,10 +1064,10 @@ export default function HouseDetailScreen() {
                 {item.status === 'pending' && hasPending
                   ? `Waiting: ${item.accepted_count}/${item.total_invites} accepted`
                   : item.status === 'pending' && allAccepted
-                  ? 'Ready to start!'
-                  : item.status === 'active'
-                  ? 'In Progress'
-                  : 'Pending'}
+                    ? 'Ready to start!'
+                    : item.status === 'active'
+                      ? 'In Progress'
+                      : 'Pending'}
               </Text>
               {item.invited_users && item.invited_users.length > 0 && (
                 <View style={styles.invitedUsersContainer}>
@@ -1193,7 +1191,7 @@ export default function HouseDetailScreen() {
   const hasKitEffects = kitRarity && ['legendary', 'mythic'].includes(kitRarity);
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       {/* Golden Bushido — full screen background */}
       {kitName === 'Golden Bushido' && (
         <Image
@@ -1259,29 +1257,29 @@ export default function HouseDetailScreen() {
             refreshing={refreshing}
             onRefresh={onRefresh}
             tintColor="#FFFFFF"
-            colors={['#FFFFFF']}
+            colors={['#000000']}
           />
         }
       >
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Pressable
-            style={styles.backButton}
-            onPress={() => {
-              console.log('[HOUSE DETAIL] Back button pressed, canGoBack:', router.canGoBack());
-              if (router.canGoBack()) {
-                router.back();
-              } else {
-                // Fallback: navigate to root - let auth guard decide final destination
-                console.log('[HOUSE DETAIL] No back navigation available, navigating to root');
-                router.replace('/');
-              }
-            }}
-          >
-            <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-          </Pressable>
-         
-        {/* <Pressable
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <Pressable
+              style={styles.backButton}
+              onPress={() => {
+                console.log('[HOUSE DETAIL] Back button pressed, canGoBack:', router.canGoBack());
+                if (router.canGoBack()) {
+                  router.back();
+                } else {
+                  // Fallback: navigate to root - let auth guard decide final destination
+                  console.log('[HOUSE DETAIL] No back navigation available, navigating to root');
+                  router.replace('/');
+                }
+              }}
+            >
+              <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
+            </Pressable>
+
+            {/* <Pressable
             style={styles.homeButton}
             onPress={() => {
               console.log('[HOUSE DETAIL] Home button pressed, navigating to root');
@@ -1289,350 +1287,350 @@ export default function HouseDetailScreen() {
             }}
           >
             <Ionicons name="home" size={22} color="#000000" />
-          </Pressable>*/} 
-        </View>
-        <View style={styles.headerActions}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.actionButton,
-              pressed && { opacity: 0.7 }
-            ]}
-            onPress={() => {
-              console.log('[HOUSE DETAIL] QR button pressed');
-              router.push(`/qr-code/${id}`);
-            }}
-          >
-            <Ionicons name="qr-code" size={24} color="#FFFFFF" />
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [
-              styles.actionButton,
-              pressed && { opacity: 0.7 }
-            ]}
-            onPress={() => {
-              console.log('[HOUSE DETAIL] Share button physically pressed!');
-              handleShare();
-            }}
-          >
-            <Ionicons name="share-outline" size={24} color="#FFFFFF" />
-          </Pressable>
-          {(isCreator || isAdmin) ? (
-            <Pressable
-              style={({ pressed }) => [
-                styles.actionButton,
-                styles.deleteButton,
-                pressed && { opacity: 0.7 }
-              ]}
-              onPress={() => {
-                console.log('[HOUSE DETAIL] Trash button physically pressed!');
-                handleDeleteHouse();
-              }}
-            >
-              <Ionicons name="trash" size={24} color="#FFFFFF" />
-            </Pressable>
-          ) : (
-            <Pressable
-              style={({ pressed }) => [
-                styles.actionButton,
-                styles.leaveButton,
-                pressed && { opacity: 0.7 }
-              ]}
-              onPress={() => {
-                console.log('[HOUSE DETAIL] Leave button pressed!');
-                handleLeaveHouse();
-              }}
-            >
-              <Ionicons name="log-out" size={24} color="#FFFFFF" />
-            </Pressable>
-          )}
-        </View>
-      </View>
-
-
-      <View style={styles.houseHeaderWrapper}>
-        <KitBorder
-          rarity={kitRarity || 'common'}
-          kitName={kitName}
-          colors={themeColors}
-          borderRadius={24}
-        >
-          <View style={styles.houseHeader}>
-            {kitName === 'Liquid Metal Candy' && (
-              <Image
-                source={require('@/assets/images/LiquidMetalProfile.jpeg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Starlight Prowler' && (
-              <Image
-                source={require('@/assets/images/StarlightProwler.jpeg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Golden Bushido' && (
-              <Image
-                source={require('@/assets/images/GoldenBushido.jpeg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Chaos Theory' && (
-              <Image
-                source={require('@/assets/images/ChaosTheory.jpeg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Phantom Void' && (
-              <Image
-                source={require('@/assets/images/PhantomVoid.jpg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Stellar' && (
-              <Image
-                source={require('@/assets/images/Stellar.jpg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Neon Pulse' && (
-              <Image
-                source={require('@/assets/images/NeonPulse.jpg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Obsidian Gold' && (
-              <Image
-                source={require('@/assets/images/ObsidianGold.jpg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            {kitName === 'Prismatic' && (
-              <Image
-                source={require('@/assets/images/Prismatic.jpg')}
-                style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
-                resizeMode="cover"
-              />
-            )}
-            <Text style={styles.houseName}>{house?.name}</Text>
-            <View style={styles.inviteCodeContainer}>
-              <Text style={styles.inviteCodeLabel}>Invite Code:</Text>
-              <Text style={styles.inviteCode}>{house?.invite_code}</Text>
-            </View>
-            <View style={styles.membersInfo}>
-              <Ionicons name="people" size={16} color="#FFFFFF" />
-              <Text style={styles.membersCount}>{members.length} members</Text>
-            </View>
+          </Pressable>*/}
           </View>
-        </KitBorder>
-      </View>
+          <View style={styles.headerActions}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.actionButton,
+                pressed && { opacity: 0.7 }
+              ]}
+              onPress={() => {
+                console.log('[HOUSE DETAIL] QR button pressed');
+                router.push(`/qr-code/${id}`);
+              }}
+            >
+              <Ionicons name="qr-code" size={24} color="#FFFFFF" />
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.actionButton,
+                pressed && { opacity: 0.7 }
+              ]}
+              onPress={() => {
+                console.log('[HOUSE DETAIL] Share button physically pressed!');
+                handleShare();
+              }}
+            >
+              <Ionicons name="share-outline" size={24} color="#FFFFFF" />
+            </Pressable>
+            {(isCreator || isAdmin) ? (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.actionButton,
+                  styles.deleteButton,
+                  pressed && { opacity: 0.7 }
+                ]}
+                onPress={() => {
+                  console.log('[HOUSE DETAIL] Trash button physically pressed!');
+                  handleDeleteHouse();
+                }}
+              >
+                <Ionicons name="trash" size={24} color="#FFFFFF" />
+              </Pressable>
+            ) : (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.actionButton,
+                  styles.leaveButton,
+                  pressed && { opacity: 0.7 }
+                ]}
+                onPress={() => {
+                  console.log('[HOUSE DETAIL] Leave button pressed!');
+                  handleLeaveHouse();
+                }}
+              >
+                <Ionicons name="log-out" size={24} color="#FFFFFF" />
+              </Pressable>
+            )}
+          </View>
+        </View>
 
-      {pendingInvitations.length > 0 && (
-        <View style={styles.invitationsSection}>
-          <Text style={styles.invitationsSectionTitle}>Pending Game Invitations</Text>
-          {pendingInvitations.map((invitation) => (
-            <View key={invitation.id} style={styles.invitationCard}>
-              <View style={styles.invitationInfo}>
-                <Text style={styles.invitationGameEmoji}>
-                  {invitation.game?.game_emoji || '­ƒÄ«'}
-                </Text>
-                <View style={styles.invitationText}>
-                  <Text style={styles.invitationGameName}>
-                    {invitation.game?.name || 'Unknown Game'}
+
+        <View style={styles.houseHeaderWrapper}>
+          <KitBorder
+            rarity={kitRarity || 'common'}
+            kitName={kitName}
+            colors={themeColors}
+            borderRadius={24}
+          >
+            <View style={styles.houseHeader}>
+              {kitName === 'Liquid Metal Candy' && (
+                <Image
+                  source={require('@/assets/images/LiquidMetalProfile.jpeg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Starlight Prowler' && (
+                <Image
+                  source={require('@/assets/images/StarlightProwler.jpeg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Golden Bushido' && (
+                <Image
+                  source={require('@/assets/images/GoldenBushido.jpeg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Chaos Theory' && (
+                <Image
+                  source={require('@/assets/images/ChaosTheory.jpeg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Phantom Void' && (
+                <Image
+                  source={require('@/assets/images/PhantomVoid.jpg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Stellar' && (
+                <Image
+                  source={require('@/assets/images/Stellar.jpg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Neon Pulse' && (
+                <Image
+                  source={require('@/assets/images/NeonPulse.jpg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Obsidian Gold' && (
+                <Image
+                  source={require('@/assets/images/ObsidianGold.jpg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              {kitName === 'Prismatic' && (
+                <Image
+                  source={require('@/assets/images/Prismatic.jpg')}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
+                  resizeMode="cover"
+                />
+              )}
+              <Text style={styles.houseName}>{house?.name}</Text>
+              <View style={styles.inviteCodeContainer}>
+                <Text style={styles.inviteCodeLabel}>Invite Code:</Text>
+                <Text style={styles.inviteCode}>{house?.invite_code}</Text>
+              </View>
+              <View style={styles.membersInfo}>
+                <Ionicons name="people" size={16} color="#FFFFFF" />
+                <Text style={styles.membersCount}>{members.length} members</Text>
+              </View>
+            </View>
+          </KitBorder>
+        </View>
+
+        {pendingInvitations.length > 0 && (
+          <View style={styles.invitationsSection}>
+            <Text style={styles.invitationsSectionTitle}>Pending Game Invitations</Text>
+            {pendingInvitations.map((invitation) => (
+              <View key={invitation.id} style={styles.invitationCard}>
+                <View style={styles.invitationInfo}>
+                  <Text style={styles.invitationGameEmoji}>
+                    {invitation.game?.game_emoji || '­ƒÄ«'}
                   </Text>
-                  <Text style={styles.invitationDescription}>
-                    {invitation.inviter?.username || 'Someone'} invited you to play in {invitation.house?.name || 'this house'}
-                  </Text>
+                  <View style={styles.invitationText}>
+                    <Text style={styles.invitationGameName}>
+                      {invitation.game?.name || 'Unknown Game'}
+                    </Text>
+                    <Text style={styles.invitationDescription}>
+                      {invitation.inviter?.username || 'Someone'} invited you to play in {invitation.house?.name || 'this house'}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.invitationActions}>
+                  <Pressable
+                    style={[styles.invitationButton, styles.declineButton]}
+                    onPress={() => handleDeclineInvitation(invitation.id, invitation.house_id)}
+                  >
+                    <Text style={styles.declineButtonText}>Decline</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.invitationButton, styles.acceptButton]}
+                    onPress={() => handleAcceptInvitation(invitation.id, invitation.game_session_id)}
+                  >
+                    <Text style={styles.invitationButtonText}>Accept</Text>
+                  </Pressable>
                 </View>
               </View>
-              <View style={styles.invitationActions}>
-                <Pressable
-                  style={[styles.invitationButton, styles.declineButton]}
-                  onPress={() => handleDeclineInvitation(invitation.id, invitation.house_id)}
-                >
-                  <Text style={styles.declineButtonText}>Decline</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.invitationButton, styles.acceptButton]}
-                  onPress={() => handleAcceptInvitation(invitation.id, invitation.game_session_id)}
-                >
-                  <Text style={styles.invitationButtonText}>Accept</Text>
-                </Pressable>
-              </View>
-            </View>
-          ))}
-        </View>
-      )}
+            ))}
+          </View>
+        )}
 
-      {gameSessions.length > 0 && (
+        {gameSessions.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={[styles.sectionTitle, { color: dynamicTextColor }]}>Active & Pending Games</Text>
+            </View>
+            <FlatList
+              data={gameSessions}
+              renderItem={renderGameSession}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.gamesList}
+              scrollEnabled={false}
+            />
+          </View>
+        )}
+
+        {leaderboardData.length > 0 && (
+          <View
+            ref={houseLeaderboard.ref}
+            onLayout={houseLeaderboard.onLayout}
+            style={styles.section}
+          >
+            <View style={styles.sectionHeader}>
+              <Ionicons name="trophy" size={24} color="#FFFFFF" />
+              <Text style={[styles.sectionTitle, { color: dynamicTextColor, marginLeft: 8 }]}>House Leaders</Text>
+            </View>
+
+            <View style={styles.leaderboardFilters}>
+              <Pressable
+                style={[styles.filterTab, selectedStatType === 'most_wins' && styles.filterTabActive]}
+                onPress={() => setSelectedStatType('most_wins')}
+              >
+                {selectedStatType === 'most_wins'
+                  ? <Ionicons name="trophy" size={13} color="#000000" />
+                  : <Ionicons name="trophy-outline" size={13} color="rgba(255,255,255,0.6)" />}
+                <Text style={[styles.filterTabText, selectedStatType === 'most_wins' && styles.filterTabTextActive]}>
+                  Most Wins
+                </Text>
+              </Pressable>
+
+              <Pressable
+                style={[styles.filterTab, selectedStatType === 'best_accuracy' && styles.filterTabActive]}
+                onPress={() => setSelectedStatType('best_accuracy')}
+              >
+                {selectedStatType === 'best_accuracy'
+                  ? <Ionicons name="radio-button-on" size={13} color="#000000" />
+                  : <Ionicons name="radio-button-off" size={13} color="rgba(255,255,255,0.6)" />}
+                <Text style={[styles.filterTabText, selectedStatType === 'best_accuracy' && styles.filterTabTextActive]}>
+                  Accuracy
+                </Text>
+              </Pressable>
+
+              <Pressable
+                style={[styles.filterTab, selectedStatType === 'winning_streak' && styles.filterTabActive]}
+                onPress={() => setSelectedStatType('winning_streak')}
+              >
+                {selectedStatType === 'winning_streak'
+                  ? <Ionicons name="flame" size={13} color="#000000" />
+                  : <Ionicons name="flame-outline" size={13} color="rgba(255,255,255,0.6)" />}
+                <Text style={[styles.filterTabText, selectedStatType === 'winning_streak' && styles.filterTabTextActive]}>
+                  Streak
+                </Text>
+              </Pressable>
+            </View>
+
+            {loadingLeaderboard ? (
+              <View style={styles.leaderboardLoading}>
+                <ActivityIndicator size="small" color="#FFFFFF" />
+              </View>
+            ) : (
+              <FlatList
+                data={leaderboardData}
+                renderItem={renderLeaderboardEntry}
+                keyExtractor={(item) => item.user_id}
+                contentContainerStyle={styles.leaderboardList}
+                scrollEnabled={false}
+              />
+            )}
+          </View>
+        )}
+
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: dynamicTextColor }]}>Active & Pending Games</Text>
-          </View>
-          <FlatList
-            data={gameSessions}
-            renderItem={renderGameSession}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.gamesList}
-            scrollEnabled={false}
-          />
-        </View>
-      )}
-
-      {leaderboardData.length > 0 && (
-        <View
-          ref={houseLeaderboard.ref}
-          onLayout={houseLeaderboard.onLayout}
-          style={styles.section}
-        >
-          <View style={styles.sectionHeader}>
-            <Ionicons name="trophy" size={24} color="#FFFFFF" />
-            <Text style={[styles.sectionTitle, { color: dynamicTextColor, marginLeft: 8 }]}>House Leaders</Text>
-          </View>
-
-          <View style={styles.leaderboardFilters}>
-            <Pressable
-              style={[styles.filterTab, selectedStatType === 'most_wins' && styles.filterTabActive]}
-              onPress={() => setSelectedStatType('most_wins')}
-            >
-              {selectedStatType === 'most_wins'
-                ? <Ionicons name="trophy" size={13} color="#000000" />
-                : <Ionicons name="trophy-outline" size={13} color="rgba(255,255,255,0.6)" />}
-              <Text style={[styles.filterTabText, selectedStatType === 'most_wins' && styles.filterTabTextActive]}>
-                Most Wins
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={[styles.filterTab, selectedStatType === 'best_accuracy' && styles.filterTabActive]}
-              onPress={() => setSelectedStatType('best_accuracy')}
-            >
-              {selectedStatType === 'best_accuracy'
-                ? <Ionicons name="radio-button-on" size={13} color="#000000" />
-                : <Ionicons name="radio-button-off" size={13} color="rgba(255,255,255,0.6)" />}
-              <Text style={[styles.filterTabText, selectedStatType === 'best_accuracy' && styles.filterTabTextActive]}>
-                Accuracy
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={[styles.filterTab, selectedStatType === 'winning_streak' && styles.filterTabActive]}
-              onPress={() => setSelectedStatType('winning_streak')}
-            >
-              {selectedStatType === 'winning_streak'
-                ? <Ionicons name="flame" size={13} color="#000000" />
-                : <Ionicons name="flame-outline" size={13} color="rgba(255,255,255,0.6)" />}
-              <Text style={[styles.filterTabText, selectedStatType === 'winning_streak' && styles.filterTabTextActive]}>
-                Streak
-              </Text>
-            </Pressable>
+            <Text style={[styles.sectionTitle, { color: dynamicTextColor }]}>Games</Text>
+            <View style={styles.headerButtonGroup}>
+              <Pressable
+                style={styles.historyButton}
+                onPress={() => router.push(`/house-history/${id}`)}
+              >
+                <Ionicons name="time" size={18} color="#FFFFFF" />
+              </Pressable>
+              {isAdmin && games.length > 0 && (
+                <Pressable
+                  ref={houseSettings.ref}
+                  onLayout={houseSettings.onLayout}
+                  style={styles.manageButton}
+                  onPress={() => router.push(`/house-settings/${id}`)}
+                >
+                  <Ionicons name="settings" size={18} color="#FFFFFF" />
+                </Pressable>
+              )}
+              {isAdmin && (
+                <Pressable
+                  ref={addGameButton.ref}
+                  onLayout={addGameButton.onLayout}
+                  style={styles.addButton}
+                  onPress={() => router.push(`/add-game/${id}`)}
+                >
+                  <Ionicons name="add" size={20} color="#000000" />
+                </Pressable>
+              )}
+            </View>
           </View>
 
-          {loadingLeaderboard ? (
-            <View style={styles.leaderboardLoading}>
-              <ActivityIndicator size="small" color="#FFFFFF" />
+          {games.length === 0 ? (
+            <View style={styles.emptyState}>
+              <View style={styles.emptyIconContainer}>
+                <Ionicons name="trophy" size={56} color="#FFFFFF" />
+              </View>
+              <Text style={styles.emptyText}>No Games Yet</Text>
+              {isAdmin ? (
+                <>
+                  <Text style={styles.emptySubtext}>
+                    Get started with a game template or create your own
+                  </Text>
+                  <View style={styles.emptyActions}>
+                    <Pressable
+                      style={styles.templateButton}
+                      onPress={() => router.push({
+                        pathname: '/game-templates',
+                        params: { houseId: id }
+                      })}
+                    >
+                      <View style={styles.templateButtonGradient}>
+                        <Ionicons name="sparkles" size={20} color="#000000" />
+                        <Text style={styles.templateButtonText}>Browse Game Templates</Text>
+                      </View>
+                    </Pressable>
+                    <Pressable
+                      style={styles.customGameButton}
+                      onPress={() => router.push(`/add-game/${id}`)}
+                    >
+                      <Ionicons name="add" size={20} color="#FFFFFF" />
+                      <Text style={styles.customGameButtonText}>Create Custom Game</Text>
+                    </Pressable>
+                  </View>
+                </>
+              ) : (
+                <Text style={styles.emptySubtext}>
+                  Waiting for an admin to add games
+                </Text>
+              )}
             </View>
           ) : (
             <FlatList
-              data={leaderboardData}
-              renderItem={renderLeaderboardEntry}
-              keyExtractor={(item) => item.user_id}
-              contentContainerStyle={styles.leaderboardList}
+              data={games}
+              renderItem={renderGame}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.gamesList}
               scrollEnabled={false}
+              showsVerticalScrollIndicator={false}
             />
           )}
         </View>
-      )}
-
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: dynamicTextColor }]}>Games</Text>
-          <View style={styles.headerButtonGroup}>
-            <Pressable
-              style={styles.historyButton}
-              onPress={() => router.push(`/house-history/${id}`)}
-            >
-              <Ionicons name="time" size={18} color="#FFFFFF" />
-            </Pressable>
-            {isAdmin && games.length > 0 && (
-              <Pressable
-                ref={houseSettings.ref}
-                onLayout={houseSettings.onLayout}
-                style={styles.manageButton}
-                onPress={() => router.push(`/house-settings/${id}`)}
-              >
-                <Ionicons name="settings" size={18} color="#FFFFFF" />
-              </Pressable>
-            )}
-            {isAdmin && (
-              <Pressable
-                ref={addGameButton.ref}
-                onLayout={addGameButton.onLayout}
-                style={styles.addButton}
-                onPress={() => router.push(`/add-game/${id}`)}
-              >
-                <Ionicons name="add" size={20} color="#000000" />
-              </Pressable>
-            )}
-          </View>
-        </View>
-
-        {games.length === 0 ? (
-          <View style={styles.emptyState}>
-            <View style={styles.emptyIconContainer}>
-              <Ionicons name="trophy" size={56} color="#FFFFFF" />
-            </View>
-            <Text style={styles.emptyText}>No Games Yet</Text>
-            {isAdmin ? (
-              <>
-                <Text style={styles.emptySubtext}>
-                  Get started with a game template or create your own
-                </Text>
-                <View style={styles.emptyActions}>
-                  <Pressable
-                    style={styles.templateButton}
-                    onPress={() => router.push({
-                      pathname: '/game-templates',
-                      params: { houseId: id }
-                    })}
-                  >
-                    <View style={styles.templateButtonGradient}>
-                      <Ionicons name="sparkles" size={20} color="#000000" />
-                      <Text style={styles.templateButtonText}>Browse Game Templates</Text>
-                    </View>
-                  </Pressable>
-                  <Pressable
-                    style={styles.customGameButton}
-                    onPress={() => router.push(`/add-game/${id}`)}
-                  >
-                    <Ionicons name="add" size={20} color="#FFFFFF" />
-                    <Text style={styles.customGameButtonText}>Create Custom Game</Text>
-                  </Pressable>
-                </View>
-              </>
-            ) : (
-              <Text style={styles.emptySubtext}>
-                Waiting for an admin to add games
-              </Text>
-            )}
-          </View>
-        ) : (
-          <FlatList
-            data={games}
-            renderItem={renderGame}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.gamesList}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-          />
-        )}
-      </View>
       </ScrollView>
 
       <HouseLimitModal
