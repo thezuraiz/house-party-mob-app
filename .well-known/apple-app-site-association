@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAMID.com.houseparty.scoretracker",
+        "paths": [
+          "/auth/confirm",
+          "/auth/reset",
+          "/invite",
+          "/house/*",
+          "/profile/*",
+          "/session/*"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "TEAMID.com.houseparty.scoretracker"
+    ]
+  }
+}
