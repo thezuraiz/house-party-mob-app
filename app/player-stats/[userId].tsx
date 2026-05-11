@@ -425,18 +425,58 @@ export default function PlayerStatsScreen() {
           {/* ── Header banner with kit ── */}
           <View style={styles.headerGradient}>
             <View style={styles.header}>
-              {hasKitEffects ? (
-                <BannerRenderer
-                  colors={activeKitTheme.colors}
-                  rarity={activeKitTheme.rarity as any}
-                  kitName={activeKitTheme.name}
-                  size="large"
-                  style={StyleSheet.absoluteFill}
-                  disableBorders={true}
-                />
-              ) : (
+              {/* Image-based kit backgrounds */}
+              {activeKitTheme?.name === 'Phantom Void' && (
+                <Image source={require('@/assets/images/PhantomVoid.jpg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Stellar' && (
+                <Image source={require('@/assets/images/Stellar.jpg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Neon Pulse' && (
+                <Image source={require('@/assets/images/NeonPulse.jpg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Obsidian Gold' && (
+                <Image source={require('@/assets/images/ObsidianGold.jpg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Prismatic' && (
+                <Image source={require('@/assets/images/Prismatic.jpg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Chaos Theory' && (
+                <Image source={require('@/assets/images/ChaosTheory.jpeg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Golden Bushido' && (
+                <Image source={require('@/assets/images/GoldenBushido.jpeg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Liquid Metal Candy' && (
+                <Image source={require('@/assets/images/LiquidMetalProfile.jpeg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {activeKitTheme?.name === 'Starlight Prowler' && (
+                <Image source={require('@/assets/images/StarlightProwler.jpeg')} style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+              )}
+              {/* Gradient/animated kits that don't have a static image */}
+              {activeKitTheme && !['Phantom Void','Stellar','Neon Pulse','Obsidian Gold','Prismatic','Chaos Theory','Golden Bushido','Liquid Metal Candy','Starlight Prowler'].includes(activeKitTheme.name) && (
+                hasKitEffects ? (
+                  <BannerRenderer
+                    colors={activeKitTheme.colors}
+                    rarity={activeKitTheme.rarity as any}
+                    kitName={activeKitTheme.name}
+                    size="large"
+                    style={StyleSheet.absoluteFill}
+                    disableBorders={true}
+                  />
+                ) : (
+                  <LinearGradient
+                    colors={activeKitTheme.colors as [string, string, ...string[]]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={StyleSheet.absoluteFill}
+                  />
+                )
+              )}
+              {/* No kit — default dark */}
+              {!activeKitTheme && (
                 <LinearGradient
-                  colors={activeKitTheme ? activeKitTheme.colors as [string, string, ...string[]] : ['#111111', '#1A1A1A']}
+                  colors={['#111111', '#1A1A1A']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={StyleSheet.absoluteFill}
@@ -506,13 +546,31 @@ export default function PlayerStatsScreen() {
                 borderRadius={18}
               >
                 <View style={styles.kitShowcase}>
-                  <BannerRenderer
-                    colors={activeKitTheme.colors}
-                    rarity={activeKitTheme.rarity as any}
-                    kitName={activeKitTheme.name}
-                    size="large"
-                    style={StyleSheet.absoluteFill as any}
-                  />
+                  {['Phantom Void','Stellar','Neon Pulse','Obsidian Gold','Prismatic','Chaos Theory','Golden Bushido','Liquid Metal Candy','Starlight Prowler'].includes(activeKitTheme.name) ? (
+                    <Image
+                      source={
+                        activeKitTheme.name === 'Phantom Void' ? require('@/assets/images/PhantomVoid.jpg')
+                        : activeKitTheme.name === 'Stellar' ? require('@/assets/images/Stellar.jpg')
+                        : activeKitTheme.name === 'Neon Pulse' ? require('@/assets/images/NeonPulse.jpg')
+                        : activeKitTheme.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
+                        : activeKitTheme.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
+                        : activeKitTheme.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
+                        : activeKitTheme.name === 'Golden Bushido' ? require('@/assets/images/GoldenBushido.jpeg')
+                        : activeKitTheme.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
+                        : require('@/assets/images/StarlightProwler.jpeg')
+                      }
+                      style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <BannerRenderer
+                      colors={activeKitTheme.colors}
+                      rarity={activeKitTheme.rarity as any}
+                      kitName={activeKitTheme.name}
+                      size="large"
+                      style={StyleSheet.absoluteFill as any}
+                    />
+                  )}
                   <View style={styles.kitShowcaseOverlay} />
                   <View style={styles.kitShowcaseContent}>
                     <View style={styles.kitShowcaseLeft}>

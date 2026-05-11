@@ -13,6 +13,7 @@ import { useProfile } from '@/contexts/ProfileContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useBannerUnlock } from '@/contexts/BannerUnlockContext';
 import BannerUnlockModal from '@/components/BannerUnlockModal';
+import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
 import { safeArrayFromColors } from '@/lib/colorUtils';
 import { useCoachMarkTarget } from '@/hooks/useCoachMarkTarget';
 import { useCoachMarkContext } from '@/contexts/CoachMarkContext';
@@ -72,6 +73,7 @@ function HouseCardAnimated({ item, index, pendingInvitations, onPress }: {
 export default function HousesScreen() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [unlockModalVisible, setUnlockModalVisible] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [unlockedBanner, setUnlockedBanner] = useState<{ id: string; name: string; rarity: 'legendary' | 'mythic'; colors: string[]; glowColor?: string } | null>(null);
   const [fetchDebounceTimer, setFetchDebounceTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
   const { user } = useAuth();
@@ -106,6 +108,16 @@ export default function HousesScreen() {
   const { data: pendingInvitations = new Map(), refetch: refetchInvitations } = useQuery({
     queryKey: ['pendingInvitations', user?.id],
     queryFn: async () => { if (!user) return new Map(); return await fetchPendingInvitationsData(user.id); },
+    enabled: !!user, staleTime: 30000,
+  });
+
+  const { data: pendingFriendRequests = 0 } = useQuery({
+    queryKey: ['pendingFriendRequestsCount', user?.id],
+    queryFn: async () => {
+      if (!user) return 0;
+      const { count } = await supabase.from('friend_requests').select('id', { count: 'exact', head: true }).eq('recipient_id', user.id).eq('status', 'pending');
+      return count || 0;
+    },
     enabled: !!user, staleTime: 30000,
   });
 
@@ -230,7 +242,17 @@ export default function HousesScreen() {
   };
 
   const onRefresh = () => { refetch(); refetchInvitations(); };
-  const handleCreateHousePress = () => { setIsNavigating(true); setTimeout(() => router.push('/create-house'), 10); };
+  const handleCreateHousePress = () => {
+    // Free users can only create 1 house
+    if (!isPremium) {
+      const adminHouses = houses.filter(h => h.role === 'admin');
+      if (adminHouses.length >= 1) {
+        setShowPremiumModal(true);
+        return;
+      }
+    }
+    setIsNavigating(true); setTimeout(() => router.push('/create-house'), 10);
+  };
 
   const renderHouse = ({ item, index }: { item: House; index: number }) => (
     <HouseCardAnimated
@@ -324,6 +346,30 @@ export default function HousesScreen() {
           </Animated.View>
         </View>
 
+        {/* ── Pending notifications banner ── */}
+        {(totalInvites > 0 || pendingFriendRequests > 0) && (
+          <Pressable
+            style={s.notifBanner}
+            onPress={() => router.push('/(tabs)/friends')}
+          >
+            <View style={s.notifIconBox}>
+              <Ionicons name="notifications" size={18} color="#FFFFFF" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.notifTitle}>
+                {totalInvites > 0 && pendingFriendRequests > 0
+                  ? `${totalInvites} game invite${totalInvites > 1 ? 's' : ''} · ${pendingFriendRequests} friend request${pendingFriendRequests > 1 ? 's' : ''}`
+                  : totalInvites > 0
+                  ? `${totalInvites} pending game invite${totalInvites > 1 ? 's' : ''}`
+                  : `${pendingFriendRequests} friend request${pendingFriendRequests > 1 ? 's' : ''}`
+                }
+              </Text>
+              <Text style={s.notifSub}>Tap to view</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.4)" />
+          </Pressable>
+        )}
+
         {/* ── Stats grid ── */}
         {houses.length > 0 && (
           <View style={s.statsWrap}>
@@ -411,6 +457,7 @@ export default function HousesScreen() {
           onClose={() => { setUnlockModalVisible(false); setUnlockedBanner(null); }}
         />
       )}
+      <PremiumPurchaseModal visible={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
     </SafeAreaView>
   );
 }
@@ -453,6 +500,19 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   actionPillWhiteText: { fontSize: 13, fontWeight: '700', color: '#000000' },
+
+  /* notification banner */
+  notifBanner: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    backgroundColor: 'rgba(74,123,247,0.12)', borderWidth: 1, borderColor: 'rgba(74,123,247,0.3)',
+    borderRadius: 16, padding: 14, marginTop: 16,
+  },
+  notifIconBox: {
+    width: 36, height: 36, borderRadius: 18, backgroundColor: '#4A7BF7',
+    justifyContent: 'center', alignItems: 'center',
+  },
+  notifTitle: { fontSize: 13, fontWeight: '700', color: '#FFFFFF' },
+  notifSub: { fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 },
 
   /* stats */
   statsWrap: {

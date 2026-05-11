@@ -82,6 +82,20 @@ export default function CreateHouseScreen() {
       if (!user) { setError('You must be signed in'); return; }
       setLoading(true); setError('');
 
+      // Free users can only create 1 house
+      if (!isPremium) {
+        const { count, error: countError } = await supabase
+          .from('house_members')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .eq('role', 'admin');
+        if (!countError && (count || 0) >= 1) {
+          setLoading(false);
+          setShowLimitModal(true);
+          return;
+        }
+      }
+
       const { data: limitCheck, error: limitError } = await supabase.rpc('check_user_can_join_house', { user_id_param: user.id });
       if (limitError) throw new Error('Failed to check house limit');
       if (limitCheck && !limitCheck.can_join) { setLoading(false); setShowLimitModal(true); return; }

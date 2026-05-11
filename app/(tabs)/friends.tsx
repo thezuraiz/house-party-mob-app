@@ -154,6 +154,10 @@ export default function FriendsScreen() {
 
   const sendFriendRequest = async () => {
     if (!user || !selectedUser) return;
+    if (!isPremium) {
+      setShowPremiumModal(true);
+      return;
+    }
     setSendingRequest(true);
     try {
       const { error } = await supabase.from('friend_requests').insert({ sender_id: user.id, recipient_id: selectedUser.id, status: 'pending' });
@@ -211,8 +215,11 @@ export default function FriendsScreen() {
       { text: 'Cancel', style: 'cancel' },
       { text: 'Remove', style: 'destructive', onPress: async () => {
         try {
-          await supabase.from('friendships').delete().eq('user_id', user?.id).eq('friend_id', friendId);
+          // Use the RPC function that handles both directions + cleans up friend_requests
+          const { error } = await supabase.rpc('remove_friendship', { target_friend_id: friendId });
+          if (error) throw error;
           await fetchFriends();
+          showSuccess('Friend removed');
         } catch (e: any) { showError(e.message || 'Failed to remove'); }
       }},
     ]);
@@ -324,12 +331,14 @@ export default function FriendsScreen() {
             })}
             {selectedUser && (
               <Pressable
-                style={[s.sendBtn, sendingRequest && { opacity: 0.6 }]}
+                style={[s.sendBtn, sendingRequest && { opacity: 0.6 }, !isPremium && { backgroundColor: '#FFD700' }]}
                 onPress={sendFriendRequest}
                 disabled={sendingRequest}
               >
                 {sendingRequest
                   ? <ActivityIndicator size="small" color="#FFFFFF" />
+                  : !isPremium
+                  ? <><Ionicons name="diamond" size={16} color="#000000" /><Text style={s.sendBtnTxt}>Upgrade to Send Requests</Text></>
                   : <><Ionicons name="person-add-outline" size={16} color="#000000" /><Text style={s.sendBtnTxt}>Send Friend Request</Text></>
                 }
               </Pressable>

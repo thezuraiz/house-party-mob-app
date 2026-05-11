@@ -54,8 +54,8 @@ function CustomTabBar({ state, navigation }: any): React.ReactElement {
         {TABS.map((tab, i) => {
           const route   = state.routes[i];
           const focused = state.index === i;
-          // badge: index=0 (invites), friends=3 (requests)
-          const badge = i === 0 ? pendingInvites : i === 3 ? pendingRequests : 0;
+          // badge: index=0 (game invites on home), friends=3 (requests + game invites)
+          const badge = i === 0 ? pendingInvites : i === 3 ? (pendingRequests + pendingInvites) : 0;
           const dot   = i === 2 && hasNewDiscounts && !badge;
 
           return (

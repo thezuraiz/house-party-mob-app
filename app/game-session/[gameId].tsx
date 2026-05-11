@@ -1,4 +1,4 @@
-﻿import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
+﻿import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, TextInput, Modal, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBadge } from '@/contexts/BadgeContext';
+import { usePremium } from '@/contexts/PremiumContext';
 import UserAvatar from '@/components/UserAvatar';
 import EnhancedPlayerCard from '@/components/EnhancedPlayerCard';
 import WinnerCelebrationModal from '@/components/WinnerCelebrationModal';
@@ -211,6 +212,7 @@ export default function GameSessionScreen() {
   const [showEndGameConfirm, setShowEndGameConfirm] = useState(false);
   const { user } = useAuth();
   const { checkBadge } = useBadge();
+  const { isPremium } = usePremium();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -680,6 +682,17 @@ export default function GameSessionScreen() {
       const nonMemberIds = selectedPlayers
         .filter(p => !houseMemberIds.includes(p.user_id))
         .map(p => p.user_id);
+
+      // Free users cannot send game invites to non-members
+      if (nonMemberIds.length > 0 && !isPremium) {
+        Alert.alert(
+          'Premium Feature',
+          'Sending game invites to players outside your house requires Premium. Upgrade to invite friends!',
+          [{ text: 'OK' }]
+        );
+        setLoading(false);
+        return;
+      }
 
       // Set status to 'pending' if there are non-members who need to accept invitations
       const initialStatus = nonMemberIds.length > 0 ? 'pending' : 'active';
