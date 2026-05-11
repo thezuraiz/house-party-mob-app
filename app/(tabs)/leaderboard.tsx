@@ -2,8 +2,8 @@ import {
   View, Text, StyleSheet, SectionList, ActivityIndicator,
   Pressable, Modal, Animated, ScrollView, Platform, StatusBar,
 } from 'react-native';
-import { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'expo-router';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -229,8 +229,29 @@ export default function LeaderboardScreen() {
   const latestSession = sessions[0];
 
   useEffect(() => {
-    if (myHouses.length > 0 && !selectedHouseId) setSelectedHouseId(myHouses[0].id);
-  }, [myHouses]);
+    if (myHouses.length === 0) {
+      if (selectedHouseId) {
+        queryClient.removeQueries({ queryKey: ['gameHistory', selectedHouseId] });
+        setSelectedHouseId(null);
+      }
+      return;
+    }
+    if (!selectedHouseId) {
+      setSelectedHouseId(myHouses[0].id);
+      return;
+    }
+    if (!myHouses.some(h => h.id === selectedHouseId)) {
+      const staleId = selectedHouseId;
+      setSelectedHouseId(myHouses[0].id);
+      queryClient.removeQueries({ queryKey: ['gameHistory', staleId] });
+    }
+  }, [myHouses, selectedHouseId, queryClient]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) queryClient.invalidateQueries({ queryKey: ['userHouses', user.id] });
+    }, [user?.id, queryClient]),
+  );
 
   useEffect(() => {
     if (!user) return;
