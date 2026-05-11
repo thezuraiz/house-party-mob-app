@@ -350,7 +350,7 @@ export default function ProfileScreen() {
         {/* Neon Rift — full screen background PNG */}
         {activeKit?.name === 'Neon Rift Loadout' && (
           <Image
-            source={require('../../NeoProfilebg.png')}
+            source={require('@/assets/images/NeonBackground.jpg')}
             style={[StyleSheet.absoluteFill, { opacity: 0.85 }]}
             resizeMode="cover"
           />

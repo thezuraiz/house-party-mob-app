@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated, Platform, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { safeArrayFromColors } from '@/lib/colorUtils';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const ENABLE_ANIMATIONS = Platform.OS !== 'android' || Platform.Version >= 28;
 
@@ -46,7 +46,7 @@ function getAccentColor(kitName?: string | null, rarity?: string | null, colors?
 
 // Phantom Echo Set — animated vertical teal wave strips
 function PhantomWaves({ accentColor }: { accentColor: string }) {
-  const anims = [0,1,2,3,4].map(() => useRef(new Animated.Value(0)).current);
+  const anims = [0, 1, 2, 3, 4].map(() => useRef(new Animated.Value(0)).current);
 
   useEffect(() => {
     if (!ENABLE_ANIMATIONS) return;
@@ -144,10 +144,10 @@ export default function HouseCard({
   // Orb opacity based on rarity — subtle for common, strong for legendary
   const orbOpacity = house.kit_rarity === 'mythic' ? 0.5
     : house.kit_rarity === 'legendary' ? 0.45
-    : house.kit_rarity === 'epic' ? 0.38
-    : house.kit_rarity === 'rare' ? 0.32
-    : house.kit_rarity === 'uncommon' ? 0.25
-    : 0.2; // common
+      : house.kit_rarity === 'epic' ? 0.38
+        : house.kit_rarity === 'rare' ? 0.32
+          : house.kit_rarity === 'uncommon' ? 0.25
+            : 0.2; // common
   const isAdmin = house.role === 'admin';
 
   // Kit change animation
@@ -224,7 +224,7 @@ export default function HouseCard({
           {/* Neon Rift — PNG background image */}
           {house.kit_name === 'Neon Rift Loadout' && (
             <Image
-              source={require('../NeonBackground.png')}
+              source={require('@/assets/images/NeonBackground.jpg')}
               style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
               resizeMode="cover"
             />
@@ -233,7 +233,7 @@ export default function HouseCard({
           {/* Ironclad Vanguard — PNG background image */}
           {house.kit_name === 'Ironclad Vanguard' && (
             <Image
-              source={require('../IroncladHouse.png')}
+              source={require('@/assets/images/IroncladHouse.jpg')}
               style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
               resizeMode="cover"
             />
