@@ -1,22 +1,29 @@
-import {
-  View, Text, StyleSheet, Pressable, ActivityIndicator,
-  ScrollView, TextInput, Platform, Image, StatusBar,
-} from 'react-native';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import HouseLimitModal from '@/components/HouseLimitModal';
+import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
+import Toast from '@/components/Toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { usePremium } from '@/contexts/PremiumContext';
+import { formatSupabaseError, logError } from '@/lib/errorReporting';
+import { uploadHouseImage } from '@/lib/imageUpload';
+import { supabase } from '@/lib/supabase';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
-import { usePremium } from '@/contexts/PremiumContext';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import Toast from '@/components/Toast';
-import { logError, formatSupabaseError } from '@/lib/errorReporting';
-import HouseLimitModal from '@/components/HouseLimitModal';
-import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
-import { uploadHouseImage } from '@/lib/imageUpload';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type EmojiPack = {
   id: string; name: string; emojis: string[]; preview_emoji: string;
@@ -216,7 +223,7 @@ export default function CreateHouseScreen() {
           <View style={s.section}>
             <View style={s.labelRow}>
               <Text style={s.label}>Background Image</Text>
-              {!isPremium && (
+              {isPremium && (
                 <View style={s.premiumTag}>
                   <Ionicons name="diamond" size={10} color="#F59E0B" />
                   <Text style={s.premiumTagTxt}>PREMIUM</Text>
