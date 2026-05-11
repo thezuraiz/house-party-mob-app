@@ -601,7 +601,7 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.35)',
+                    borderColor: 'rgba(255,215,0,0.8)',
                     marginTop: 0,
                     backgroundColor: 'rgba(201,162,39,0.3)',
                     overflow: 'hidden',
@@ -666,7 +666,7 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1.5,
-                    borderColor: 'rgba(0,206,209,0.35)',
+                    borderColor: 'rgba(0,206,209,0.8)',
                     marginTop: 0,
                     backgroundColor: 'transparent',
                     overflow: 'hidden',
@@ -708,7 +708,7 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(0,206,209,0.5)', borderWidth: 1.5,
+                      borderColor: 'rgba(0,206,209,0.8)', borderWidth: 1.5,
                       backgroundColor: 'transparent',
                       shadowColor: '#00CED1', shadowOpacity: 0.4, shadowRadius: 10,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
@@ -730,7 +730,7 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1.5,
-                    borderColor: 'rgba(192,192,192,0.35)',
+                    borderColor: 'rgba(192,192,192,0.8)',
                     marginTop: 0,
                     backgroundColor: 'transparent',
                     overflow: 'hidden',
@@ -772,7 +772,7 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(192,192,192,0.5)', borderWidth: 1.5,
+                      borderColor: 'rgba(192,192,192,0.8)', borderWidth: 1.5,
                       backgroundColor: 'transparent',
                       shadowColor: '#C0C0C0', shadowOpacity: 0.4, shadowRadius: 10,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
@@ -794,7 +794,7 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1.5,
-                    borderColor: 'rgba(0,255,255,0.35)',
+                    borderColor: 'rgba(0,255,255,0.8)',
                     marginTop: 0,
                     backgroundColor: 'transparent',
                     overflow: 'hidden',
@@ -836,7 +836,7 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(0,255,255,0.5)', borderWidth: 1.5,
+                      borderColor: 'rgba(0,255,255,0.8)', borderWidth: 1.5,
                       backgroundColor: 'transparent',
                       shadowColor: '#00FFFF', shadowOpacity: 0.4, shadowRadius: 10,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
@@ -858,7 +858,7 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1.5,
-                    borderColor: 'rgba(255,215,0,0.35)',
+                    borderColor: 'rgba(255,215,0,0.8)',
                     marginTop: 0,
                     backgroundColor: 'transparent',
                     overflow: 'hidden',
@@ -900,7 +900,7 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(255,215,0,0.5)', borderWidth: 1.5,
+                      borderColor: 'rgba(255,215,0,0.8)', borderWidth: 1.5,
                       backgroundColor: 'transparent',
                       shadowColor: '#FFD700', shadowOpacity: 0.4, shadowRadius: 10,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
@@ -922,7 +922,7 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1.5,
-                    borderColor: 'rgba(157,0,255,0.35)',
+                    borderColor: 'rgba(157,0,255,0.8)',
                     marginTop: 0,
                     backgroundColor: 'transparent',
                     overflow: 'hidden',
@@ -964,7 +964,7 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(157,0,255,0.5)', borderWidth: 1.5,
+                      borderColor: 'rgba(157,0,255,0.8)', borderWidth: 1.5,
                       backgroundColor: 'transparent',
                       shadowColor: '#9D00FF', shadowOpacity: 0.4, shadowRadius: 10,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
@@ -1136,7 +1136,7 @@ export default function ProfileScreen() {
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(255,215,0,0.2)',
+                  borderColor: 'rgba(255,215,0,0.8)',
                   borderWidth: 1,
                   backgroundColor: 'rgba(15,23,42,0.95)',
                   shadowColor: '#FFD700',
@@ -1174,7 +1174,7 @@ export default function ProfileScreen() {
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(0,206,209,0.3)',
+                  borderColor: 'rgba(0,206,209,0.8)',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
                 }]}>
@@ -1202,7 +1202,7 @@ export default function ProfileScreen() {
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(192,192,192,0.3)',
+                  borderColor: 'rgba(192,192,192,0.8)',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
                 }]}>
@@ -1230,7 +1230,7 @@ export default function ProfileScreen() {
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(0,255,255,0.3)',
+                  borderColor: 'rgba(0,255,255,0.8)',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
                 }]}>
@@ -1258,7 +1258,7 @@ export default function ProfileScreen() {
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(255,215,0,0.3)',
+                  borderColor: 'rgba(255,215,0,0.8)',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
                 }]}>
@@ -1286,7 +1286,7 @@ export default function ProfileScreen() {
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(157,0,255,0.3)',
+                  borderColor: 'rgba(157,0,255,0.8)',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
                 }]}>
@@ -1387,10 +1387,10 @@ export default function ProfileScreen() {
             <View style={s.gap}>
               {gameHistory.map((game) => (
                 <View key={game.id} style={[s.historyRow, game.isWinner && s.historyWin,
-                  (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+                (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
                 ]}>
                   <View style={[s.historyEmojiBg,
-                    (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.2)' }
+                  (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.2)' }
                   ]}>
                     <Text style={{ fontSize: 22 }}>{game.gameEmoji}</Text>
                   </View>
@@ -1430,7 +1430,7 @@ export default function ProfileScreen() {
             <View style={s.gap}>
               {leaderboard.map((entry, i) => (
                 <View key={entry.id} style={[s.lbRow,
-                  (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+                (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
                 ]}>
                   <View style={[s.lbRank, i === 0 && s.lbGold, i === 1 && s.lbSilver, i === 2 && s.lbBronze]}>
                     <Text style={s.lbRankText}>{i + 1}</Text>
@@ -1459,7 +1459,7 @@ export default function ProfileScreen() {
         {/* MENU */}
         <View style={s.section}>
           <View style={[s.menuCard,
-            (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+          (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.8)' }
           ]}>
             {[
               { icon: 'settings-outline', label: 'Profile Settings', sub: 'Edit name, photo & kit', onPress: () => router.push('/profile-settings') },
@@ -1546,7 +1546,7 @@ export default function ProfileScreen() {
           </Pressable>
         </Modal>
       </SafeAreaView >
-    </ScrollView>
+    </ScrollView >
   );
 }
 
@@ -1568,7 +1568,7 @@ const s = StyleSheet.create({
   headerBtn: {
     width: 40, height: 40, borderRadius: 20,
     backgroundColor: '#111111',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.8)',
     justifyContent: 'center', alignItems: 'center',
   },
   headerTitle: { fontSize: 17, fontWeight: '700', color: '#FFFFFF' },
@@ -1752,18 +1752,18 @@ const s = StyleSheet.create({
   // Menu
   menuCard: {
     backgroundColor: '#111111', borderRadius: 18,
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.8)',
     overflow: 'hidden',
   },
   menuRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingHorizontal: 16, paddingVertical: 14 },
-  menuDivider: { borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)' },
+  menuDivider: { borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.8)' },
   menuIconBox: {
     width: 40, height: 40, borderRadius: 12,
     backgroundColor: '#1A1A1A',
     justifyContent: 'center', alignItems: 'center',
   },
   menuLabel: { fontSize: 14, fontWeight: '700', color: '#FFFFFF' },
-  menuSub: { fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 1 },
+  menuSub: { fontSize: 12, color: 'rgba(255,255,255,0.8)', marginTop: 1 },
 
   // Sign out
   signOutBtn: {
