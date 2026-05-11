@@ -1749,7 +1749,7 @@ const styles = StyleSheet.create({
   },
   gameInfo: { flex: 1 },
   gameName: { fontSize: 15, fontWeight: '700', color: '#FFFFFF', marginBottom: 2 },
-  gameType: { fontSize: 11, color: 'rgba(255,255,255,0.45)', textTransform: 'capitalize' },
+  gameType: { fontSize: 11, color: 'rgba(255,255,255,0.8)', textTransform: 'capitalize' },
 
   // Empty state
   emptyState: { alignItems: 'center', paddingVertical: 40, gap: 10 },
