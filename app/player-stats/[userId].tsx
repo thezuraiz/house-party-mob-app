@@ -98,7 +98,7 @@ export default function PlayerStatsScreen() {
     if (!userId) return;
 
     const subscription = supabase
-      .channel(`player-stats-${userId}`)
+      .channel(`player-stats-${userId}-${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -141,7 +141,7 @@ export default function PlayerStatsScreen() {
       .subscribe();
 
     return () => {
-      subscription.unsubscribe();
+      supabase.removeChannel(subscription);
     };
   }, [userId]);
 

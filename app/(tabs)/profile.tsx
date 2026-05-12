@@ -138,11 +138,11 @@ export default function ProfileScreen() {
     checkPremiumStatus();
     fetchActiveKit();
     const ch = supabase
-      .channel(`profile-${user.id}`)
+      .channel(`profile-${user.id}-${Date.now()}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'session_scores', filter: `user_id=eq.${user.id}` }, () => fetchProfile())
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_profile_settings', filter: `user_id=eq.${user.id}` }, () => fetchActiveKit())
       .subscribe();
-    return () => { ch.unsubscribe(); };
+    return () => { supabase.removeChannel(ch); };
   }, [user, checkPremiumStatus]));
 
   useEffect(() => { if (user) fetchGameHistory(); }, [showAllHistory]);

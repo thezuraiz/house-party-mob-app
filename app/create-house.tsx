@@ -320,15 +320,37 @@ export default function CreateHouseScreen() {
             <View style={s.section}>
               <Text style={s.label}>Select Emoji</Text>
               <View style={s.emojiGrid}>
-                {selectedPack.emojis.map((emoji, i) => (
-                  <Pressable
-                    key={i}
-                    style={[s.emojiBtn, selectedEmoji === emoji && s.emojiBtnOn]}
-                    onPress={() => setSelectedEmoji(emoji)}
-                  >
-                    <Text style={{ fontSize: 24 }}>{emoji}</Text>
-                  </Pressable>
-                ))}
+                {selectedPack.emojis.map((emoji, i) => {
+                  // Free users can only use the first emoji from the free pack
+                  const isLocked = !isPremium && !selectedPack.is_free;
+                  const isFreeEmoji = selectedPack.is_free && i === 0;
+                  const canUse = isPremium || isFreeEmoji;
+
+                  return (
+                    <Pressable
+                      key={i}
+                      style={[
+                        s.emojiBtn,
+                        selectedEmoji === emoji && s.emojiBtnOn,
+                        !canUse && { opacity: 0.35 },
+                      ]}
+                      onPress={() => {
+                        if (canUse) {
+                          setSelectedEmoji(emoji);
+                        } else {
+                          setShowPremiumModal(true);
+                        }
+                      }}
+                    >
+                      <Text style={{ fontSize: 24 }}>{emoji}</Text>
+                      {!canUse && (
+                        <View style={s.emojiLock}>
+                          <Ionicons name="lock-closed" size={8} color="#FFFFFF" />
+                        </View>
+                      )}
+                    </Pressable>
+                  );
+                })}
               </View>
             </View>
           )}
@@ -475,6 +497,12 @@ const s = StyleSheet.create({
     borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)',
   },
   emojiBtnOn: { borderColor: 'rgba(255,255,255,0.4)', backgroundColor: 'rgba(255,255,255,0.06)' },
+  emojiLock: {
+    position: 'absolute', top: 4, right: 4,
+    width: 16, height: 16, borderRadius: 8,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center', alignItems: 'center',
+  },
 
   createBtn: {
     backgroundColor: '#FFFFFF', borderRadius: 16,
