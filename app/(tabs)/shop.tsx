@@ -66,32 +66,25 @@ export default function HouseKitsScreen() {
     queryKey: ['userAdminHouses', user?.id],
     queryFn: async () => {
       if (!user) return [];
+      // Use houses table directly with creator_id — this automatically excludes deleted houses
+      // since deleted houses are hard-deleted (row removed from DB)
       const { data } = await supabase
-        .from('house_members')
-        .select(`
-          houses!inner (
-            id,
-            name,
-            house_emoji
-          )
-        `)
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
+        .from('houses')
+        .select('id, name, house_emoji')
+        .eq('creator_id', user.id)
+        .order('created_at', { ascending: false })
         .limit(50);
 
-      return (data || [])
-        .filter(member => member.houses)
-        .map(member => {
-          const house = member.houses as any;
-          return {
-            id: house.id,
-            name: house.name,
-            emoji: house.house_emoji || '🏠',
-          };
-        });
+      return (data || []).map(house => ({
+        id: house.id,
+        name: house.name,
+        emoji: (house as any).house_emoji || '🏠',
+      }));
     },
     enabled: !!user,
-    staleTime: 300000,
+    staleTime: 0,          // always fresh — no stale cache
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   const { data: kits = [], isLoading: loading, refetch } = useQuery({
@@ -137,8 +130,9 @@ export default function HouseKitsScreen() {
   useFocusEffect(
     useCallback(() => {
       if (user) {
-        console.log('[SHOP] Screen focused, refreshing kits');
+        console.log('[SHOP] Screen focused, refreshing kits and houses');
         queryClient.invalidateQueries({ queryKey: ['houseKits', user.id] });
+        queryClient.invalidateQueries({ queryKey: ['userAdminHouses', user.id] });
         refetch();
       }
     }, [user, refetch])
