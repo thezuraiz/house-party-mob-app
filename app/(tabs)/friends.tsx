@@ -63,7 +63,10 @@ export default function FriendsScreen() {
     fetchAll();
     const ch = supabase.channel(`friends-${user.id}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'friendships', filter: `user_id=eq.${user.id}` }, fetchAll)
+      // Listen as recipient — catches incoming requests AND cancellations by sender
       .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${user.id}` }, fetchAll)
+      // Listen as sender — catches status changes (accepted/declined) on our sent requests
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `sender_id=eq.${user.id}` }, fetchAll)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'game_invitations', filter: `invitee_id=eq.${user.id}` }, fetchAll)
       .subscribe();
     return () => { ch.unsubscribe(); };
@@ -212,7 +215,17 @@ export default function FriendsScreen() {
 
   const cancelSentRequest = async (requestId: string) => {
     try {
+      // Find the cancelled request before deleting (to update search results)
+      const cancelledRequest = sentRequests.find(r => r.id === requestId);
       await supabase.from('friend_requests').delete().eq('id', requestId);
+      // Update search results immediately so "Pending" badge disappears
+      if (cancelledRequest) {
+        setSearchResults(prev => prev.map(u =>
+          u.id === cancelledRequest.recipient_id
+            ? { ...u, has_pending_request: false }
+            : u
+        ));
+      }
       await fetchRequests();
     } catch (e: any) { showError(e.message || 'Failed to cancel'); }
   };
