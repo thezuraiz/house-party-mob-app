@@ -1,46 +1,19 @@
 import { useState, useEffect } from 'react';
-import { getUSDToZARRate, formatUSDCentsAsZAR, convertUSDToZAR } from '@/lib/currencyConverter';
+import { getUSDToZARRate, convertUSDToZAR } from '@/lib/currencyConverter';
 
 export function useCurrency() {
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-
-    const fetchRate = async () => {
-      try {
-        const rate = await getUSDToZARRate();
-        if (mounted) {
-          setExchangeRate(rate);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.log('Failed to fetch exchange rate:', error);
-        if (mounted) {
-          setExchangeRate(18.5); // Fallback
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchRate();
-
-    const interval = setInterval(fetchRate, 60 * 60 * 1000);
-
-    return () => {
-      mounted = false;
-      clearInterval(interval);
-    };
+    // Exchange rate no longer needed — prices are stored as ZAR cents directly
+    setLoading(false);
   }, []);
 
-  const formatPriceCents = (usdCents: number): string => {
-    if (!exchangeRate) {
-      const usdAmount = usdCents / 100;
-      const zarAmount = usdAmount * 18.5;
-      return `R${zarAmount.toFixed(2)} (~$${usdAmount.toFixed(2)} USD)`;
-    }
-    return formatUSDCentsAsZAR(usdCents, exchangeRate);
+  // price_cents in DB = ZAR cents directly (e.g. 2999 = R29.99)
+  const formatPriceCents = (zarCents: number): string => {
+    const zarAmount = zarCents / 100;
+    return `R${zarAmount.toFixed(2)}`;
   };
 
   const convertUSDToZARAmount = (usdAmount: number): number => {
