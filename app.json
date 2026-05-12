@@ -2,7 +2,7 @@
   "expo": {
     "name": "HouseParty",
     "slug": "houseparty-score-tracker",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "houseparty",
@@ -29,7 +29,9 @@
         "NSPhotoLibraryAddUsageDescription": "HouseParty needs permission to save QR codes to your photo library.",
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["houseparty"]
+            "CFBundleURLSchemes": [
+              "houseparty"
+            ]
           }
         ]
       },

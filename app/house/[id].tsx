@@ -79,7 +79,7 @@ export default function HouseDetailScreen() {
   const [selectedStatType, setSelectedStatType] = useState<LeaderboardStatType>('most_wins');
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ visible: boolean; gameName: string; onConfirm: () => void }>({ visible: false, gameName: '', onConfirm: () => { } });
-  const [houseDeletedModal, setHouseDeletedModal] = useState<{ visible: boolean; houseName: string }>({ visible: false, houseName: '' });
+  // const [houseDeletedModal, setHouseDeletedModal] = useState<{ visible: boolean; houseName: string }>({ visible: false, houseName: '' });
   const [leaveConfirm, setLeaveConfirm] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
@@ -1006,24 +1006,23 @@ export default function HouseDetailScreen() {
       console.log('[HOUSE DETAIL] Deleted house:', data);
       console.log('[HOUSE DETAIL] Invalidating React Query cache...');
 
-      // Ô£à FIX: Invalidate React Query cache immediately
-      queryClient.invalidateQueries({
-        queryKey: ['houses', user?.id],
-        refetchType: 'active' // Force immediate refetch on active queries
-      });
+      // FIX: Invalidate React Query cache immediately\
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['houses', user?.id],
+          refetchType: 'active'
+        }),
 
-      queryClient.invalidateQueries({
-        queryKey: ['userAdminHouses', user.id]
-      });
+        queryClient.invalidateQueries({
+          queryKey: ['userAdminHouses', user.id],
+          refetchType: 'active'
+        })
+      ]);
+
 
       console.log('[HOUSE DETAIL] Cache invalidated, navigating back...');
 
-      if (Platform.OS === 'web') {
-        alert(`"${house?.name}" and all associated data have been permanently removed.`);
-        router.dismissTo('/(tabs)');
-      } else {
-        setHouseDeletedModal({ visible: true, houseName: house?.name || 'House' });
-      }
+      router.dismissTo('/(tabs)');
     } catch (error: any) {
       console.log('[HOUSE DETAIL] UNEXPECTED ERROR:', error);
       console.log('[HOUSE DETAIL] Error stack:', error.stack);
@@ -1034,6 +1033,7 @@ export default function HouseDetailScreen() {
 
 
   const renderGameSession = ({ item }: { item: GameSession }) => {
+    // @ts-ignore
     const allAccepted = item.total_invites === item.accepted_count && item.total_invites > 0;
     const hasPending = (item.pending_count || 0) > 0;
 
@@ -1658,30 +1658,6 @@ export default function HouseDetailScreen() {
         </View>
       </Modal>
 
-      {/* ── House Deleted Success Modal ── */}
-      <Modal visible={houseDeletedModal.visible} transparent animationType="fade" onRequestClose={() => { setHouseDeletedModal(d => ({ ...d, visible: false })); router.dismissTo('/(tabs)'); }}>
-        <View style={dcStyles.overlay}>
-          <View style={dcStyles.box}>
-            {/* Icon */}
-            <View style={[dcStyles.iconCircle, { backgroundColor: '#FFFFFF' }]}>
-              <Ionicons name="checkmark" size={34} color="#000000" />
-            </View>
-            {/* Title */}
-            <Text style={dcStyles.title}>House Deleted</Text>
-            {/* Message */}
-            <Text style={dcStyles.message}>
-              "{houseDeletedModal.houseName}" and all associated data have been permanently removed.
-            </Text>
-            {/* Button */}
-            <Pressable
-              style={[dcStyles.cancelBtn, { backgroundColor: '#FFFFFF', borderColor: '#FFFFFF', marginTop: 4 }]}
-              onPress={() => { setHouseDeletedModal(d => ({ ...d, visible: false })); router.dismissTo('/(tabs)'); }}
-            >
-              <Text style={[dcStyles.cancelTxt, { color: '#000000', fontWeight: '800' }]}>Done</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
 
       {/* ── Custom Delete Confirm Modal ── */}
       <Modal visible={deleteConfirm.visible} transparent animationType="fade" onRequestClose={() => setDeleteConfirm(d => ({ ...d, visible: false }))}>

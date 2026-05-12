@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, Modal, Pressable, ActivityIndicator, Platform, ScrollView, Dimensions } from 'react-native';
-import { useState, useEffect } from 'react';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { getUSDToZARRate } from '@/lib/currencyConverter';
-import * as Linking from 'expo-linking';
-import Toast from './Toast';
 import { logger } from '@/lib/logger';
+import { supabase } from '@/lib/supabase';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Linking from 'expo-linking';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Toast from './Toast';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -82,7 +82,6 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
   ];
 
   return (
-   return (
     <>
       <Modal
         visible={visible}
@@ -165,7 +164,7 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
                     <Ionicons
                       name="diamond"
                       size={36}
-                      color="#FFFFFF"
+                      color="#000"
                     />
                   </View>
 

@@ -1,16 +1,15 @@
+import { CoachMarkStep, TargetElement } from '@/types/coachMark';
 import React, { useEffect } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
   Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
-import Svg, { Defs, Rect, Mask, Circle, RRect } from 'react-native-svg';
+import Svg, { Circle, Defs, Mask, Rect, } from 'react-native-svg';
 import CoachMark from './CoachMark';
 import CoachMarkTooltip from './CoachMarkTooltip';
-import { TargetElement, CoachMarkStep } from '@/types/coachMark';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -71,7 +70,7 @@ export default function CoachMarkOverlay({
                 {isCircle ? (
                   <Circle cx={centerX} cy={centerY} r={radius} fill="black" />
                 ) : (
-                  <RRect
+                  <Rect
                     x={highlightX}
                     y={highlightY}
                     width={highlightWidth}
