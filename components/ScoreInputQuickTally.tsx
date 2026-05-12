@@ -22,31 +22,41 @@ export function ScoreInputQuickTally({
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(initialValue.toString());
 
+  // Always-current ref — avoids stale closure in rapid taps
+  const localValueRef = useRef(initialValue);
+  const onValueChangeRef = useRef(onValueChange);
+
+  useEffect(() => { onValueChangeRef.current = onValueChange; }, [onValueChange]);
+
   // Keep local value in sync with parent when it changes externally
   useEffect(() => {
     setLocalValue(initialValue);
+    localValueRef.current = initialValue;
     if (!isEditing) {
       setInputValue(initialValue.toString());
     }
   }, [initialValue]);
 
   const handleIncrement = useCallback(() => {
-    const newValue = localValue + step;
+    const newValue = localValueRef.current + step;
+    localValueRef.current = newValue;
     setLocalValue(newValue);
-    onValueChange(newValue);
-  }, [localValue, step, onValueChange]);
+    onValueChangeRef.current(newValue);
+  }, [step]);
 
   const handleDecrement = useCallback(() => {
-    const newValue = Math.max(0, localValue - step);
+    const newValue = Math.max(0, localValueRef.current - step);
+    localValueRef.current = newValue;
     setLocalValue(newValue);
-    onValueChange(newValue);
-  }, [localValue, step, onValueChange]);
+    onValueChangeRef.current(newValue);
+  }, [step]);
 
   const handleDirectInput = () => {
     const parsed = parseFloat(inputValue) || 0;
     const clamped = Math.max(0, parsed);
+    localValueRef.current = clamped;
     setLocalValue(clamped);
-    onValueChange(clamped);
+    onValueChangeRef.current(clamped);
     setIsEditing(false);
   };
 
