@@ -180,10 +180,10 @@ export default function PlayerStatsScreen() {
 
     console.log('[PLAYER STATS] House kit data:', { houseKit, kitError });
 
-    if (!kitError && houseKit && houseKit.color_scheme) {
+    if (!kitError && houseKit) {
       let colors = Array.isArray(houseKit.color_scheme) && houseKit.color_scheme.length > 0
         ? houseKit.color_scheme
-        : ['#10B981', '#059669'];
+        : ['#111111', '#1A1A1A']; // fallback for image-based kits
 
       if (colors.length === 1) {
         colors = [colors[0], colors[0]];
@@ -482,8 +482,20 @@ export default function PlayerStatsScreen() {
                   style={StyleSheet.absoluteFill}
                 />
               )}
-              {/* Dark overlay so text is always readable */}
-              <View style={styles.headerOverlay} />
+              {/* Dark overlay — lighter for image-based kits so image shows through */}
+              <View style={[
+                styles.headerOverlay,
+                activeKitTheme && ['Phantom Void','Stellar','Neon Pulse','Obsidian Gold','Prismatic','Chaos Theory','Golden Bushido','Liquid Metal Candy','Starlight Prowler'].includes(activeKitTheme.name)
+                  && { backgroundColor: 'rgba(0,0,0,0.15)' }
+              ]} />
+              {/* Bottom gradient for text readability on image kits */}
+              {activeKitTheme && ['Phantom Void','Stellar','Neon Pulse','Obsidian Gold','Prismatic','Chaos Theory','Golden Bushido','Liquid Metal Candy','Starlight Prowler'].includes(activeKitTheme.name) && (
+                <LinearGradient
+                  colors={['transparent', 'rgba(0,0,0,0.6)']}
+                  locations={[0.5, 1]}
+                  style={[StyleSheet.absoluteFill, { zIndex: 1 }]}
+                />
+              )}
 
               <View style={styles.headerContentWrapper}>
                 <Pressable style={[styles.backButton, { top: insets.top + 8 }]} onPress={() => router.back()}>

@@ -1,3 +1,4 @@
+import KitBorder from '@/components/KitBorder';
 import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
 import ReferralProgress from '@/components/ReferralProgress';
 import { formatScore, type ScoringType } from '@/constants/ScoringTypes';
@@ -10,6 +11,17 @@ import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
+
+function getRarityColor(rarity: string): string {
+  switch (rarity) {
+    case 'mythic': return '#EC4899';
+    case 'legendary': return '#FFD700';
+    case 'epic': return '#A855F7';
+    case 'rare': return '#3B82F6';
+    case 'uncommon': return '#22C55E';
+    default: return 'rgba(255,255,255,0.5)';
+  }
+}
 import {
   ActivityIndicator,
   Animated,
@@ -1117,6 +1129,86 @@ export default function ProfileScreen() {
             </>
           )}
         </View>
+
+        {/* ── ACTIVE KIT SHOWCASE ── */}
+        {activeKit && activeKit.name !== 'Custom' && (
+          <View style={{ marginHorizontal: 16, marginBottom: 16, marginTop: 8 }}>
+            <KitBorder
+              rarity={activeKit.rarity}
+              kitName={activeKit.name}
+              colors={activeKit.colors}
+              borderRadius={18}
+            >
+              <View style={{
+                height: 80,
+                borderRadius: 16,
+                overflow: 'hidden',
+                position: 'relative',
+              }}>
+                {/* Background */}
+                {['Phantom Void', 'Stellar', 'Neon Pulse', 'Obsidian Gold', 'Prismatic', 'Chaos Theory', 'Golden Bushido', 'Liquid Metal Candy', 'Starlight Prowler'].includes(activeKit.name) ? (
+                  <Image
+                    source={
+                      activeKit.name === 'Phantom Void' ? require('@/assets/images/PhantomVoid.jpg')
+                      : activeKit.name === 'Stellar' ? require('@/assets/images/Stellar.jpg')
+                      : activeKit.name === 'Neon Pulse' ? require('@/assets/images/NeonPulse.jpg')
+                      : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
+                      : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
+                      : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
+                      : activeKit.name === 'Golden Bushido' ? require('@/assets/images/GoldenBushido.jpeg')
+                      : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
+                      : require('@/assets/images/StarlightProwler.jpeg')
+                    }
+                    style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <LinearGradient
+                    colors={activeKit.colors as [string, string, ...string[]]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={StyleSheet.absoluteFill}
+                  />
+                )}
+                {/* Dark overlay */}
+                <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.45)' }]} />
+                {/* Content */}
+                <View style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 16,
+                }}>
+                  <View>
+                    <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: '600', marginBottom: 3, letterSpacing: 0.5 }}>
+                      Active Kit
+                    </Text>
+                    <Text style={{ fontSize: 20, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.3 }}>
+                      {activeKit.name}
+                    </Text>
+                  </View>
+                  <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 5,
+                    backgroundColor: getRarityColor(activeKit.rarity) + '33',
+                    borderWidth: 1,
+                    borderColor: getRarityColor(activeKit.rarity),
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    borderRadius: 20,
+                  }}>
+                    <Ionicons name="sparkles" size={12} color={getRarityColor(activeKit.rarity)} />
+                    <Text style={{ fontSize: 12, fontWeight: '700', color: getRarityColor(activeKit.rarity), letterSpacing: 0.5 }}>
+                      {activeKit.rarity.toUpperCase()}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </KitBorder>
+          </View>
+        )}
 
         {/* STAT CARDS */}
         {activeKit?.name === 'Golden Bushido' ? (
