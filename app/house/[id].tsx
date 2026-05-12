@@ -1024,6 +1024,10 @@ export default function HouseDetailScreen() {
         refetchType: 'active' // Force immediate refetch on active queries
       });
 
+      queryClient.invalidateQueries({
+        queryKey: ['userAdminHouses', user.id]
+      });
+
       console.log('[HOUSE DETAIL] Cache invalidated, navigating back...');
 
       if (Platform.OS === 'web') {
