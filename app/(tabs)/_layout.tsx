@@ -72,6 +72,11 @@ function CustomTabBar({ state, navigation }: any): React.ReactElement {
               {focused ? (
                 <View style={s.activeCircle}>
                   <Ionicons name={tab.active} size={22} color="#FFFFFF" />
+                  {badge > 0 && (
+                    <View style={s.badge}>
+                      <Text style={s.badgeText}>{badge > 9 ? '9+' : badge}</Text>
+                    </View>
+                  )}
                 </View>
               ) : (
                 <View style={s.inactiveItem}>
@@ -132,14 +137,16 @@ const s = StyleSheet.create({
   activeCircle: {
     width: 48, height: 48, borderRadius: 24, backgroundColor: '#1A1A1A',
     justifyContent: 'center', alignItems: 'center', elevation: 4,
+    position: 'relative',
   },
   inactiveItem: {
     width: 48, height: 48, justifyContent: 'center', alignItems: 'center', position: 'relative',
   },
   badge: {
-    position: 'absolute', top: 6, right: 6, backgroundColor: '#EF4444',
+    position: 'absolute', top: 4, right: 4, backgroundColor: '#EF4444',
     borderRadius: 8, minWidth: 15, height: 15, justifyContent: 'center',
     alignItems: 'center', paddingHorizontal: 3, borderWidth: 1.5, borderColor: '#FFFFFF',
+    zIndex: 10,
   },
   badgeText: { color: '#FFFFFF', fontSize: 8, fontWeight: '800', lineHeight: 11 },
   dot: {
