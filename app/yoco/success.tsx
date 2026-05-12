@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { CheckCircle } from 'lucide-react-native';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { logger } from '@/lib/logger';
+
+const MAX_RETRIES = 8;
+const RETRY_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000]; // progressive delays
 
 export default function YocoSuccessScreen() {
   const router = useRouter();
@@ -14,6 +17,8 @@ export default function YocoSuccessScreen() {
   const [verified, setVerified] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const retryCountRef = useRef(0);
+  const verifiedRef = useRef(false);
 
   const type = params.type as string;
   const userId = params.userId as string;
@@ -21,67 +26,64 @@ export default function YocoSuccessScreen() {
   const tempId = params.tempId as string;
 
   useEffect(() => {
-    verifyPayment();
+    // Wait 2s before first attempt — give webhook time to process
+    const timer = setTimeout(() => verifyPayment(), 2000);
 
     const channel = supabase.channel('payment-verification');
 
     if (type === 'premium') {
       channel
-        .on(
-          'postgres_changes',
-          {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'profiles',
-            filter: `id=eq.${userId}`,
-          },
-          (payload) => {
-            if (payload.new.premium_unlocked === true) {
-              logger.info('YOCO_SUCCESS', 'Premium unlocked via realtime');
-              setVerified(true);
-              setVerifying(false);
-              queryClient.invalidateQueries({ queryKey: ['premium'] });
-              queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-            }
+        .on('postgres_changes', {
+          event: 'UPDATE', schema: 'public',
+          table: 'profiles', filter: `id=eq.${userId}`,
+        }, (payload) => {
+          if (payload.new.premium_unlocked === true && !verifiedRef.current) {
+            logger.info('YOCO_SUCCESS', 'Premium unlocked via realtime');
+            verifiedRef.current = true;
+            setVerified(true);
+            setVerifying(false);
+            setError(null);
+            queryClient.invalidateQueries({ queryKey: ['premium'] });
+            queryClient.invalidateQueries({ queryKey: ['userProfile'] });
           }
-        )
+        })
         .subscribe();
     } else if (type === 'kit') {
       channel
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'user_house_kits',
-            filter: `user_id=eq.${userId}`,
-          },
-          (payload) => {
-            if (payload.new.house_kit_id === kitId) {
-              logger.info('YOCO_SUCCESS', 'Kit unlocked via realtime');
-              setVerified(true);
-              setVerifying(false);
-              queryClient.invalidateQueries({ queryKey: ['houseKits'] });
-              queryClient.invalidateQueries({ queryKey: ['userKits'] });
-            }
+        .on('postgres_changes', {
+          event: 'INSERT', schema: 'public',
+          table: 'user_house_kits', filter: `user_id=eq.${userId}`,
+        }, (payload) => {
+          if (payload.new.house_kit_id === kitId && !verifiedRef.current) {
+            logger.info('YOCO_SUCCESS', 'Kit unlocked via realtime');
+            verifiedRef.current = true;
+            setVerified(true);
+            setVerifying(false);
+            setError(null);
+            queryClient.invalidateQueries({ queryKey: ['houseKits'] });
+            queryClient.invalidateQueries({ queryKey: ['userKits'] });
+            queryClient.invalidateQueries({ queryKey: ['userAdminHouses'] });
           }
-        )
+        })
         .subscribe();
     }
 
     return () => {
+      clearTimeout(timer);
       supabase.removeChannel(channel);
     };
   }, []);
 
-  const verifyPayment = async (retry = false) => {
+  const verifyPayment = async () => {
+    // Already verified via realtime — skip
+    if (verifiedRef.current) return;
+
     try {
       setVerifying(true);
       setError(null);
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        logger.error('YOCO_SUCCESS', 'No session found');
         setError('Session expired. Please log in again.');
         setVerifying(false);
         return;
@@ -108,11 +110,8 @@ export default function YocoSuccessScreen() {
             .order('id', { ascending: false })
             .limit(1)
             .maybeSingle();
-
           purchase = fallbackPurchase;
-          logger.info('YOCO_SUCCESS', 'Using fallback lookup for premium');
         }
-
         checkoutId = purchase?.payment_transaction_id;
       } else if (type === 'kit' && kitId) {
         let { data: purchase } = await supabase
@@ -133,84 +132,81 @@ export default function YocoSuccessScreen() {
             .order('id', { ascending: false })
             .limit(1)
             .maybeSingle();
-
           purchase = fallbackPurchase;
-          logger.info('YOCO_SUCCESS', 'Using fallback lookup for kit');
         }
-
         checkoutId = purchase?.payment_transaction_id;
       }
 
+      // No record yet — webhook still processing, retry with delay
       if (!checkoutId) {
-        logger.error('YOCO_SUCCESS', 'No checkout ID found', { type, userId, kitId, tempId });
-        setError('Payment record not found. Please contact support.');
-        setVerifying(false);
+        logger.info('YOCO_SUCCESS', 'No checkout ID yet, will retry', { attempt: retryCountRef.current });
+        scheduleRetry();
         return;
       }
 
       const apiUrl = `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/yoco-verify-payment`;
-
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          checkoutId,
-          type,
-          kitId: kitId || null,
-        }),
+        body: JSON.stringify({ checkoutId, type, kitId: kitId || null }),
       });
 
       if (response.ok) {
         const result = await response.json();
         if (result.verified) {
+          verifiedRef.current = true;
           setVerified(true);
-
+          setVerifying(false);
+          setError(null);
           if (type === 'premium') {
             queryClient.invalidateQueries({ queryKey: ['premium'] });
             queryClient.invalidateQueries({ queryKey: ['userProfile'] });
           } else if (type === 'kit') {
             queryClient.invalidateQueries({ queryKey: ['houseKits'] });
             queryClient.invalidateQueries({ queryKey: ['userKits'] });
+            queryClient.invalidateQueries({ queryKey: ['userAdminHouses'] });
           }
-
-          logger.info('YOCO_SUCCESS', 'Payment verified and completed', { type, userId, kitId, checkoutId, tempId });
+          logger.info('YOCO_SUCCESS', 'Payment verified', { type, checkoutId });
         } else {
-          setError('Payment could not be verified. Please try again.');
+          // Not verified yet — webhook may still be processing
+          scheduleRetry();
         }
       } else {
-        const errorData = await response.json().catch(() => ({}));
-        logger.error('YOCO_SUCCESS', 'Verification failed', { status: response.status, error: errorData });
-
-        if (retryCount < 5) {
-          logger.info('YOCO_SUCCESS', 'Auto-retrying verification', { retryCount: retryCount + 1 });
-          setRetryCount(retryCount + 1);
-          await new Promise(resolve => setTimeout(resolve, 500));
-          return verifyPayment(true);
-        } else {
-          setError('Verification failed after multiple attempts. Your purchase is safe and will be processed shortly.');
-        }
+        scheduleRetry();
       }
-    } catch (error) {
-      logger.error('YOCO_SUCCESS', error, { type, userId, kitId, tempId });
-
-      if (retryCount < 5) {
-        setRetryCount(retryCount + 1);
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return verifyPayment(true);
-      } else {
-        setError('An error occurred while verifying your payment. Your purchase is safe and will be processed shortly.');
-      }
-    } finally {
-      setVerifying(false);
+    } catch (err) {
+      logger.error('YOCO_SUCCESS', err, { type, userId, kitId });
+      scheduleRetry();
     }
   };
 
-  const handleRetry = () => {
+  const scheduleRetry = () => {
+    if (verifiedRef.current) return;
+
+    const currentRetry = retryCountRef.current;
+
+    if (currentRetry >= MAX_RETRIES) {
+      setVerifying(false);
+      setError('Payment could not be verified automatically. Your purchase is safe — please restart the app or contact support if your kit is not available.');
+      return;
+    }
+
+    const delay = RETRY_DELAYS[currentRetry] || 10000;
+    retryCountRef.current = currentRetry + 1;
+    setRetryCount(retryCountRef.current);
+
+    logger.info('YOCO_SUCCESS', `Retrying in ${delay}ms`, { attempt: retryCountRef.current });
+    setTimeout(() => verifyPayment(), delay);
+  };
+
+  const handleManualRetry = () => {
+    retryCountRef.current = 0;
     setRetryCount(0);
-    verifyPayment(true);
+    setError(null);
+    verifyPayment();
   };
 
   const handleContinue = () => {
@@ -233,8 +229,11 @@ export default function YocoSuccessScreen() {
           <>
             <ActivityIndicator size="large" color="#10B981" />
             <Text style={styles.message}>
-              Verifying your payment{retryCount > 0 ? ` (attempt ${retryCount + 1})` : ''}...
+              {retryCount === 0
+                ? 'Verifying your payment...'
+                : `Processing payment... (${retryCount}/${MAX_RETRIES})`}
             </Text>
+            <Text style={styles.subMessage}>This may take a few seconds</Text>
           </>
         ) : verified ? (
           <>
@@ -251,7 +250,7 @@ export default function YocoSuccessScreen() {
           <>
             <Text style={styles.errorMessage}>{error}</Text>
             <View style={styles.buttonRow}>
-              <Pressable style={styles.retryButton} onPress={handleRetry}>
+              <Pressable style={styles.retryButton} onPress={handleManualRetry}>
                 <Text style={styles.buttonText}>Retry Verification</Text>
               </Pressable>
               <Pressable style={styles.continueButton} onPress={handleContinue}>
@@ -306,6 +305,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#94A3B8',
     textAlign: 'center',
+  },
+  subMessage: {
+    fontSize: 13,
+    color: 'rgba(148,163,184,0.6)',
+    textAlign: 'center',
+    marginTop: -8,
   },
   errorMessage: {
     fontSize: 16,

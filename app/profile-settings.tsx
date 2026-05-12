@@ -1,6 +1,6 @@
 import {
   View, Text, TextInput, StyleSheet, Pressable, ActivityIndicator,
-  Alert, Platform, ScrollView, StatusBar,
+  Alert, Platform, ScrollView, StatusBar, Modal,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
@@ -15,6 +15,7 @@ export default function ProfileSettingsScreen() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [sendingReset, setSendingReset] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   const { user } = useAuth();
   const { displayName, updateDisplayName } = useProfile();
@@ -44,8 +45,7 @@ export default function ProfileSettingsScreen() {
     setSaving(true);
     try {
       if (localDisplayName !== displayName) await updateDisplayName(localDisplayName);
-      Alert.alert('Saved', 'Settings saved successfully!');
-      router.back();
+      setSuccessModal(true);
     } catch (e: any) {
       Alert.alert('Error', 'Failed to save: ' + e.message);
     } finally {
@@ -66,6 +66,29 @@ export default function ProfileSettingsScreen() {
   return (
     <SafeAreaView style={s.root} edges={['top']}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
+      {/* ── Success Modal ── */}
+      <Modal visible={successModal} transparent animationType="fade" onRequestClose={() => { setSuccessModal(false); router.back(); }}>
+        <View style={s.modalOverlay}>
+          <View style={s.modalBox}>
+            {/* Icon */}
+            <View style={s.modalIconCircle}>
+              <Ionicons name="checkmark" size={32} color="#000000" />
+            </View>
+            {/* Title */}
+            <Text style={s.modalTitle}>Settings Saved</Text>
+            {/* Message */}
+            <Text style={s.modalMessage}>Your profile has been updated successfully.</Text>
+            {/* Button */}
+            <Pressable
+              style={s.modalBtn}
+              onPress={() => { setSuccessModal(false); router.back(); }}
+            >
+              <Text style={s.modalBtnTxt}>Done</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
 
       {/* Header */}
       <View style={s.header}>
@@ -242,4 +265,37 @@ const s = StyleSheet.create({
     marginHorizontal: 16, marginTop: 24,
   },
   saveBtnTxt: { color: '#000000', fontSize: 16, fontWeight: '800' },
+
+  // Success Modal
+  modalOverlay: {
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center', alignItems: 'center', padding: 32,
+  },
+  modalBox: {
+    backgroundColor: '#111111', borderRadius: 28, padding: 32,
+    width: '100%', alignItems: 'center', gap: 12,
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)',
+    shadowColor: '#000', shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.5, shadowRadius: 32, elevation: 20,
+  },
+  modalIconCircle: {
+    width: 72, height: 72, borderRadius: 36,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center', alignItems: 'center',
+    marginBottom: 4,
+  },
+  modalTitle: {
+    fontSize: 22, fontWeight: '800', color: '#FFFFFF',
+    letterSpacing: -0.4,
+  },
+  modalMessage: {
+    fontSize: 14, color: 'rgba(255,255,255,0.5)',
+    textAlign: 'center', lineHeight: 22,
+  },
+  modalBtn: {
+    backgroundColor: '#FFFFFF', borderRadius: 14,
+    paddingVertical: 14, paddingHorizontal: 48,
+    marginTop: 8,
+  },
+  modalBtnTxt: { fontSize: 15, fontWeight: '800', color: '#000000' },
 });

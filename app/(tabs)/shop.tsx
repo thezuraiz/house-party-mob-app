@@ -1000,12 +1000,7 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
                     </View>
                   ) : (
                     <View style={kc.priceBlock}>
-                      <Text style={kc.priceMain}>{formatPriceCents(kit.price_cents).split('(')[0].trim()}</Text>
-                      {formatPriceCents(kit.price_cents).includes('(') && (
-                        <Text style={kc.priceUsd}>
-                          {formatPriceCents(kit.price_cents).match(/\(.*\)/)?.[0] || ''}
-                        </Text>
-                      )}
+                      <Text style={kc.priceMain}>{formatPriceCents(kit.price_cents)}</Text>
                     </View>
                   )
                 ) : kit.unlock_type === 'chance_based' ? (
