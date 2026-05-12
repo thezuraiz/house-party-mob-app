@@ -1,13 +1,13 @@
+import { View, Text, StyleSheet, Modal, Pressable, ActivityIndicator, Platform, ScrollView, Dimensions } from 'react-native';
+import { useState, useEffect } from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
-import { useCurrency } from '@/hooks/useCurrency';
-import { logger } from '@/lib/logger';
-import { supabase } from '@/lib/supabase';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { getUSDToZARRate } from '@/lib/currencyConverter';
 import * as Linking from 'expo-linking';
-import { useState } from 'react';
-import { ActivityIndicator, Dimensions, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Toast from './Toast';
+import { logger } from '@/lib/logger';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -23,7 +23,18 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
   });
   const { user } = useAuth();
   const { isPremium, refreshPremiumStatus } = usePremium();
-  const { formatPriceCents } = useCurrency();
+  const [zarPrice, setZarPrice] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (visible) {
+      getUSDToZARRate().then(rate => {
+        const zarAmount = (4.99 * rate).toFixed(2);
+        setZarPrice(`R${zarAmount}`);
+      }).catch(() => {
+        setZarPrice('R92.00'); // fallback
+      });
+    }
+  }, [visible]);
 
   const handlePurchase = async () => {
     if (!user) {
@@ -71,107 +82,212 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
   ];
 
   return (
+   return (
     <>
-      <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <Modal
+        visible={visible}
+        transparent
+        animationType="slide"
+        onRequestClose={onClose}
+      >
         <View style={styles.overlay}>
           <View style={styles.modalContainer}>
-            {[
-              <Pressable key="close" style={styles.closeButton} onPress={onClose}>
-                <Ionicons name="close" size={18} color="rgba(255,255,255,0.6)" />
-              </Pressable>,
-              isPremium ? (
-                <View key="premium" style={styles.alreadyPremiumContainer}>
-                  <View style={styles.alreadyPremiumIcon}>
-                    <Ionicons name="diamond" size={40} color="#FFD700" />
-                  </View>
-                  <Text style={styles.alreadyPremiumTitle}>You're Premium!</Text>
-                  <Text style={styles.alreadyPremiumSubtitle}>
-                    You already have lifetime Premium access. Enjoy all features!
-                  </Text>
-                  <View style={styles.alreadyPremiumFeatures}>
-                    {['Unlimited Friends', 'Unlimited Houses', 'Unlimited Games', 'Custom profile photos', 'All emoji packs'].map((f, i) => (
-                      <View key={i} style={styles.featureItem}>
-                        <View style={styles.checkIcon}>
-                          <Ionicons name="checkmark" size={14} color="#000000" />
-                        </View>
-                        <Text style={styles.featureText}>{f}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  <Pressable style={styles.alreadyPremiumBtn} onPress={onClose}>
-                    <Text style={styles.alreadyPremiumBtnTxt}>Awesome!</Text>
-                  </Pressable>
+
+            {/* Close Button */}
+            <Pressable style={styles.closeButton} onPress={onClose}>
+              <Ionicons
+                name="close"
+                size={18}
+                color="rgba(255,255,255,0.6)"
+              />
+            </Pressable>
+
+            {isPremium ? (
+              <View style={styles.alreadyPremiumContainer}>
+
+                <View style={styles.alreadyPremiumIcon}>
+                  <Ionicons name="diamond" size={40} color="#FFD700" />
                 </View>
-              ) : (
-                <ScrollView
-                  key="purchase"
-                  showsVerticalScrollIndicator={false}
-                  bounces={false}
-                  contentContainerStyle={styles.scrollContent}
+
+                <Text style={styles.alreadyPremiumTitle}>
+                  You're Premium!
+                </Text>
+
+                <Text style={styles.alreadyPremiumSubtitle}>
+                  You already have lifetime Premium access.
+                  Enjoy all features!
+                </Text>
+
+                <View style={styles.alreadyPremiumFeatures}>
+                  {[
+                    'Unlimited Friends',
+                    'Unlimited Houses',
+                    'Unlimited Games',
+                    'Custom profile photos',
+                    'All emoji packs',
+                  ].map((f, i) => (
+                    <View key={i} style={styles.featureItem}>
+                      <View style={styles.checkIcon}>
+                        <Ionicons
+                          name="checkmark"
+                          size={14}
+                          color="#000000"
+                        />
+                      </View>
+
+                      <Text style={styles.featureText}>
+                        {f}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+
+                <Pressable
+                  style={styles.alreadyPremiumBtn}
+                  onPress={onClose}
                 >
-                  {/* Crown header */}
-                  <View style={styles.header}>
-                    <View style={styles.iconBox}>
-                      <Ionicons name="diamond" size={36} color="#00000" />
-                    </View>
-                    <Text style={styles.title}>Unlock Premium</Text>
-                    <Text style={styles.subtitle}>Pay once, own forever</Text>
+                  <Text style={styles.alreadyPremiumBtnTxt}>
+                    Awesome!
+                  </Text>
+                </Pressable>
+
+              </View>
+            ) : (
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+                contentContainerStyle={styles.scrollContent}
+              >
+
+                {/* Header */}
+                <View style={styles.header}>
+                  <View style={styles.iconBox}>
+                    <Ionicons
+                      name="diamond"
+                      size={36}
+                      color="#FFFFFF"
+                    />
                   </View>
 
-                  {/* Price pill */}
-                  <View style={styles.pricePill}>
-                    <Text style={styles.priceAmount} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.7}>
-                      {formatPriceCents(499)}
+                  <Text style={styles.title}>
+                    Unlock Premium
+                  </Text>
+
+                  <Text style={styles.subtitle}>
+                    Pay once, own forever
+                  </Text>
+                </View>
+
+                {/* Price */}
+                <View style={styles.pricePill}>
+
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={styles.priceAmount}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                      minimumFontScale={0.7}
+                    >
+                      {zarPrice || 'Loading...'}
                     </Text>
-                    <View style={styles.priceMeta}>
-                      <Text style={styles.priceOnce}>one-time</Text>
-                      <View style={styles.lifetimeBadge}>
-                        <Ionicons name="flash" size={11} color="#FFFFFF" />
-                        <Text style={styles.lifetimeText}>LIFETIME</Text>
-                      </View>
-                    </View>
-                  </View>
 
-                  {/* Features */}
-                  <View style={styles.featuresContainer}>
-                    {features.map((feature, index) => (
-                      <View key={index} style={styles.featureItem}>
-                        <View style={styles.checkIcon}>
-                          <Ionicons name="checkmark" size={14} color="#000000" />
-                        </View>
-                        <Text style={styles.featureText}>{feature.text}</Text>
-                      </View>
-                    ))}
-                  </View>
-
-                  {/* Note */}
-                  <View style={styles.noteContainer}>
-                    <Ionicons name="sparkles" size={15} color="rgba(255,255,255,0.7)" />
-                    <Text style={styles.noteText}>
-                      Unlock unlimited houses and all premium features forever
+                    <Text style={styles.priceUsdSub}>
+                      (~$4.99 USD)
                     </Text>
                   </View>
 
-                  {/* CTA */}
-                  <Pressable
-                    style={[styles.purchaseButton, loading && { opacity: 0.6 }]}
-                    onPress={handlePurchase}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <ActivityIndicator size="small" color="#000000" />
-                    ) : (
-                      <>
-                        <Ionicons name="diamond" size={20} color="#000000" />
-                        <Text style={styles.purchaseText}>Purchase Premium</Text>
-                      </>
-                    )}
-                  </Pressable>
+                  <View style={styles.priceMeta}>
+                    <Text style={styles.priceOnce}>
+                      one-time
+                    </Text>
 
-                  <Text style={styles.disclaimer}>Secure payment processed by YOCO</Text>
-                </ScrollView>
-              ),
-            ]}
+                    <View style={styles.lifetimeBadge}>
+                      <Ionicons
+                        name="flash"
+                        size={11}
+                        color="#FFFFFF"
+                      />
+
+                      <Text style={styles.lifetimeText}>
+                        LIFETIME
+                      </Text>
+                    </View>
+                  </View>
+
+                </View>
+
+                {/* Features */}
+                <View style={styles.featuresContainer}>
+                  {features.map((feature, index) => (
+                    <View
+                      key={index}
+                      style={styles.featureItem}
+                    >
+                      <View style={styles.checkIcon}>
+                        <Ionicons
+                          name="checkmark"
+                          size={14}
+                          color="#000000"
+                        />
+                      </View>
+
+                      <Text style={styles.featureText}>
+                        {feature.text}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Note */}
+                <View style={styles.noteContainer}>
+                  <Ionicons
+                    name="sparkles"
+                    size={15}
+                    color="rgba(255,255,255,0.7)"
+                  />
+
+                  <Text style={styles.noteText}>
+                    Unlock unlimited houses and all premium
+                    features forever
+                  </Text>
+                </View>
+
+                {/* CTA */}
+                <Pressable
+                  style={[
+                    styles.purchaseButton,
+                    loading && { opacity: 0.6 },
+                  ]}
+                  onPress={handlePurchase}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ActivityIndicator
+                      size="small"
+                      color="#000000"
+                    />
+                  ) : (
+                    <>
+                      <Ionicons
+                        name="diamond"
+                        size={20}
+                        color="#000000"
+                      />
+
+                      <Text style={styles.purchaseText}>
+                        Purchase Premium
+                      </Text>
+                    </>
+                  )}
+                </Pressable>
+
+                <Text style={styles.disclaimer}>
+                  Secure payment processed by YOCO
+                </Text>
+
+              </ScrollView>
+            )}
+
           </View>
         </View>
       </Modal>
@@ -180,7 +296,9 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
         message={toast.message}
         type={toast.type}
         visible={toast.visible}
-        onHide={() => setToast({ ...toast, visible: false })}
+        onHide={() =>
+          setToast({ ...toast, visible: false })
+        }
       />
     </>
   );
@@ -260,7 +378,10 @@ const styles = StyleSheet.create({
   },
   priceAmount: {
     fontSize: 22, fontWeight: '800', color: '#FFFFFF',
-    letterSpacing: -0.5, flex: 1, flexShrink: 1,
+    letterSpacing: -0.5,
+  },
+  priceUsdSub: {
+    fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: '500', marginTop: 2,
   },
   priceMeta: {
     gap: 6, alignItems: 'flex-end', marginLeft: 12,

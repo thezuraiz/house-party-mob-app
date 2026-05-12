@@ -59,11 +59,11 @@ export default function HouseHistoryScreen() {
     if (!houseId || !user) return;
     fetchHouseHistory();
     fetchHouseName();
-    const ch = supabase.channel(`house-sessions-${houseId}`)
+    const ch = supabase.channel(`house-sessions-${houseId}-${Date.now()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'game_sessions', filter: `house_id=eq.${houseId}` }, (payload) => {
         if (payload.eventType === 'UPDATE' && (payload.new as any).status === 'completed') fetchHouseHistory(false);
       }).subscribe();
-    return () => { ch.unsubscribe(); };
+    return () => { supabase.removeChannel(ch); };
   }, [houseId, user]));
 
   const fetchHouseName = async () => {

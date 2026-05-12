@@ -69,7 +69,7 @@ export default function FriendsScreen() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `sender_id=eq.${user.id}` }, fetchAll)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'game_invitations', filter: `invitee_id=eq.${user.id}` }, fetchAll)
       .subscribe();
-    return () => { ch.unsubscribe(); };
+    return () => { supabase.removeChannel(ch); };
   }, [user]));
 
   const fetchAll = async () => {

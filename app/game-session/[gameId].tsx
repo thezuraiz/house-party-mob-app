@@ -263,7 +263,7 @@ export default function GameSessionScreen() {
 
     // Subscribe to invitation changes
     const channel = supabase
-      .channel(`invitations-${sessionId}`)
+      .channel(`invitations-${sessionId}-${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -282,7 +282,7 @@ export default function GameSessionScreen() {
     checkInvitationStatus();
 
     return () => {
-      channel.unsubscribe();
+      supabase.removeChannel(channel);
     };
   }, [sessionId, checkInvitationStatus]);
 
@@ -791,7 +791,7 @@ export default function GameSessionScreen() {
 
       // Set up realtime subscription for invitation responses
       const channel = supabase
-        .channel(`game-invitations-${session.id}`)
+        .channel(`game-invitations-${session.id}-${Date.now()}`)
         .on(
           'postgres_changes',
           {
@@ -837,7 +837,7 @@ export default function GameSessionScreen() {
         .subscribe();
 
       return () => {
-        channel.unsubscribe();
+        supabase.removeChannel(channel);
       };
     } catch (err) {
       console.log('[GAME SESSION] Unexpected error starting game:', err);

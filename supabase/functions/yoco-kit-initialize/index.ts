@@ -117,27 +117,13 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    let exchangeRate = 18.5;
-    try {
-      const rateResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-      if (rateResponse.ok) {
-        const rateData = await rateResponse.json();
-        exchangeRate = rateData.rates?.ZAR || 18.5;
-        console.log('[YOCO_KIT_INIT] Using live exchange rate:', exchangeRate);
-      }
-    } catch (err) {
-      console.warn('[YOCO_KIT_INIT] Failed to fetch exchange rate, using fallback:', err);
-    }
+    // price_cents in DB = ZAR cents directly (e.g. 2999 = R29.99)
+    // No USD conversion needed
+    const zarAmountInCents = finalPriceCents;
 
-    const usdAmountInCents = finalPriceCents;
-    const zarAmountInCents = Math.round((usdAmountInCents / 100) * exchangeRate * 100);
-
-    console.log('[YOCO_KIT_INIT] Price conversion:', {
-      originalUsdCents: kit.price_cents,
-      discountedUsdCents: usdAmountInCents,
-      usdAmount: usdAmountInCents / 100,
-      exchangeRate,
-      zarCents: zarAmountInCents,
+    console.log('[YOCO_KIT_INIT] Price (ZAR):', {
+      originalZarCents: kit.price_cents,
+      finalZarCents: zarAmountInCents,
       zarAmount: zarAmountInCents / 100,
       discountApplied: discount
     });
@@ -201,8 +187,7 @@ Deno.serve(async (req: Request) => {
           temp_checkout_id: tempCheckoutId,
           kit_name: kit.name,
           created_at: new Date().toISOString(),
-          usd_price_cents: usdAmountInCents,
-          exchange_rate: exchangeRate,
+          zar_price_cents: zarAmountInCents,
         },
       });
 

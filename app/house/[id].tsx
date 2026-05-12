@@ -80,6 +80,7 @@ export default function HouseDetailScreen() {
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ visible: boolean; gameName: string; onConfirm: () => void }>({ visible: false, gameName: '', onConfirm: () => { } });
   const [houseDeletedModal, setHouseDeletedModal] = useState<{ visible: boolean; houseName: string }>({ visible: false, houseName: '' });
+  const [leaveConfirm, setLeaveConfirm] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
   const { startFlow, userProgress } = useCoachMarkContext();
@@ -119,8 +120,9 @@ export default function HouseDetailScreen() {
       }
 
       // Set up real-time subscription for house customizations
+      const channelId = `house-customization-${id}-${Date.now()}`;
       const customizationChannel = supabase
-        .channel(`house-customization-${id}`)
+        .channel(channelId)
         .on(
           'postgres_changes',
           {
@@ -187,7 +189,7 @@ export default function HouseDetailScreen() {
         .subscribe();
 
       return () => {
-        customizationChannel.unsubscribe();
+        supabase.removeChannel(customizationChannel);
       };
     }, [id, user])
   );
@@ -887,22 +889,7 @@ export default function HouseDetailScreen() {
         confirmLeaveHouse();
       }
     } else {
-      Alert.alert(
-        'Leave House',
-        `Are you sure you want to leave "${house.name}"?\n\nYou will lose access to all games and content in this house.`,
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-          {
-            text: 'Leave',
-            style: 'destructive',
-            onPress: confirmLeaveHouse,
-          },
-        ],
-        { cancelable: true }
-      );
+      setLeaveConfirm(true);
     }
   };
 
@@ -1643,6 +1630,33 @@ export default function HouseDetailScreen() {
         context="join"
         houseName={house?.name}
       />
+
+      {/* ── Leave House Confirm Modal ── */}
+      <Modal visible={leaveConfirm} transparent animationType="fade" onRequestClose={() => setLeaveConfirm(false)}>
+        <View style={dcStyles.overlay}>
+          <View style={dcStyles.box}>
+            <View style={[dcStyles.iconCircle, { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)' }]}>
+              <Ionicons name="exit-outline" size={32} color="#FFFFFF" />
+            </View>
+            <Text style={dcStyles.title}>Leave "{house?.name}"?</Text>
+            <Text style={dcStyles.message}>
+              You will lose access to all games and content in this house. This action cannot be undone.
+            </Text>
+            <View style={dcStyles.btnRow}>
+              <Pressable style={dcStyles.cancelBtn} onPress={() => setLeaveConfirm(false)}>
+                <Text style={dcStyles.cancelTxt}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={[dcStyles.deleteBtn, { backgroundColor: '#FFFFFF' }]}
+                onPress={() => { setLeaveConfirm(false); confirmLeaveHouse(); }}
+              >
+                <Ionicons name="exit-outline" size={16} color="#000000" />
+                <Text style={[dcStyles.deleteTxt, { color: '#000000' }]}>Leave</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* ── House Deleted Success Modal ── */}
       <Modal visible={houseDeletedModal.visible} transparent animationType="fade" onRequestClose={() => { setHouseDeletedModal(d => ({ ...d, visible: false })); router.dismissTo('/(tabs)'); }}>
