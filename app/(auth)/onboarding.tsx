@@ -30,11 +30,6 @@ const STEPS: Step[] = [
     title: 'Track Everything',
     description: "From board games to sports, track any activity with custom scoring. See who's leading on the leaderboard.",
   },
-  {
-    icon: 'sparkles',
-    title: 'Unlock Rewards',
-    description: 'Earn badges, unlock custom themes and banners. Make your houses uniquely yours!',
-  },
 ];
 
 function StepContent({ step, index, currentStep }: { step: Step; index: number; currentStep: number }) {

@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, Modal, Pressable, ActivityIndicator, Platform, ScrollView, Dimensions } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
-import { useCurrency } from '@/hooks/useCurrency';
+import { getUSDToZARRate } from '@/lib/currencyConverter';
 import * as Linking from 'expo-linking';
 import Toast from './Toast';
 import { logger } from '@/lib/logger';
@@ -23,7 +23,18 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
   });
   const { user } = useAuth();
   const { isPremium, refreshPremiumStatus } = usePremium();
-  const { formatPriceCents } = useCurrency();
+  const [zarPrice, setZarPrice] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (visible) {
+      getUSDToZARRate().then(rate => {
+        const zarAmount = (4.99 * rate).toFixed(2);
+        setZarPrice(`R${zarAmount}`);
+      }).catch(() => {
+        setZarPrice('R92.00'); // fallback
+      });
+    }
+  }, [visible]);
 
   const handlePurchase = async () => {
     if (!user) {
@@ -120,9 +131,12 @@ export default function PremiumPurchaseModal({ visible, onClose }: PremiumPurcha
 
               {/* Price pill */}
               <View style={styles.pricePill}>
-                <Text style={styles.priceAmount} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.7}>
-                  {formatPriceCents(499)}
-                </Text>
+                <View style={{ flex: 1, flexShrink: 1 }}>
+                  <Text style={styles.priceAmount} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+                    {zarPrice || 'Loading...'}
+                  </Text>
+                  <Text style={styles.priceUsdSub}>(~$4.99 USD)</Text>
+                </View>
                 <View style={styles.priceMeta}>
                   <Text style={styles.priceOnce}>one-time</Text>
                   <View style={styles.lifetimeBadge}>
@@ -260,7 +274,10 @@ const styles = StyleSheet.create({
   },
   priceAmount: {
     fontSize: 22, fontWeight: '800', color: '#FFFFFF',
-    letterSpacing: -0.5, flex: 1, flexShrink: 1,
+    letterSpacing: -0.5,
+  },
+  priceUsdSub: {
+    fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: '500', marginTop: 2,
   },
   priceMeta: {
     gap: 6, alignItems: 'flex-end', marginLeft: 12,
