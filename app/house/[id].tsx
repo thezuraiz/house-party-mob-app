@@ -79,6 +79,7 @@ export default function HouseDetailScreen() {
   const [selectedStatType, setSelectedStatType] = useState<LeaderboardStatType>('most_wins');
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ visible: boolean; gameName: string; onConfirm: () => void }>({ visible: false, gameName: '', onConfirm: () => { } });
+  const [houseDeletedModal, setHouseDeletedModal] = useState<{ visible: boolean; houseName: string }>({ visible: false, houseName: '' });
   const { user } = useAuth();
   const router = useRouter();
   const { startFlow, userProgress } = useCoachMarkContext();
@@ -1028,15 +1029,10 @@ export default function HouseDetailScreen() {
 
       if (Platform.OS === 'web') {
         alert(`"${house?.name}" and all associated data have been permanently removed.`);
+        router.dismissTo('/(tabs)');
       } else {
-        Alert.alert(
-          'House Deleted',
-          `"${house?.name}" and all associated data have been permanently removed.`
-        );
+        setHouseDeletedModal({ visible: true, houseName: house?.name || 'House' });
       }
-
-      // Navigate to root - let auth guard decide final destination
-      router.dismissTo('/(tabs)');
     } catch (error: any) {
       console.log('[HOUSE DETAIL] UNEXPECTED ERROR:', error);
       console.log('[HOUSE DETAIL] Error stack:', error.stack);
@@ -1643,6 +1639,31 @@ export default function HouseDetailScreen() {
         context="join"
         houseName={house?.name}
       />
+
+      {/* ── House Deleted Success Modal ── */}
+      <Modal visible={houseDeletedModal.visible} transparent animationType="fade" onRequestClose={() => { setHouseDeletedModal(d => ({ ...d, visible: false })); router.dismissTo('/(tabs)'); }}>
+        <View style={dcStyles.overlay}>
+          <View style={dcStyles.box}>
+            {/* Icon */}
+            <View style={[dcStyles.iconCircle, { backgroundColor: '#FFFFFF' }]}>
+              <Ionicons name="checkmark" size={34} color="#000000" />
+            </View>
+            {/* Title */}
+            <Text style={dcStyles.title}>House Deleted</Text>
+            {/* Message */}
+            <Text style={dcStyles.message}>
+              "{houseDeletedModal.houseName}" and all associated data have been permanently removed.
+            </Text>
+            {/* Button */}
+            <Pressable
+              style={[dcStyles.cancelBtn, { backgroundColor: '#FFFFFF', borderColor: '#FFFFFF', marginTop: 4 }]}
+              onPress={() => { setHouseDeletedModal(d => ({ ...d, visible: false })); router.dismissTo('/(tabs)'); }}
+            >
+              <Text style={[dcStyles.cancelTxt, { color: '#000000', fontWeight: '800' }]}>Done</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
 
       {/* ── Custom Delete Confirm Modal ── */}
       <Modal visible={deleteConfirm.visible} transparent animationType="fade" onRequestClose={() => setDeleteConfirm(d => ({ ...d, visible: false }))}>
