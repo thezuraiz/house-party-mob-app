@@ -277,7 +277,7 @@ export default function YocoSuccessScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,

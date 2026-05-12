@@ -2,8 +2,8 @@ import {
   View, Text, StyleSheet, SectionList, ActivityIndicator,
   Pressable, Modal, Animated, ScrollView, Platform, StatusBar,
 } from 'react-native';
-import { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'expo-router';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -229,12 +229,34 @@ export default function LeaderboardScreen() {
   const latestSession = sessions[0];
 
   useEffect(() => {
-    if (myHouses.length > 0 && !selectedHouseId) setSelectedHouseId(myHouses[0].id);
-  }, [myHouses]);
+    if (myHouses.length === 0) {
+      if (selectedHouseId) {
+        queryClient.removeQueries({ queryKey: ['gameHistory', selectedHouseId] });
+        setSelectedHouseId(null);
+      }
+      return;
+    }
+    if (!selectedHouseId) {
+      setSelectedHouseId(myHouses[0].id);
+      return;
+    }
+    if (!myHouses.some(h => h.id === selectedHouseId)) {
+      const staleId = selectedHouseId;
+      setSelectedHouseId(myHouses[0].id);
+      queryClient.removeQueries({ queryKey: ['gameHistory', staleId] });
+    }
+  }, [myHouses, selectedHouseId, queryClient]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) queryClient.invalidateQueries({ queryKey: ['userHouses', user.id] });
+    }, [user?.id, queryClient]),
+  );
 
   useEffect(() => {
     if (!user) return;
-    const sub = supabase.channel('lb-rt')
+    const channelName = `lb-rt-${user.id}-${selectedHouseId ?? 'none'}`;
+    const sub = supabase.channel(channelName)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'house_members', filter: `user_id=eq.${user.id}` }, () => {
         queryClient.invalidateQueries({ queryKey: ['userHouses', user?.id] });
       })
@@ -242,7 +264,7 @@ export default function LeaderboardScreen() {
         if ((ev.new as any)?.status === 'completed') queryClient.invalidateQueries({ queryKey: ['gameHistory', selectedHouseId] });
       })
       .subscribe();
-    return () => { sub.unsubscribe(); };
+    return () => { supabase.removeChannel(sub); };
   }, [user, selectedHouseId]);
 
   return (

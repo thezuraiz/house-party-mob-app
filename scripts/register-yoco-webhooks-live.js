@@ -1,8 +1,15 @@
 const https = require('https');
 require('dotenv').config();
 
-const YOCO_SECRET_KEY = process.env.YOCO_SECRET_KEY || 'sk_live_8de8cbedgENlzglf86f46988e89a';
-const SUPABASE_URL = 'https://qqeccmwtvjjysypahgkn.supabase.co';
+const YOCO_SECRET_KEY = process.env.YOCO_SECRET_KEY;
+
+if (!YOCO_SECRET_KEY) {
+  console.error('❌ YOCO_SECRET_KEY not found in environment variables.');
+  console.error('   Add it to your .env file: YOCO_SECRET_KEY=sk_live_...');
+  process.exit(1);
+}
+
+const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://qqeccmwtvjjysypahgkn.supabase.co';
 
 const webhooks = [
   {

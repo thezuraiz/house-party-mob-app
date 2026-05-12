@@ -1,17 +1,24 @@
-import {
-  View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator,
-  TextInput, Alert, Platform, Image, FlatList, Modal,
-} from 'react-native';
-import { useState, useCallback } from 'react';
-import { useFocusEffect, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { supabase } from '@/lib/supabase';
+import GameInvitationCard from '@/components/GameInvitationCard';
+import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useToast } from '@/contexts/ToastContext';
-import GameInvitationCard from '@/components/GameInvitationCard';
-import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
+import { supabase } from '@/lib/supabase';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SearchUser = {
   id: string; username: string; display_name: string; avatar_url: string | null;
@@ -56,7 +63,10 @@ export default function FriendsScreen() {
     fetchAll();
     const ch = supabase.channel(`friends-${user.id}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'friendships', filter: `user_id=eq.${user.id}` }, fetchAll)
+      // Listen as recipient — catches incoming requests AND cancellations by sender
       .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${user.id}` }, fetchAll)
+      // Listen as sender — catches status changes (accepted/declined) on our sent requests
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `sender_id=eq.${user.id}` }, fetchAll)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'game_invitations', filter: `invitee_id=eq.${user.id}` }, fetchAll)
       .subscribe();
     return () => { ch.unsubscribe(); };
@@ -154,6 +164,10 @@ export default function FriendsScreen() {
 
   const sendFriendRequest = async () => {
     if (!user || !selectedUser) return;
+    if (!isPremium) {
+      setShowPremiumModal(true);
+      return;
+    }
     setSendingRequest(true);
     try {
       const { error } = await supabase.from('friend_requests').insert({ sender_id: user.id, recipient_id: selectedUser.id, status: 'pending' });
@@ -201,7 +215,17 @@ export default function FriendsScreen() {
 
   const cancelSentRequest = async (requestId: string) => {
     try {
+      // Find the cancelled request before deleting (to update search results)
+      const cancelledRequest = sentRequests.find(r => r.id === requestId);
       await supabase.from('friend_requests').delete().eq('id', requestId);
+      // Update search results immediately so "Pending" badge disappears
+      if (cancelledRequest) {
+        setSearchResults(prev => prev.map(u =>
+          u.id === cancelledRequest.recipient_id
+            ? { ...u, has_pending_request: false }
+            : u
+        ));
+      }
       await fetchRequests();
     } catch (e: any) { showError(e.message || 'Failed to cancel'); }
   };
@@ -209,12 +233,17 @@ export default function FriendsScreen() {
   const removeFriend = async (friendId: string) => {
     Alert.alert('Remove Friend', 'Are you sure?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Remove', style: 'destructive', onPress: async () => {
-        try {
-          await supabase.from('friendships').delete().eq('user_id', user?.id).eq('friend_id', friendId);
-          await fetchFriends();
-        } catch (e: any) { showError(e.message || 'Failed to remove'); }
-      }},
+      {
+        text: 'Remove', style: 'destructive', onPress: async () => {
+          try {
+            // Use the RPC function that handles both directions + cleans up friend_requests
+            const { error } = await supabase.rpc('remove_friendship', { target_friend_id: friendId });
+            if (error) throw error;
+            await fetchFriends();
+            showSuccess('Friend removed');
+          } catch (e: any) { showError(e.message || 'Failed to remove'); }
+        }
+      },
     ]);
   };
 
@@ -241,7 +270,7 @@ export default function FriendsScreen() {
             <Text style={s.headerTitle}>Friends</Text>
             <Text style={s.headerSub}>{friends.length} friends</Text>
           </View>
-          {!isPremium && (
+          {isPremium && (
             <Pressable style={s.premiumBtn} onPress={() => setShowPremiumModal(true)}>
               <Ionicons name="diamond" size={13} color="#F59E0B" />
               <Text style={s.premiumBtnTxt}>Premium</Text>
@@ -324,13 +353,15 @@ export default function FriendsScreen() {
             })}
             {selectedUser && (
               <Pressable
-                style={[s.sendBtn, sendingRequest && { opacity: 0.6 }]}
+                style={[s.sendBtn, sendingRequest && { opacity: 0.6 }, !isPremium && { backgroundColor: '#FFD700' }]}
                 onPress={sendFriendRequest}
                 disabled={sendingRequest}
               >
                 {sendingRequest
                   ? <ActivityIndicator size="small" color="#FFFFFF" />
-                  : <><Ionicons name="person-add-outline" size={16} color="#000000" /><Text style={s.sendBtnTxt}>Send Friend Request</Text></>
+                  : !isPremium
+                    ? <><Ionicons name="diamond" size={16} color="#000000" /><Text style={s.sendBtnTxt}>Upgrade to Send Requests</Text></>
+                    : <><Ionicons name="person-add-outline" size={16} color="#000000" /><Text style={s.sendBtnTxt}>Send Friend Request</Text></>
                 }
               </Pressable>
             )}

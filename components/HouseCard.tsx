@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated, Platform, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { safeArrayFromColors } from '@/lib/colorUtils';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const ENABLE_ANIMATIONS = Platform.OS !== 'android' || Platform.Version >= 28;
 
@@ -46,7 +46,7 @@ function getAccentColor(kitName?: string | null, rarity?: string | null, colors?
 
 // Phantom Echo Set — animated vertical teal wave strips
 function PhantomWaves({ accentColor }: { accentColor: string }) {
-  const anims = [0,1,2,3,4].map(() => useRef(new Animated.Value(0)).current);
+  const anims = [0, 1, 2, 3, 4].map(() => useRef(new Animated.Value(0)).current);
 
   useEffect(() => {
     if (!ENABLE_ANIMATIONS) return;
@@ -144,10 +144,10 @@ export default function HouseCard({
   // Orb opacity based on rarity — subtle for common, strong for legendary
   const orbOpacity = house.kit_rarity === 'mythic' ? 0.5
     : house.kit_rarity === 'legendary' ? 0.45
-    : house.kit_rarity === 'epic' ? 0.38
-    : house.kit_rarity === 'rare' ? 0.32
-    : house.kit_rarity === 'uncommon' ? 0.25
-    : 0.2; // common
+      : house.kit_rarity === 'epic' ? 0.38
+        : house.kit_rarity === 'rare' ? 0.32
+          : house.kit_rarity === 'uncommon' ? 0.25
+            : 0.2; // common
   const isAdmin = house.role === 'admin';
 
   // Kit change animation
@@ -224,7 +224,7 @@ export default function HouseCard({
           {/* Neon Rift — PNG background image */}
           {house.kit_name === 'Neon Rift Loadout' && (
             <Image
-              source={require('../NeonBackground.png')}
+              source={require('@/assets/images/NeonBackground.jpg')}
               style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
               resizeMode="cover"
             />
@@ -233,7 +233,7 @@ export default function HouseCard({
           {/* Ironclad Vanguard — PNG background image */}
           {house.kit_name === 'Ironclad Vanguard' && (
             <Image
-              source={require('../IroncladHouse.png')}
+              source={require('@/assets/images/IroncladHouse.jpg')}
               style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
               resizeMode="cover"
             />
@@ -284,8 +284,53 @@ export default function HouseCard({
             />
           )}
 
+          {/* Phantom Void — dark teal image background */}
+          {house.kit_name === 'Phantom Void' && (
+            <Image
+              source={require('@/assets/images/PhantomVoid.jpg')}
+              style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
+              resizeMode="cover"
+            />
+          )}
+
+          {/* Stellar — silver cosmic image background */}
+          {house.kit_name === 'Stellar' && (
+            <Image
+              source={require('@/assets/images/Stellar.jpg')}
+              style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
+              resizeMode="cover"
+            />
+          )}
+
+          {/* Neon Pulse — neon cyan image background */}
+          {house.kit_name === 'Neon Pulse' && (
+            <Image
+              source={require('@/assets/images/NeonPulse.jpg')}
+              style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
+              resizeMode="cover"
+            />
+          )}
+
+          {/* Obsidian Gold — gold dark image background */}
+          {house.kit_name === 'Obsidian Gold' && (
+            <Image
+              source={require('@/assets/images/ObsidianGold.jpg')}
+              style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
+              resizeMode="cover"
+            />
+          )}
+
+          {/* Prismatic — purple prismatic image background */}
+          {house.kit_name === 'Prismatic' && (
+            <Image
+              source={require('@/assets/images/Prismatic.jpg')}
+              style={{ position: 'absolute', top: -2, left: -2, right: -2, bottom: -2, width: undefined, height: undefined }}
+              resizeMode="cover"
+            />
+          )}
+
           {/* Kit gradient — full card (not for PNG/GIF kits) */}
-          {hasAppliedKit && safeColors && house.kit_name !== 'Neon Rift Loadout' && house.kit_name !== 'Ironclad Vanguard' && house.kit_name !== 'Phantom Echo Set' && house.kit_name !== 'Liquid Metal Candy' && house.kit_name !== 'Starlight Prowler' && house.kit_name !== 'Golden Bushido' && house.kit_name !== 'Chaos Theory' && (
+          {hasAppliedKit && safeColors && house.kit_name !== 'Neon Rift Loadout' && house.kit_name !== 'Ironclad Vanguard' && house.kit_name !== 'Phantom Echo Set' && house.kit_name !== 'Liquid Metal Candy' && house.kit_name !== 'Starlight Prowler' && house.kit_name !== 'Golden Bushido' && house.kit_name !== 'Chaos Theory' && house.kit_name !== 'Phantom Void' && house.kit_name !== 'Stellar' && house.kit_name !== 'Neon Pulse' && house.kit_name !== 'Obsidian Gold' && house.kit_name !== 'Prismatic' && (
             <LinearGradient
               colors={safeColors.length >= 2
                 ? safeColors as [string, string, ...string[]]
@@ -297,7 +342,7 @@ export default function HouseCard({
           )}
 
           {/* Subtle dark overlay for text readability — NONE for PNG/GIF kits */}
-          {hasAppliedKit && house.kit_name !== 'Neon Rift Loadout' && house.kit_name !== 'Ironclad Vanguard' && house.kit_name !== 'Phantom Echo Set' && house.kit_name !== 'Liquid Metal Candy' && house.kit_name !== 'Starlight Prowler' && house.kit_name !== 'Golden Bushido' && house.kit_name !== 'Chaos Theory' && (
+          {hasAppliedKit && house.kit_name !== 'Neon Rift Loadout' && house.kit_name !== 'Ironclad Vanguard' && house.kit_name !== 'Phantom Echo Set' && house.kit_name !== 'Liquid Metal Candy' && house.kit_name !== 'Starlight Prowler' && house.kit_name !== 'Golden Bushido' && house.kit_name !== 'Chaos Theory' && house.kit_name !== 'Phantom Void' && house.kit_name !== 'Stellar' && house.kit_name !== 'Neon Pulse' && house.kit_name !== 'Obsidian Gold' && house.kit_name !== 'Prismatic' && (
             <LinearGradient
               colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.15)', 'rgba(0,0,0,0.3)']}
               start={{ x: 0, y: 0 }}
@@ -307,7 +352,7 @@ export default function HouseCard({
           )}
 
           {/* Kit texture — ON TOP of overlay so it's visible */}
-          {hasAppliedKit && house.kit_name !== 'Neon Rift Loadout' && house.kit_name !== 'Ironclad Vanguard' && house.kit_name !== 'Phantom Echo Set' && house.kit_name !== 'Liquid Metal Candy' && house.kit_name !== 'Starlight Prowler' && (
+          {hasAppliedKit && house.kit_name !== 'Neon Rift Loadout' && house.kit_name !== 'Ironclad Vanguard' && house.kit_name !== 'Phantom Echo Set' && house.kit_name !== 'Liquid Metal Candy' && house.kit_name !== 'Starlight Prowler' && house.kit_name !== 'Phantom Void' && house.kit_name !== 'Stellar' && house.kit_name !== 'Neon Pulse' && house.kit_name !== 'Obsidian Gold' && house.kit_name !== 'Prismatic' && (
             <KitTexture kitName={house.kit_name} rarity={house.kit_rarity} accentColor={accentColor} />
           )}
 
