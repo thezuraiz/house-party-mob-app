@@ -255,7 +255,8 @@ export default function LeaderboardScreen() {
 
   useEffect(() => {
     if (!user) return;
-    const sub = supabase.channel('lb-rt')
+    const channelName = `lb-rt-${user.id}-${selectedHouseId ?? 'none'}`;
+    const sub = supabase.channel(channelName)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'house_members', filter: `user_id=eq.${user.id}` }, () => {
         queryClient.invalidateQueries({ queryKey: ['userHouses', user?.id] });
       })
@@ -263,7 +264,7 @@ export default function LeaderboardScreen() {
         if ((ev.new as any)?.status === 'completed') queryClient.invalidateQueries({ queryKey: ['gameHistory', selectedHouseId] });
       })
       .subscribe();
-    return () => { sub.unsubscribe(); };
+    return () => { supabase.removeChannel(sub); };
   }, [user, selectedHouseId]);
 
   return (
