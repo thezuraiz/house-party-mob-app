@@ -323,7 +323,7 @@ export default function CreateHouseScreen() {
                 {selectedPack.emojis.map((emoji, i) => {
                   // Free users can only use the first emoji from the free pack
                   const isLocked = !isPremium && !selectedPack.is_free;
-                  const isFreeEmoji = selectedPack.is_free && i === 0;
+                  const isFreeEmoji = selectedPack.is_free;
                   const canUse = isPremium || isFreeEmoji;
 
                   return (
