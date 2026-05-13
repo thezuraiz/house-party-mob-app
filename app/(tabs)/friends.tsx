@@ -1,3 +1,4 @@
+import ConfirmModal from '@/components/CustomDialog';
 import GameInvitationCard from '@/components/GameInvitationCard';
 import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,7 +10,6 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
   Pressable,
   ScrollView,
@@ -57,6 +57,14 @@ export default function FriendsScreen() {
   const { isPremium, loading: premiumLoading } = usePremium();
   const { showSuccess, showError } = useToast();
   const router = useRouter();
+  const [confirmState, setConfirmState] = useState<{
+    visible: boolean;
+    friendId: string | null;
+    name?: string;
+  }>({
+    visible: false,
+    friendId: null,
+  });
 
   useFocusEffect(useCallback(() => {
     if (!user) return;
@@ -231,20 +239,20 @@ export default function FriendsScreen() {
   };
 
   const removeFriend = async (friendId: string) => {
-    Alert.alert('Remove Friend', 'Are you sure?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Remove', style: 'destructive', onPress: async () => {
-          try {
-            // Use the RPC function that handles both directions + cleans up friend_requests
-            const { error } = await supabase.rpc('remove_friendship', { target_friend_id: friendId });
-            if (error) throw error;
-            await fetchFriends();
-            showSuccess('Friend removed');
-          } catch (e: any) { showError(e.message || 'Failed to remove'); }
-        }
-      },
-    ]);
+
+    try {
+      const { error } = await supabase.rpc('remove_friendship', {
+        target_friend_id: friendId,
+      });
+
+      if (error) throw error;
+
+      await fetchFriends();
+      showSuccess('Friend removed');
+    } catch (e: any) {
+      showError(e.message || 'Failed to remove friend');
+    }
+
   };
 
   if (premiumLoading || loading) {
@@ -394,7 +402,13 @@ export default function FriendsScreen() {
                     <Text style={s.rowName}>{item.display_name}</Text>
                     <Text style={s.rowSub}>@{item.username}</Text>
                   </View>
-                  <Pressable style={s.removeBtn} onPress={() => removeFriend(item.friend_id)}>
+                  <Pressable style={s.removeBtn} onPress={() =>
+                    setConfirmState({
+                      visible: true,
+                      friendId: item.friend_id,
+                      name: item.display_name,
+                    })
+                  }>
                     <Ionicons name="close" size={15} color="#EF4444" />
                   </Pressable>
                 </Pressable>
@@ -402,7 +416,31 @@ export default function FriendsScreen() {
             )}
           </View>
         )}
+        <ConfirmModal
+          visible={confirmState.visible}
+          title={`Remove "${confirmState.name}"`}
+          message="This friend will be removed from your list."
+          confirmText="Remove"
+          icon="person-remove"
+          iconColor="#EF4444"
+          confirmColor="#EF4444"
+          onCancel={() =>
+            setConfirmState({
+              visible: false,
+              friendId: null,
+            })
+          }
+          onConfirm={async () => {
+            if (!confirmState.friendId) return;
 
+            await removeFriend(confirmState.friendId);
+
+            setConfirmState({
+              visible: false,
+              friendId: null,
+            });
+          }}
+        />
         {/* REQUESTS TAB */}
         {activeTab === 'requests' && (
           <View style={s.section}>
