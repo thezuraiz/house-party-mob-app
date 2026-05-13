@@ -117,7 +117,8 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // price_cents in DB = USD cents — convert to ZAR for Yoco payment
+    // price_cents in DB = USD dollar amount (e.g. 4.25 = $4.25)
+    // Convert to ZAR cents for Yoco payment
     let exchangeRate = 18.5;
     try {
       const rateResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
@@ -130,12 +131,11 @@ Deno.serve(async (req: Request) => {
       console.warn('[YOCO_KIT_INIT] Failed to fetch exchange rate, using fallback:', err);
     }
 
-    const usdAmountInCents = finalPriceCents;
-    const zarAmountInCents = Math.round((usdAmountInCents / 100) * exchangeRate * 100);
+    const usdAmount = finalPriceCents; // This is now USD dollars (e.g. 4.25)
+    const zarAmountInCents = Math.round(usdAmount * exchangeRate * 100);
 
     console.log('[YOCO_KIT_INIT] Price conversion:', {
-      usdCents: usdAmountInCents,
-      usdAmount: usdAmountInCents / 100,
+      usdAmount,
       exchangeRate,
       zarCents: zarAmountInCents,
       zarAmount: zarAmountInCents / 100,
@@ -201,7 +201,7 @@ Deno.serve(async (req: Request) => {
           temp_checkout_id: tempCheckoutId,
           kit_name: kit.name,
           created_at: new Date().toISOString(),
-          usd_price_cents: usdAmountInCents,
+          usd_price: usdAmount,
           exchange_rate: exchangeRate,
         },
       });

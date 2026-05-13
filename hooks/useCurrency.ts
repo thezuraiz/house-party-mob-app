@@ -33,11 +33,11 @@ export function useCurrency() {
     };
   }, []);
 
-  // price_cents in DB = USD cents (e.g. 162 = $1.62, 499 = $4.99)
+  // price_cents in DB = USD dollar amount (e.g. 4.25 = $4.25)
   // Display as ZAR using live exchange rate
-  const formatPriceCents = (usdCents: number): string => {
+  const formatPriceCents = (usdAmount: number): string => {
     const rate = exchangeRate || 18.5;
-    const zarAmount = (usdCents / 100) * rate;
+    const zarAmount = usdAmount * rate;
     return `R${zarAmount.toFixed(2)}`;
   };
 
