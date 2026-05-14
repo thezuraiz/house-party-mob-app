@@ -371,7 +371,7 @@ export default function ProfileScreen() {
         {activeKit?.name === 'Golden Bushido' && (
           <>
             <Image
-              source={require('@/assets/images/GoldenBushido.jpeg')}
+              source={require('@/assets/images/lionheader.jpeg')}
               style={{
                 position: 'absolute',
                 top: -80,
@@ -623,12 +623,13 @@ export default function ProfileScreen() {
                     shadowRadius: 20,
                     elevation: 12,
                   }]}>
-                    {/* Golden Bushido — gold solid */}
-                    <LinearGradient
-                      colors={['#C9A227', '#B8920F', '#A07C00', '#C9A227']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28 }]}
+                    {/* Golden Bushido — lion face card */}
+                    <Image
+                      source={require('@/assets/images/lionhalfface.jpeg')}
+                      style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', borderRadius: 24 }]}
+                      resizeMode="cover"
                     />
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 24 }]} />
                     <View style={s.lmcAvatarBox}>
                       <View style={s.lmcAvatarOuter}>
                         {profilePhotoUrl ? (
@@ -1155,7 +1156,7 @@ export default function ProfileScreen() {
                       : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
                       : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
                       : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
-                      : activeKit.name === 'Golden Bushido' ? require('@/assets/images/GoldenBushido.jpeg')
+                      : activeKit.name === 'Golden Bushido' ? require('@/assets/images/lionhalfface.jpeg')
                       : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
                       : require('@/assets/images/StarlightProwler.jpeg')
                     }
