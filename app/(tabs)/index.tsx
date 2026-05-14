@@ -1,6 +1,7 @@
 import BannerUnlockModal from '@/components/BannerUnlockModal';
 import HouseCard from '@/components/HouseCard';
 import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
+import Toast from '@/components/Toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBannerUnlock } from '@/contexts/BannerUnlockContext';
 import { useCoachMarkContext } from '@/contexts/CoachMarkContext';
@@ -80,6 +81,7 @@ export default function HousesScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { startFlow, userProgress } = useCoachMarkContext();
+  const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' }>({ visible: false, message: '', type: 'success' });
 
   // entrance animations
   const heroAnim = useRef(new Animated.Value(0)).current;
@@ -310,13 +312,27 @@ export default function HousesScreen() {
           <Text style={s.greetSub}>Welcome to your houses</Text>
         </View>
 
+        <Toast message={toast.message} type={toast.type} visible={toast.visible} onHide={() => setToast({ ...toast, visible: false })} />
+
         {/* ── Action pills ── */}
         <View style={s.actionRow}>
           <Pressable
             ref={scanQrButton.ref}
             onLayout={scanQrButton.onLayout}
             style={s.actionPill}
-            onPress={() => { setIsNavigating(true); setTimeout(() => router.push('/scan-qr'), 10); }}
+            onPress={() => {
+              // Free users can only create 1 house
+              if (!isPremium) {
+                const adminHouses = houses.filter(h => h.role === 'admin');
+                if (adminHouses.length >= 1) {
+                  // setShowPremiumModal(true);
+                  setToast({ visible: true, message: 'Upgrade to Premium to create more houses and unlock exclusive features!', type: 'error' });
+
+                  return;
+                }
+              }
+              setIsNavigating(true); setTimeout(() => router.push('/scan-qr'), 10);
+            }}
           >
             <Ionicons name="qr-code-outline" size={14} color="#FFFFFF" />
             <Text style={s.actionPillText}>Scan QR</Text>
@@ -325,7 +341,20 @@ export default function HousesScreen() {
             ref={joinHouseButton.ref}
             onLayout={joinHouseButton.onLayout}
             style={s.actionPill}
-            onPress={() => { setIsNavigating(true); setTimeout(() => router.push('/join-house'), 10); }}
+            onPress={() => {
+
+              if (!isPremium) {
+                const adminHouses = houses.filter(h => h.role === 'admin');
+                if (adminHouses.length >= 1) {
+                  // setShowPremiumModal(true);
+                  setToast({ visible: true, message: 'Upgrade to Premium to create more houses and unlock exclusive features!', type: 'error' });
+
+                  return;
+                }
+              }
+
+              setIsNavigating(true); setTimeout(() => router.push('/join-house'), 10);
+            }}
           >
             <Ionicons name="enter-outline" size={14} color="#FFFFFF" />
             <Text style={s.actionPillText}>Join</Text>
