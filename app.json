@@ -4,7 +4,7 @@
     "slug": "houseparty-score-tracker",
     "version": "1.0.8",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "houseparty",
     "userInterfaceStyle": "dark",
     "description": "Score everything, anywhere. Track games, compete with friends, and unlock achievements in your custom houses.",
