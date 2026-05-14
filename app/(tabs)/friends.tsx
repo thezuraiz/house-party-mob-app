@@ -6,8 +6,9 @@ import { usePremium } from '@/contexts/PremiumContext';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useQueryClient } from '@tanstack/react-query';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -57,6 +58,7 @@ export default function FriendsScreen() {
   const { isPremium, loading: premiumLoading } = usePremium();
   const { showSuccess, showError } = useToast();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [confirmState, setConfirmState] = useState<{
     visible: boolean;
     friendId: string | null;
@@ -65,6 +67,13 @@ export default function FriendsScreen() {
     visible: false,
     friendId: null,
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['pendingFriendRequestsCount', user?.id],
+      refetchType: 'all',
+    });
+  }, []);
 
   useFocusEffect(useCallback(() => {
     if (!user) return;
