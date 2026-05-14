@@ -119,7 +119,6 @@ export default function HouseDetailScreen() {
         }
       }
 
-      
 
       // Set up real-time subscription for house customizations
       const channelId = `house-customization-${id}-${Date.now()}`;
