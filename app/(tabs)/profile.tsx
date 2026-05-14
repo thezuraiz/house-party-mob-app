@@ -11,17 +11,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
-
-function getRarityColor(rarity: string): string {
-  switch (rarity) {
-    case 'mythic': return '#EC4899';
-    case 'legendary': return '#FFD700';
-    case 'epic': return '#A855F7';
-    case 'rare': return '#3B82F6';
-    case 'uncommon': return '#22C55E';
-    default: return 'rgba(255,255,255,0.5)';
-  }
-}
 import {
   ActivityIndicator,
   Animated,
@@ -36,6 +25,17 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+function getRarityColor(rarity: string): string {
+  switch (rarity) {
+    case 'mythic': return '#EC4899';
+    case 'legendary': return '#FFD700';
+    case 'epic': return '#A855F7';
+    case 'rare': return '#3B82F6';
+    case 'uncommon': return '#22C55E';
+    default: return 'rgba(255,255,255,0.5)';
+  }
+}
 
 type UserStats = {
   totalGames: number;
@@ -1150,14 +1150,14 @@ export default function ProfileScreen() {
                   <Image
                     source={
                       activeKit.name === 'Phantom Void' ? require('@/assets/images/PhantomVoid.jpg')
-                      : activeKit.name === 'Stellar' ? require('@/assets/images/Stellar.jpg')
-                      : activeKit.name === 'Neon Pulse' ? require('@/assets/images/NeonPulse.jpg')
-                      : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
-                      : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
-                      : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
-                      : activeKit.name === 'Golden Bushido' ? require('@/assets/images/GoldenBushido.jpeg')
-                      : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
-                      : require('@/assets/images/StarlightProwler.jpeg')
+                        : activeKit.name === 'Stellar' ? require('@/assets/images/Stellar.jpg')
+                          : activeKit.name === 'Neon Pulse' ? require('@/assets/images/NeonPulse.jpg')
+                            : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
+                              : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
+                                : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
+                                  : activeKit.name === 'Golden Bushido' ? require('@/assets/images/GoldenBushido.jpeg')
+                                    : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
+                                      : require('@/assets/images/StarlightProwler.jpeg')
                     }
                     style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
                     resizeMode="cover"
@@ -1422,8 +1422,8 @@ export default function ProfileScreen() {
                       style={{
                         position: 'absolute',
                         width: 320, height: 320,
-                        top: i < 2 ? -30 : -160,
-                        left: i % 2 === 0 ? -30 : -160,
+                        // top: i < 2 ? -30 : -160,
+                        // left: i % 2 === 0 ? -30 : -160,
                         borderRadius: 18,
                       }}
                       resizeMode="cover"
@@ -1774,13 +1774,26 @@ const s = StyleSheet.create({
     gap: 12, paddingHorizontal: 16, marginBottom: 4,
   },
   statCard: {
-    width: '47%',
+    width: '48%',
     backgroundColor: '#111111',
-    borderRadius: 20, padding: 18,
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
-    alignItems: 'flex-start', gap: 4,
+    borderRadius: 20,
+    padding: 18,
+    marginBottom: 12,
+
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.07)',
+
+    alignItems: 'flex-start',
     overflow: 'hidden',
   },
+  // statCard: {
+  //   width: '47%',
+  //   backgroundColor: '#111111',
+  //   borderRadius: 20, padding: 18,
+  //   borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
+  //   alignItems: 'flex-start', gap: 4,
+  //   overflow: 'hidden',
+  // },
   statEmoji: { fontSize: 26, marginBottom: 4 },
   statValue: { fontSize: 26, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5 },
   statLabel: { fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.4 },

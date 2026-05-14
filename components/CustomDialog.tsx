@@ -19,7 +19,7 @@ interface ConfirmModalProps {
     iconColor?: string;
     confirmColor?: string;
     onCancel: () => void;
-    onConfirm: () => void;
+    onConfirm?: () => void;
 }
 
 export default function ConfirmModal({
@@ -85,27 +85,28 @@ export default function ConfirmModal({
                                 {cancelText}
                             </Text>
                         </Pressable>
+                        {onConfirm &&
+                            <Pressable
+                                style={[
+                                    styles.confirmBtn,
+                                    {
+                                        backgroundColor:
+                                            confirmColor,
+                                    },
+                                ]}
+                                onPress={onConfirm}
+                            >
+                                <Ionicons
+                                    name="trash-outline"
+                                    size={16}
+                                    color="#FFFFFF"
+                                />
 
-                        <Pressable
-                            style={[
-                                styles.confirmBtn,
-                                {
-                                    backgroundColor:
-                                        confirmColor,
-                                },
-                            ]}
-                            onPress={onConfirm}
-                        >
-                            <Ionicons
-                                name="trash-outline"
-                                size={16}
-                                color="#FFFFFF"
-                            />
-
-                            <Text style={styles.confirmTxt}>
-                                {confirmText}
-                            </Text>
-                        </Pressable>
+                                <Text style={styles.confirmTxt}>
+                                    {confirmText}
+                                </Text>
+                            </Pressable>
+                        }
                     </View>
                 </Pressable>
             </Pressable>
