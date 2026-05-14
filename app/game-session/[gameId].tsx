@@ -1342,8 +1342,8 @@ export default function GameSessionScreen() {
       weightUnit={weightUnit}
       maxAttempts={maxAttempts}
       totalPlayers={selectedPlayers.length}
-      onUpdateScore={updateScore}
-      onSetDirectScore={setDirectScore}
+      onUpdateScore={isUserAdmin ? updateScore : () => {}}
+      onSetDirectScore={isUserAdmin ? setDirectScore : () => {}}
     />
   );
 
@@ -1660,16 +1660,24 @@ export default function GameSessionScreen() {
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="on-drag"
           />
-          <View style={[styles.actions, { bottom: Math.max(insets.bottom, 16) + 8 }]}>
-            <Pressable style={styles.cancelButton} onPress={cancelGame}>
-              <Ionicons name="close" size={20} color="#EF4444" />
-              <Text style={[styles.buttonText, { color: '#EF4444' }]}>Cancel</Text>
-            </Pressable>
-            <Pressable style={styles.endButton} onPress={handleEndGamePress}>
-              <Ionicons name="checkmark" size={20} color="#FFFFFF" />
-              <Text style={styles.buttonText}>End Game</Text>
-            </Pressable>
-          </View>
+          {isUserAdmin ? (
+            <View style={[styles.actions, { bottom: Math.max(insets.bottom, 16) + 8 }]}>
+              <Pressable style={styles.cancelButton} onPress={cancelGame}>
+                <Ionicons name="close" size={20} color="#EF4444" />
+                <Text style={[styles.buttonText, { color: '#EF4444' }]}>Cancel</Text>
+              </Pressable>
+              <Pressable style={styles.endButton} onPress={handleEndGamePress}>
+                <Ionicons name="checkmark" size={20} color="#FFFFFF" />
+                <Text style={styles.buttonText}>End Game</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View style={[styles.actions, { bottom: Math.max(insets.bottom, 16) + 8 }]}>
+              <View style={{ flex: 1, backgroundColor: '#1A1A1A', borderRadius: 18, paddingVertical: 14, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+                <Text style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14, fontWeight: '600' }}>Waiting for admin to end game...</Text>
+              </View>
+            </View>
+          )}
         </KeyboardAvoidingView>
       )}
 
