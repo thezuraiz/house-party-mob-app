@@ -604,7 +604,7 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  backgroundColor: 'rgba(5,3,0,0.95)',
+                  // backgroundColor: 'rgba(5,3,0,0.6)',
                   borderTopLeftRadius: 32,
                   borderTopRightRadius: 32,
                   paddingTop: 20,
@@ -656,12 +656,12 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: '#354458', borderWidth: 2,
-                      backgroundColor: 'transparent',
+                      borderColor: '#C9A227', borderWidth: 2,
+                      backgroundColor: 'rgba(5,3,0,0.6)',
                       shadowColor: '#354458', shadowOpacity: 0.4, shadowRadius: 8,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#C9A227' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: '#fff', textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 1 }]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -1139,11 +1139,13 @@ export default function ProfileScreen() {
               colors={activeKit.colors}
               borderRadius={18}
             >
+
               <View style={{
                 height: 80,
                 borderRadius: 16,
                 overflow: 'hidden',
                 position: 'relative',
+
               }}>
                 {/* Background */}
                 {['Phantom Void', 'Stellar', 'Neon Pulse', 'Obsidian Gold', 'Prismatic', 'Chaos Theory', 'Golden Bushido', 'Liquid Metal Candy', 'Starlight Prowler'].includes(activeKit.name) ? (
@@ -1163,6 +1165,7 @@ export default function ProfileScreen() {
                     resizeMode="cover"
                   />
                 ) : (
+
                   <LinearGradient
                     colors={activeKit.colors as [string, string, ...string[]]}
                     start={{ x: 0, y: 0 }}
@@ -1215,7 +1218,6 @@ export default function ProfileScreen() {
           <View style={{
             marginHorizontal: 0,
             marginTop: 0,
-            backgroundColor: 'rgba(5,5,10,0.96)',
             paddingHorizontal: 16,
             paddingBottom: 20,
             paddingTop: 8,

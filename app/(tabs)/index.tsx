@@ -240,7 +240,11 @@ export default function HousesScreen() {
     } catch { return []; }
   };
 
-  const onRefresh = () => { refetch(); refetchInvitations(); };
+  const onRefresh = async () => {
+    await Promise.all([refetch(), refetchInvitations()]);
+
+    queryClient.refetchQueries();
+  };
   const handleCreateHousePress = () => {
     // Free users can only create 1 house
     if (!isPremium) {

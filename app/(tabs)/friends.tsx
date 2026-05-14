@@ -69,10 +69,12 @@ export default function FriendsScreen() {
   });
 
   useEffect(() => {
+    console.log('Friends tab mounted, invalidating pendingFriendRequestsCount');
     queryClient.invalidateQueries({
       queryKey: ['pendingFriendRequestsCount', user?.id],
       refetchType: 'all',
     });
+    fetchAll();
   }, []);
 
   useFocusEffect(useCallback(() => {
@@ -111,7 +113,7 @@ export default function FriendsScreen() {
         .select('user_id, display_name')
         .in('user_id', friendIds);
       const nameMap = new Map((settings || []).map((s: any) => [s.user_id, s.display_name]));
-
+      console.log('Fetched friends:', data.length);
       setFriends(data.map((f: any) => ({
         id: f.id, friend_id: f.friend_id,
         username: f.profiles?.username || '',
