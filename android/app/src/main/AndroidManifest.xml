@@ -21,8 +21,10 @@
     <meta-data android:name="expo.modules.notifications.default_notification_color" android:resource="@color/notification_icon_color"/>
     <meta-data android:name="expo.modules.notifications.default_notification_icon" android:resource="@drawable/notification_icon"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
+    <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://u.expo.dev/238fdf90-f4b5-4337-b1d7-a2453a16dfff"/>
     <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustPan" android:theme="@style/Theme.App.SplashScreen" android:exported="true" android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -34,6 +36,26 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="houseparty"/>
         <data android:scheme="exp+houseparty-score-tracker"/>
+      </intent-filter>
+      <intent-filter android:autoVerify="true" data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="https" android:host="qqeccmwtvjjysypahgkn.supabase.co" android:pathPrefix="/functions/v1/well-known"/>
+        <data android:scheme="https" android:host="houseparty.app" android:pathPrefix="/auth/confirm"/>
+        <data android:scheme="https" android:host="houseparty.app" android:pathPrefix="/auth/reset"/>
+        <data android:scheme="https" android:host="houseparty.app" android:pathPrefix="/invite"/>
+        <data android:scheme="https" android:host="houseparty.app" android:pathPrefix="/house"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+      <intent-filter data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="houseparty" android:host="yoco"/>
+        <data android:scheme="houseparty" android:host="confirm-email"/>
+        <data android:scheme="houseparty" android:host="reset-password"/>
+        <data android:scheme="houseparty" android:host="auth-redirect"/>
+        <data android:scheme="houseparty" android:host="signup"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
       <intent-filter android:autoVerify="true" data-generated="true">
         <action android:name="android.intent.action.VIEW"/>

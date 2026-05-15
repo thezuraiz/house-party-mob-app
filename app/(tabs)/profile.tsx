@@ -11,17 +11,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
-
-function getRarityColor(rarity: string): string {
-  switch (rarity) {
-    case 'mythic': return '#EC4899';
-    case 'legendary': return '#FFD700';
-    case 'epic': return '#A855F7';
-    case 'rare': return '#3B82F6';
-    case 'uncommon': return '#22C55E';
-    default: return 'rgba(255,255,255,0.5)';
-  }
-}
 import {
   ActivityIndicator,
   Animated,
@@ -36,6 +25,17 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+function getRarityColor(rarity: string): string {
+  switch (rarity) {
+    case 'mythic': return '#EC4899';
+    case 'legendary': return '#FFD700';
+    case 'epic': return '#A855F7';
+    case 'rare': return '#3B82F6';
+    case 'uncommon': return '#22C55E';
+    default: return 'rgba(255,255,255,0.5)';
+  }
+}
 
 type UserStats = {
   totalGames: number;
@@ -374,19 +374,24 @@ export default function ProfileScreen() {
               source={require('@/assets/images/lionheader.jpeg')}
               style={{
                 position: 'absolute',
-                top: -80,
+                top: 0,
                 left: 0,
                 right: 0,
-                bottom: 0,
                 width: '100%',
-                height: '115%',
+                height: Platform.OS === 'android' ? 280 + (StatusBar.currentHeight || 24) : 280,
               }}
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['transparent', 'transparent', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.97)']}
-              locations={[0, 0.40, 0.55, 1]}
-              style={StyleSheet.absoluteFill}
+              colors={['transparent', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,1)']}
+              locations={[0.4, 0.7, 1]}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: Platform.OS === 'android' ? 320 + (StatusBar.currentHeight || 24) : 320,
+              }}
             />
           </>
         )}
@@ -604,7 +609,7 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  backgroundColor: 'rgba(5,3,0,0.75)',
+                  backgroundColor: '#000000',
                   borderTopLeftRadius: 32,
                   borderTopRightRadius: 32,
                   paddingTop: 20,
@@ -613,15 +618,15 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.5)',
+                    borderColor: 'rgba(255,215,0,0.8)',
                     marginTop: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(201,162,39,0.25)',
                     overflow: 'hidden',
                     shadowColor: '#FFD700',
                     shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.15,
+                    shadowOpacity: 0.25,
                     shadowRadius: 20,
-                    elevation: 8,
+                    elevation: 12,
                   }]}>
                     {/* Golden Bushido — lion face card */}
                     <Image
@@ -657,12 +662,12 @@ export default function ProfileScreen() {
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: '#354458', borderWidth: 2,
-                      backgroundColor: 'transparent',
+                      borderColor: '#C9A227', borderWidth: 2,
+                      backgroundColor: 'rgba(5,3,0,0.6)',
                       shadowColor: '#354458', shadowOpacity: 0.4, shadowRadius: 8,
                       elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#C9A227' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: '#fff', textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 1 }]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -1140,30 +1145,33 @@ export default function ProfileScreen() {
               colors={activeKit.colors}
               borderRadius={18}
             >
+
               <View style={{
                 height: 80,
                 borderRadius: 16,
                 overflow: 'hidden',
                 position: 'relative',
+
               }}>
                 {/* Background */}
                 {['Phantom Void', 'Stellar', 'Neon Pulse', 'Obsidian Gold', 'Prismatic', 'Chaos Theory', 'Golden Bushido', 'Liquid Metal Candy', 'Starlight Prowler'].includes(activeKit.name) ? (
                   <Image
                     source={
                       activeKit.name === 'Phantom Void' ? require('@/assets/images/PhantomVoid.jpg')
-                      : activeKit.name === 'Stellar' ? require('@/assets/images/Stellar.jpg')
-                      : activeKit.name === 'Neon Pulse' ? require('@/assets/images/NeonPulse.jpg')
-                      : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
-                      : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
-                      : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
-                      : activeKit.name === 'Golden Bushido' ? require('@/assets/images/lionhalfface.jpeg')
-                      : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
-                      : require('@/assets/images/StarlightProwler.jpeg')
+                        : activeKit.name === 'Stellar' ? require('@/assets/images/Stellar.jpg')
+                          : activeKit.name === 'Neon Pulse' ? require('@/assets/images/NeonPulse.jpg')
+                            : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
+                              : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
+                                : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
+                                  : activeKit.name === 'Golden Bushido' ? require('@/assets/images/lionhalfface.jpeg')
+                                    : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
+                                      : require('@/assets/images/StarlightProwler.jpeg')
                     }
                     style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
                     resizeMode="cover"
                   />
                 ) : (
+
                   <LinearGradient
                     colors={activeKit.colors as [string, string, ...string[]]}
                     start={{ x: 0, y: 0 }}
@@ -1216,7 +1224,6 @@ export default function ProfileScreen() {
           <View style={{
             marginHorizontal: 0,
             marginTop: 0,
-            backgroundColor: 'rgba(5,5,10,0.96)',
             paddingHorizontal: 16,
             paddingBottom: 20,
             paddingTop: 8,
@@ -1423,8 +1430,8 @@ export default function ProfileScreen() {
                       style={{
                         position: 'absolute',
                         width: 320, height: 320,
-                        top: i < 2 ? -30 : -160,
-                        left: i % 2 === 0 ? -30 : -160,
+                        // top: i < 2 ? -30 : -160,
+                        // left: i % 2 === 0 ? -30 : -160,
                         borderRadius: 18,
                       }}
                       resizeMode="cover"
@@ -1775,13 +1782,26 @@ const s = StyleSheet.create({
     gap: 12, paddingHorizontal: 16, marginBottom: 4,
   },
   statCard: {
-    width: '47%',
+    width: '48%',
     backgroundColor: '#111111',
-    borderRadius: 20, padding: 18,
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
-    alignItems: 'flex-start', gap: 4,
+    borderRadius: 20,
+    padding: 18,
+    marginBottom: 12,
+
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.07)',
+
+    alignItems: 'flex-start',
     overflow: 'hidden',
   },
+  // statCard: {
+  //   width: '47%',
+  //   backgroundColor: '#111111',
+  //   borderRadius: 20, padding: 18,
+  //   borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
+  //   alignItems: 'flex-start', gap: 4,
+  //   overflow: 'hidden',
+  // },
   statEmoji: { fontSize: 26, marginBottom: 4 },
   statValue: { fontSize: 26, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5 },
   statLabel: { fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.4 },

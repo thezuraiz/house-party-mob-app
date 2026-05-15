@@ -1,23 +1,21 @@
-import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, RefreshControl, ScrollView, Animated, Dimensions, Image } from 'react-native';
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { useRouter, useFocusEffect } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import HouseCard from '@/components/HouseCard';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
-import { useProfile } from '@/contexts/ProfileContext';
-import { usePremium } from '@/contexts/PremiumContext';
-import { useBannerUnlock } from '@/contexts/BannerUnlockContext';
 import BannerUnlockModal from '@/components/BannerUnlockModal';
+import HouseCard from '@/components/HouseCard';
 import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
-import { safeArrayFromColors } from '@/lib/colorUtils';
-import { useCoachMarkTarget } from '@/hooks/useCoachMarkTarget';
+import Toast from '@/components/Toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useBannerUnlock } from '@/contexts/BannerUnlockContext';
 import { useCoachMarkContext } from '@/contexts/CoachMarkContext';
-import { T } from '@/constants/Theme';
+import { usePremium } from '@/contexts/PremiumContext';
+import { useProfile } from '@/contexts/ProfileContext';
+import { useCoachMarkTarget } from '@/hooks/useCoachMarkTarget';
+import { safeArrayFromColors } from '@/lib/colorUtils';
+import { supabase } from '@/lib/supabase';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Dimensions, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width: SW } = Dimensions.get('window');
 
@@ -83,6 +81,7 @@ export default function HousesScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { startFlow, userProgress } = useCoachMarkContext();
+  const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' }>({ visible: false, message: '', type: 'success' });
 
   // entrance animations
   const heroAnim = useRef(new Animated.Value(0)).current;
@@ -96,8 +95,8 @@ export default function HousesScreen() {
   }, []);
 
   const createHouseButton = useCoachMarkTarget('create_house_button');
-  const joinHouseButton   = useCoachMarkTarget('join_house_button');
-  const scanQrButton      = useCoachMarkTarget('scan_qr_button');
+  const joinHouseButton = useCoachMarkTarget('join_house_button');
+  const scanQrButton = useCoachMarkTarget('scan_qr_button');
 
   const { data: houses = [], isLoading: loading, refetch } = useQuery({
     queryKey: ['houses', user?.id],
@@ -178,7 +177,7 @@ export default function HousesScreen() {
           setUnlockModalVisible(true);
         }
       }
-    } catch {}
+    } catch { }
   };
 
   const fetchPendingInvitationsData = async (userId: string): Promise<Map<string, number>> => {
@@ -241,7 +240,11 @@ export default function HousesScreen() {
     } catch { return []; }
   };
 
-  const onRefresh = () => { refetch(); refetchInvitations(); };
+  const onRefresh = async () => {
+    await Promise.all([refetch(), refetchInvitations()]);
+
+    queryClient.refetchQueries();
+  };
   const handleCreateHousePress = () => {
     // Free users can only create 1 house
     if (!isPremium) {
@@ -313,13 +316,27 @@ export default function HousesScreen() {
           <Text style={s.greetSub}>Welcome to your houses</Text>
         </View>
 
+        <Toast message={toast.message} type={toast.type} visible={toast.visible} onHide={() => setToast({ ...toast, visible: false })} />
+
         {/* ── Action pills ── */}
         <View style={s.actionRow}>
           <Pressable
             ref={scanQrButton.ref}
             onLayout={scanQrButton.onLayout}
             style={s.actionPill}
-            onPress={() => { setIsNavigating(true); setTimeout(() => router.push('/scan-qr'), 10); }}
+            onPress={() => {
+              // Free users can only create 1 house
+              if (!isPremium) {
+                const adminHouses = houses.filter(h => h.role === 'admin');
+                if (adminHouses.length >= 1) {
+                  // setShowPremiumModal(true);
+                  setToast({ visible: true, message: 'Upgrade to Premium to create more houses and unlock exclusive features!', type: 'error' });
+
+                  return;
+                }
+              }
+              setIsNavigating(true); setTimeout(() => router.push('/scan-qr'), 10);
+            }}
           >
             <Ionicons name="qr-code-outline" size={14} color="#FFFFFF" />
             <Text style={s.actionPillText}>Scan QR</Text>
@@ -328,7 +345,20 @@ export default function HousesScreen() {
             ref={joinHouseButton.ref}
             onLayout={joinHouseButton.onLayout}
             style={s.actionPill}
-            onPress={() => { setIsNavigating(true); setTimeout(() => router.push('/join-house'), 10); }}
+            onPress={() => {
+
+              if (!isPremium) {
+                const adminHouses = houses.filter(h => h.role === 'admin');
+                if (adminHouses.length >= 1) {
+                  // setShowPremiumModal(true);
+                  setToast({ visible: true, message: 'Upgrade to Premium to create more houses and unlock exclusive features!', type: 'error' });
+
+                  return;
+                }
+              }
+
+              setIsNavigating(true); setTimeout(() => router.push('/join-house'), 10);
+            }}
           >
             <Ionicons name="enter-outline" size={14} color="#FFFFFF" />
             <Text style={s.actionPillText}>Join</Text>
@@ -360,8 +390,8 @@ export default function HousesScreen() {
                 {totalInvites > 0 && pendingFriendRequests > 0
                   ? `${totalInvites} game invite${totalInvites > 1 ? 's' : ''} · ${pendingFriendRequests} friend request${pendingFriendRequests > 1 ? 's' : ''}`
                   : totalInvites > 0
-                  ? `${totalInvites} pending game invite${totalInvites > 1 ? 's' : ''}`
-                  : `${pendingFriendRequests} friend request${pendingFriendRequests > 1 ? 's' : ''}`
+                    ? `${totalInvites} pending game invite${totalInvites > 1 ? 's' : ''}`
+                    : `${pendingFriendRequests} friend request${pendingFriendRequests > 1 ? 's' : ''}`
                 }
               </Text>
               <Text style={s.notifSub}>Tap to view</Text>
@@ -505,7 +535,7 @@ const s = StyleSheet.create({
   notifBanner: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
     backgroundColor: 'rgba(74,123,247,0.12)', borderWidth: 1, borderColor: 'rgba(74,123,247,0.3)',
-    borderRadius: 16, padding: 14, marginTop: 16,
+    borderRadius: 16, padding: 14, marginVertical: 16,
   },
   notifIconBox: {
     width: 36, height: 36, borderRadius: 18, backgroundColor: '#4A7BF7',

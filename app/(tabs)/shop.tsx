@@ -1,26 +1,22 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Platform, Modal, Animated, Image } from 'react-native';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter, useFocusEffect } from 'expo-router';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
-import { usePremium } from '@/contexts/PremiumContext';
-import { useDiscountNotification } from '@/contexts/DiscountNotificationContext';
-import { useCurrency } from '@/hooks/useCurrency';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import NeuIcon from '@/components/NeuIcon';
-import BannerRenderer from '@/components/BannerRenderer';
-import Toast from '@/components/Toast';
-import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
-import KitApplicationModal from '@/components/KitApplicationModal';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { logError, logInfo, logWarning, formatSupabaseError } from '@/lib/errorReporting';
 import ColorPickerModal from '@/components/ColorPickerModal';
-import { notifications } from '@/lib/notifications';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import KitApplicationModal from '@/components/KitApplicationModal';
+import PremiumPurchaseModal from '@/components/PremiumPurchaseModal';
+import Toast from '@/components/Toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useDiscountNotification } from '@/contexts/DiscountNotificationContext';
+import { usePremium } from '@/contexts/PremiumContext';
+import { useCurrency } from '@/hooks/useCurrency';
+import { formatSupabaseError, logError, logInfo, logWarning } from '@/lib/errorReporting';
+import { supabase } from '@/lib/supabase';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
-import { T } from '@/constants/Theme';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Image, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type HouseKit = {
   id: string;
@@ -191,42 +187,42 @@ export default function HouseKitsScreen() {
 
       logInfo('HOUSE_KITS', `Loaded ${data.length} kits successfully`);
       const mapped = (data || []).map(kit => {
-          let unlockType: 'free' | 'purchasable' | 'chance_based' = 'free';
-          let isUnlockable = false;
-          let isEarnable = false;
-          let ownedByUser = purchasedKitIds.has(kit.id);
-          if (kit.price_cents === 0 && (kit.rarity !== 'legendary' && kit.rarity !== 'mythic')) {
-            ownedByUser = true;
-          }
+        let unlockType: 'free' | 'purchasable' | 'chance_based' = 'free';
+        let isUnlockable = false;
+        let isEarnable = false;
+        let ownedByUser = purchasedKitIds.has(kit.id);
+        if (kit.price_cents === 0 && (kit.rarity !== 'legendary' && kit.rarity !== 'mythic')) {
+          ownedByUser = true;
+        }
 
-          if (kit.price_cents > 0) {
-            unlockType = 'purchasable';
-          } else if (kit.rarity === 'legendary' || kit.rarity === 'mythic') {
-            unlockType = 'chance_based';
-            isEarnable = true;
-            isUnlockable = true;
-          }
+        if (kit.price_cents > 0) {
+          unlockType = 'purchasable';
+        } else if (kit.rarity === 'legendary' || kit.rarity === 'mythic') {
+          unlockType = 'chance_based';
+          isEarnable = true;
+          isUnlockable = true;
+        }
 
-          // Debug log for new kits
-          if (['Golden Bushido', 'Starlight Prowler', 'Chaos Theory'].includes(kit.name)) {
-            console.log(`[OWNED_CHECK] ${kit.name} — id: ${kit.id}, price_cents: ${kit.price_cents}, rarity: ${kit.rarity}, owned: ${ownedByUser}, inPurchasedSet: ${purchasedKitIds.has(kit.id)}, unlockType: ${unlockType}`);
-          }
+        // Debug log for new kits
+        if (['Golden Bushido', 'Starlight Prowler', 'Chaos Theory'].includes(kit.name)) {
+          console.log(`[OWNED_CHECK] ${kit.name} — id: ${kit.id}, price_cents: ${kit.price_cents}, rarity: ${kit.rarity}, owned: ${ownedByUser}, inPurchasedSet: ${purchasedKitIds.has(kit.id)}, unlockType: ${unlockType}`);
+        }
 
-          return {
-            id: kit.id,
-            name: kit.name,
-            description: kit.description,
-            rarity: kit.rarity,
-            is_unlockable: isUnlockable,
-            is_earnable: isEarnable,
-            is_active: kit.is_active,
-            color_scheme: kit.color_scheme,
-            unlock_type: unlockType,
-            price_cents: kit.price_cents,
-            unlock_condition: isEarnable ? 'game_win' : undefined,
-            owned_by_user: ownedByUser
-          };
-        }) as any;
+        return {
+          id: kit.id,
+          name: kit.name,
+          description: kit.description,
+          rarity: kit.rarity,
+          is_unlockable: isUnlockable,
+          is_earnable: isEarnable,
+          is_active: kit.is_active,
+          color_scheme: kit.color_scheme,
+          unlock_type: unlockType,
+          price_cents: kit.price_cents,
+          unlock_condition: isEarnable ? 'game_win' : undefined,
+          owned_by_user: ownedByUser
+        };
+      }) as any;
 
       console.log('[OWNED_CHECK] purchasedKitIds set:', Array.from(purchasedKitIds));
       return mapped;
@@ -728,87 +724,87 @@ export default function HouseKitsScreen() {
             <>
               {/* ── Custom Color Kit card ── */}
               <Pressable style={kc.customCard} onPress={() => setShowColorPicker(true)}>
-                  {/* Background gradient from current colors */}
-                  <LinearGradient
-                    colors={customColors.length >= 2 ? customColors as [string, string, ...string[]] : ['#0A0A1A', '#1A0A2E', '#0A1A2E']}
-                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                    style={StyleSheet.absoluteFill}
-                  />
-                  {/* Dark overlay for readability */}
-                  <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.6)' }]} />
+                {/* Background gradient from current colors */}
+                <LinearGradient
+                  colors={customColors.length >= 2 ? customColors as [string, string, ...string[]] : ['#0A0A1A', '#1A0A2E', '#0A1A2E']}
+                  start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
+                {/* Dark overlay for readability */}
+                <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.6)' }]} />
 
-                  {/* Content */}
-                  <View style={kc.customContent}>
-                    {/* Left — icon + label */}
-                    <View style={kc.customLeft}>
-                      <View style={kc.customIconCircle}>
-                        <Ionicons name="color-palette" size={24} color="#FFFFFF" />
-                      </View>
-                      <View>
-                        <Text style={kc.customTitle}>Your Colors</Text>
-                        <Text style={kc.customSub}>Build your own gradient</Text>
-                      </View>
+                {/* Content */}
+                <View style={kc.customContent}>
+                  {/* Left — icon + label */}
+                  <View style={kc.customLeft}>
+                    <View style={kc.customIconCircle}>
+                      <Ionicons name="color-palette" size={24} color="#FFFFFF" />
                     </View>
-
-                    {/* Right — color dots + button */}
-                    <View style={kc.customRight}>
-                      <View style={kc.customDots}>
-                        {customColors.slice(0, 4).map((c, i) => (
-                          <View key={i} style={[kc.customDot, {
-                            backgroundColor: c,
-                            borderWidth: 1.5,
-                            borderColor: 'rgba(255,255,255,0.25)',
-                          }]} />
-                        ))}
-                      </View>
-                      <View style={kc.customBtn}>
-                        <Ionicons name="pencil" size={13} color="#000000" />
-                        <Text style={kc.customBtnTxt}>Edit</Text>
-                      </View>
+                    <View>
+                      <Text style={kc.customTitle}>Your Colors</Text>
+                      <Text style={kc.customSub}>Build your own gradient</Text>
                     </View>
                   </View>
-                </Pressable>
+
+                  {/* Right — color dots + button */}
+                  <View style={kc.customRight}>
+                    <View style={kc.customDots}>
+                      {customColors.slice(0, 4).map((c, i) => (
+                        <View key={i} style={[kc.customDot, {
+                          backgroundColor: c,
+                          borderWidth: 1.5,
+                          borderColor: 'rgba(255,255,255,0.25)',
+                        }]} />
+                      ))}
+                    </View>
+                    <View style={kc.customBtn}>
+                      <Ionicons name="pencil" size={13} color="#000000" />
+                      <Text style={kc.customBtnTxt}>Edit</Text>
+                    </View>
+                  </View>
+                </View>
+              </Pressable>
 
               {filteredKits.map((kit, index) => {
-              const canEquip = canEquipKit(kit);
-              const isApplying = applyingKitId === kit.id;
-              const colors = getKitColors(kit);
-              const discountInfo = getKitDiscount(kit.id);
-              const rarityColor =
-                kit.rarity === 'mythic'    ? '#EC4899' :
-                kit.rarity === 'legendary' ? '#F59E0B' :
-                kit.rarity === 'epic'      ? '#A855F7' :
-                kit.rarity === 'rare'      ? '#3B82F6' :
-                kit.rarity === 'uncommon'  ? '#22C55E' : '#6B7280';
+                const canEquip = canEquipKit(kit);
+                const isApplying = applyingKitId === kit.id;
+                const colors = getKitColors(kit);
+                const discountInfo = getKitDiscount(kit.id);
+                const rarityColor =
+                  kit.rarity === 'mythic' ? '#EC4899' :
+                    kit.rarity === 'legendary' ? '#F59E0B' :
+                      kit.rarity === 'epic' ? '#A855F7' :
+                        kit.rarity === 'rare' ? '#3B82F6' :
+                          kit.rarity === 'uncommon' ? '#22C55E' : '#6B7280';
 
-              return (
-                <KitCard
-                  key={kit.id}
-                  index={index}
-                  kit={kit}
-                  colors={colors}
-                  rarityColor={rarityColor}
-                  canEquip={canEquip}
-                  isApplying={isApplying}
-                  discountInfo={discountInfo}
-                  formatPriceCents={formatPriceCents}
-                  onApply={() => handleOpenApplicationModal(kit)}
-                  onClaim={() => handleClaimFree(kit)}
-                  onBuy={() => handlePurchaseKit(kit)}
-                  onInfo={() => {
-                    setInfoModalContent({
-                      title: kit.name,
-                      description: kit.rarity === 'mythic'
-                        ? 'This ultra-rare kit has a 0.015% chance (1 in 6,667) to unlock every time you WIN a game.'
-                        : 'This rare kit has a 0.025% chance (1 in 4,000) to unlock every time you FINISH a game.',
-                      rarity: kit.rarity,
-                    });
-                    setShowInfoModal(true);
-                  }}
-                  logError={logError}
-                />
-              );
-            })}
+                return (
+                  <KitCard
+                    key={kit.id}
+                    index={index}
+                    kit={kit}
+                    colors={colors}
+                    rarityColor={rarityColor}
+                    canEquip={canEquip}
+                    isApplying={isApplying}
+                    discountInfo={discountInfo}
+                    formatPriceCents={formatPriceCents}
+                    onApply={() => handleOpenApplicationModal(kit)}
+                    onClaim={() => handleClaimFree(kit)}
+                    onBuy={() => handlePurchaseKit(kit)}
+                    onInfo={() => {
+                      setInfoModalContent({
+                        title: kit.name,
+                        description: kit.rarity === 'mythic'
+                          ? 'This ultra-rare kit has a 0.015% chance (1 in 6,667) to unlock every time you WIN a game.'
+                          : 'This rare kit has a 0.025% chance (1 in 4,000) to unlock every time you FINISH a game.',
+                        rarity: kit.rarity,
+                      });
+                      setShowInfoModal(true);
+                    }}
+                    logError={logError}
+                  />
+                );
+              })}
             </>
           )}
           <View style={{ height: 110 }} />
@@ -822,14 +818,14 @@ export default function HouseKitsScreen() {
 
 // ── Kit Card — new design ─────────────────────────────────────────────────────
 function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discountInfo, formatPriceCents, onApply, onClaim, onBuy, onInfo, logError }: any) {
-  const slideAnim   = useRef(new Animated.Value(0)).current;
-  const glowAnim    = useRef(new Animated.Value(0)).current;
-  const pressAnim   = useRef(new Animated.Value(1)).current;
-  const bounceAnim  = useRef(new Animated.Value(1)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const glowAnim = useRef(new Animated.Value(0)).current;
+  const pressAnim = useRef(new Animated.Value(1)).current;
+  const bounceAnim = useRef(new Animated.Value(1)).current;
   const sparkleAnim = useRef(new Animated.Value(0)).current;
   const sparkleOpacity = useRef(new Animated.Value(0)).current;
   const shimmerAnim = useRef(new Animated.Value(0)).current;  // shimmer sweep
-  const pulseAnim   = useRef(new Animated.Value(1)).current;  // border pulse
+  const pulseAnim = useRef(new Animated.Value(1)).current;  // border pulse
 
   const isPremiumKit = ['epic', 'legendary', 'mythic'].includes(kit.rarity);
   const isUnowned = !canEquip && kit.unlock_type === 'purchasable';
@@ -842,8 +838,8 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
     }).start();
   }, []);
 
-  const onPressIn  = () => Animated.spring(pressAnim, { toValue: 0.96, useNativeDriver: true, speed: 60 }).start();
-  const onPressOut = () => Animated.spring(pressAnim, { toValue: 1,    useNativeDriver: true, speed: 60 }).start();
+  const onPressIn = () => Animated.spring(pressAnim, { toValue: 0.96, useNativeDriver: true, speed: 60 }).start();
+  const onPressOut = () => Animated.spring(pressAnim, { toValue: 1, useNativeDriver: true, speed: 60 }).start();
 
   // Micro-interaction: bounce + sparkle burst when Apply/Claim tapped
   const triggerApplyFeedback = (callback: () => void) => {
@@ -891,20 +887,20 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
                 source={kit.name === 'Golden Bushido'
                   ? require('@/assets/images/GoldenBushido.jpeg')
                   : kit.name === 'Chaos Theory'
-                  ? require('@/assets/images/ChaosTheory.jpeg')
-                  : kit.name === 'Starlight Prowler'
-                  ? require('@/assets/images/StarlightProwler.jpeg')
-                  : kit.name === 'Phantom Void'
-                  ? require('@/assets/images/PhantomVoid.jpg')
-                  : kit.name === 'Stellar'
-                  ? require('@/assets/images/Stellar.jpg')
-                  : kit.name === 'Neon Pulse'
-                  ? require('@/assets/images/NeonPulse.jpg')
-                  : kit.name === 'Obsidian Gold'
-                  ? require('@/assets/images/ObsidianGold.jpg')
-                  : kit.name === 'Prismatic'
-                  ? require('@/assets/images/Prismatic.jpg')
-                  : require('@/assets/images/LiquidMetalProfile.jpeg')}
+                    ? require('@/assets/images/ChaosTheory.jpeg')
+                    : kit.name === 'Starlight Prowler'
+                      ? require('@/assets/images/StarlightProwler.jpeg')
+                      : kit.name === 'Phantom Void'
+                        ? require('@/assets/images/PhantomVoid.jpg')
+                        : kit.name === 'Stellar'
+                          ? require('@/assets/images/Stellar.jpg')
+                          : kit.name === 'Neon Pulse'
+                            ? require('@/assets/images/NeonPulse.jpg')
+                            : kit.name === 'Obsidian Gold'
+                              ? require('@/assets/images/ObsidianGold.jpg')
+                              : kit.name === 'Prismatic'
+                                ? require('@/assets/images/Prismatic.jpg')
+                                : require('@/assets/images/LiquidMetalProfile.jpeg')}
                 style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%', borderRadius: 24 }}
                 resizeMode="cover"
               />
@@ -1000,7 +996,8 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
                     </View>
                   ) : (
                     <View style={kc.priceBlock}>
-                      <Text style={kc.priceMain}>{formatPriceCents(kit.price_cents)}</Text>
+                      <Text style={kc.priceMain}>${kit.price_cents} USD</Text>
+                      <Text style={kc.priceUsd}>(~{formatPriceCents(kit.price_cents)})</Text>
                     </View>
                   )
                 ) : kit.unlock_type === 'chance_based' ? (
@@ -1013,7 +1010,7 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
 
               {/* CTA */}
               {canEquip ? (
-                <Pressable style={[kc.cta, { backgroundColor: '#FFFFFF' }]} onPress={() => { onApply(); triggerApplyFeedback(() => {}); }} disabled={isApplying}>
+                <Pressable style={[kc.cta, { backgroundColor: '#FFFFFF' }]} onPress={() => { onApply(); triggerApplyFeedback(() => { }); }} disabled={isApplying}>
                   {isApplying
                     ? <ActivityIndicator size="small" color="#000" />
                     : <Text style={[kc.ctaTxt, { color: '#000000' }]}>Apply</Text>
@@ -1024,7 +1021,7 @@ function KitCard({ kit, index, colors, rarityColor, canEquip, isApplying, discou
                   {isApplying ? <ActivityIndicator size="small" color="#000" /> : <Text style={[kc.ctaTxt, { color: '#000000' }]}>Claim</Text>}
                 </Pressable>
               ) : kit.unlock_type === 'purchasable' ? (
-                <Pressable style={[kc.cta, { backgroundColor: '#FFFFFF' }]} onPress={() => { triggerApplyFeedback(() => {}); onBuy(); }} disabled={isApplying}>
+                <Pressable style={[kc.cta, { backgroundColor: '#FFFFFF' }]} onPress={() => { triggerApplyFeedback(() => { }); onBuy(); }} disabled={isApplying}>
                   {isApplying ? <ActivityIndicator size="small" color="#000" /> : <Text style={[kc.ctaTxt, { color: '#000000' }]}>Buy</Text>}
                 </Pressable>
               ) : (
@@ -1161,7 +1158,7 @@ const kc = StyleSheet.create({
   price: { fontSize: 13, fontWeight: '700', color: '#FFFFFF' },
   priceBlock: { gap: 1 },
   priceMain: { fontSize: 15, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.3 },
-  priceUsd: { fontSize: 11, color: 'rgba(255,255,255,0.35)', fontWeight: '500' },
+  priceUsd: { fontSize: 11, color: 'rgba(255,255,255,0.65)', fontWeight: '500' },
   priceOld: { fontSize: 11, color: 'rgba(255,255,255,0.25)', textDecorationLine: 'line-through' },
   priceNew: { fontSize: 15, fontWeight: '800', color: '#FFFFFF' },
   priceChance: { fontSize: 11, fontWeight: '700', color: '#F59E0B' },

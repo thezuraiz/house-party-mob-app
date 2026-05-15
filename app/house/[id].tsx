@@ -1,3 +1,4 @@
+import ConfirmModal from '@/components/CustomDialog';
 import HouseLimitModal from '@/components/HouseLimitModal';
 import KitBorder from '@/components/KitBorder';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,6 +12,7 @@ import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, FlatList, Image, Modal, Platform, Pressable, RefreshControl, ScrollView, Share, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 type Game = {
   id: string;
@@ -79,6 +81,13 @@ export default function HouseDetailScreen() {
   const [selectedStatType, setSelectedStatType] = useState<LeaderboardStatType>('most_wins');
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ visible: boolean; gameName: string; onConfirm: () => void }>({ visible: false, gameName: '', onConfirm: () => { } });
+  const [leaveHouseConfirm, setLeaveHouseConfirm] = useState<{
+    visible: boolean;
+    houseName: string | null;
+  }>({
+    visible: false,
+    houseName: null,
+  });
   // const [houseDeletedModal, setHouseDeletedModal] = useState<{ visible: boolean; houseName: string }>({ visible: false, houseName: '' });
   const [leaveConfirm, setLeaveConfirm] = useState(false);
   const { user } = useAuth();
@@ -118,6 +127,8 @@ export default function HouseDetailScreen() {
           }, 1500);
         }
       }
+
+
 
 
       // Set up real-time subscription for house customizations
@@ -927,6 +938,10 @@ export default function HouseDetailScreen() {
         alert(`You have left "${house?.name}"`);
       } else {
         Alert.alert('Left House', `You have left "${house?.name}"`);
+        setLeaveHouseConfirm({
+          visible: true,
+          houseName: house?.name || '',
+        });
       }
 
       // Navigate to root - let auth guard decide final destination
@@ -937,6 +952,30 @@ export default function HouseDetailScreen() {
       setLoading(false);
     }
   };
+
+  <ConfirmModal
+    visible={leaveHouseConfirm.visible}
+    title="Leave House"
+    message={`You are leaving "${leaveHouseConfirm.houseName}". This action cannot be undone.`}
+    confirmText="Leave"
+    icon="exit-outline"
+    iconColor="#EF4444"
+    confirmColor="#EF4444"
+    onCancel={() =>
+      setLeaveHouseConfirm({
+        visible: false,
+        houseName: null,
+      })
+    }
+  // onConfirm={async () => {
+  //   // await leaveHouse();
+
+  //   setLeaveHouseConfirm({
+  //     visible: false,
+  //     houseName: null,
+  //   });
+  // }}
+  />
 
   const confirmDeleteHouse = async () => {
     try {
