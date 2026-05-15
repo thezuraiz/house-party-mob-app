@@ -1534,6 +1534,7 @@ export default function HouseDetailScreen() {
                 </Text>
               </Pressable>
 
+              {/* Accuracy and Streak tabs hidden for now
               <Pressable
                 style={[styles.filterTab, selectedStatType === 'best_accuracy' && styles.filterTabActive]}
                 onPress={() => setSelectedStatType('best_accuracy')}
@@ -1557,6 +1558,7 @@ export default function HouseDetailScreen() {
                   Streak
                 </Text>
               </Pressable>
+              */}
             </View>
 
             {loadingLeaderboard ? (
