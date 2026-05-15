@@ -1148,7 +1148,7 @@ export default function ProfileScreen() {
 
               }}>
                 {/* Background */}
-                {['Phantom Void', 'Stellar', 'Neon Pulse', 'Obsidian Gold', 'Prismatic', 'Chaos Theory', 'Golden Bushido', 'Liquid Metal Candy', 'Starlight Prowler'].includes(activeKit.name) ? (
+                {['Phantom Void', 'Stellar', 'Neon Pulse', 'Obsidian Gold', 'Prismatic', 'Chaos Theory', 'Liquid Metal Candy', 'Starlight Prowler'].includes(activeKit.name) ? (
                   <Image
                     source={
                       activeKit.name === 'Phantom Void' ? require('@/assets/images/PhantomVoid.jpg')
@@ -1157,7 +1157,6 @@ export default function ProfileScreen() {
                             : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
                               : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
                                 : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
-                                  : activeKit.name === 'Golden Bushido' ? require('@/assets/images/lionhalfface.jpeg')
                                     : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
                                       : require('@/assets/images/StarlightProwler.jpeg')
                     }
@@ -1201,6 +1200,7 @@ export default function ProfileScreen() {
                     paddingHorizontal: 12,
                     paddingVertical: 6,
                     borderRadius: 20,
+                    display: activeKit.name === 'Golden Bushido' ? 'none' : 'flex',
                   }}>
                     <Ionicons name="sparkles" size={12} color={getRarityColor(activeKit.rarity)} />
                     <Text style={{ fontSize: 12, fontWeight: '700', color: getRarityColor(activeKit.rarity), letterSpacing: 0.5 }}>
