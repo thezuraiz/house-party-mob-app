@@ -604,7 +604,7 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  backgroundColor: 'rgba(5,3,0,0.95)',
+                  backgroundColor: 'rgba(5,3,0,0.75)',
                   borderTopLeftRadius: 32,
                   borderTopRightRadius: 32,
                   paddingTop: 20,
@@ -613,15 +613,15 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.8)',
+                    borderColor: 'rgba(255,215,0,0.5)',
                     marginTop: 0,
-                    backgroundColor: 'rgba(201,162,39,0.3)',
+                    backgroundColor: 'transparent',
                     overflow: 'hidden',
                     shadowColor: '#FFD700',
                     shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.25,
+                    shadowOpacity: 0.15,
                     shadowRadius: 20,
-                    elevation: 12,
+                    elevation: 8,
                   }]}>
                     {/* Golden Bushido — lion face card */}
                     <Image
@@ -629,7 +629,7 @@ export default function ProfileScreen() {
                       style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', borderRadius: 24 }]}
                       resizeMode="cover"
                     />
-                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 24 }]} />
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.15)', borderRadius: 24 }]} />
                     <View style={s.lmcAvatarBox}>
                       <View style={s.lmcAvatarOuter}>
                         {profilePhotoUrl ? (
