@@ -64,9 +64,9 @@ function KitApplicationModal({ visible, kit, userHouses = [], loadingHouses: ext
         console.log(`[PERFORMANCE] Modal open to houses ready: ${(endTime - startTime).toFixed(0)}ms`);
       } else {
         console.log('[KIT_APPLICATION] No pre-loaded houses, loading from database');
-        console.time('[PERFORMANCE] loadUserHouses');
+        const loadStart = performance.now();
         loadUserHouses().then(() => {
-          console.timeEnd('[PERFORMANCE] loadUserHouses');
+          console.log(`[PERFORMANCE] loadUserHouses took ${(performance.now() - loadStart).toFixed(0)}ms`);
           const endTime = performance.now();
           console.log(`[PERFORMANCE] Modal open to houses loaded: ${(endTime - startTime).toFixed(0)}ms`);
         });
