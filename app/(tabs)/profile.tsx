@@ -371,7 +371,7 @@ export default function ProfileScreen() {
         {activeKit?.name === 'Golden Bushido' && (
           <>
             <Image
-              source={require('@/assets/images/GoldenBushido.jpeg')}
+              source={require('@/assets/images/lionheader.jpeg')}
               style={{
                 position: 'absolute',
                 top: -80,
@@ -604,7 +604,7 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  // backgroundColor: 'rgba(5,3,0,0.6)',
+                  backgroundColor: 'rgba(5,3,0,0.75)',
                   borderTopLeftRadius: 32,
                   borderTopRightRadius: 32,
                   paddingTop: 20,
@@ -613,22 +613,23 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.8)',
+                    borderColor: 'rgba(255,215,0,0.5)',
                     marginTop: 0,
-                    backgroundColor: 'rgba(201,162,39,0.3)',
+                    backgroundColor: 'transparent',
                     overflow: 'hidden',
                     shadowColor: '#FFD700',
                     shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.25,
+                    shadowOpacity: 0.15,
                     shadowRadius: 20,
-                    elevation: 12,
+                    elevation: 8,
                   }]}>
-                    {/* Golden Bushido — gold solid */}
-                    <LinearGradient
-                      colors={['#C9A227', '#B8920F', '#A07C00', '#C9A227']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28 }]}
+                    {/* Golden Bushido — lion face card */}
+                    <Image
+                      source={require('@/assets/images/lionhalfface.jpeg')}
+                      style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', borderRadius: 24 }]}
+                      resizeMode="cover"
                     />
+                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.15)', borderRadius: 24 }]} />
                     <View style={s.lmcAvatarBox}>
                       <View style={s.lmcAvatarOuter}>
                         {profilePhotoUrl ? (
@@ -1157,7 +1158,7 @@ export default function ProfileScreen() {
                             : activeKit.name === 'Obsidian Gold' ? require('@/assets/images/ObsidianGold.jpg')
                               : activeKit.name === 'Prismatic' ? require('@/assets/images/Prismatic.jpg')
                                 : activeKit.name === 'Chaos Theory' ? require('@/assets/images/ChaosTheory.jpeg')
-                                  : activeKit.name === 'Golden Bushido' ? require('@/assets/images/GoldenBushido.jpeg')
+                                  : activeKit.name === 'Golden Bushido' ? require('@/assets/images/lionhalfface.jpeg')
                                     : activeKit.name === 'Liquid Metal Candy' ? require('@/assets/images/LiquidMetalProfile.jpeg')
                                       : require('@/assets/images/StarlightProwler.jpeg')
                     }
