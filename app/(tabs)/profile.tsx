@@ -374,19 +374,24 @@ export default function ProfileScreen() {
               source={require('@/assets/images/lionheader.jpeg')}
               style={{
                 position: 'absolute',
-                top: -80,
+                top: 0,
                 left: 0,
                 right: 0,
-                bottom: 0,
                 width: '100%',
-                height: '115%',
+                height: Platform.OS === 'android' ? 280 + (StatusBar.currentHeight || 24) : 280,
               }}
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['transparent', 'transparent', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.97)']}
-              locations={[0, 0.40, 0.55, 1]}
-              style={StyleSheet.absoluteFill}
+              colors={['transparent', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,1)']}
+              locations={[0.4, 0.7, 1]}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: Platform.OS === 'android' ? 320 + (StatusBar.currentHeight || 24) : 320,
+              }}
             />
           </>
         )}
@@ -604,7 +609,7 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  backgroundColor: 'rgba(5,3,0,0.75)',
+                  backgroundColor: '#000000',
                   borderTopLeftRadius: 32,
                   borderTopRightRadius: 32,
                   paddingTop: 20,
@@ -613,15 +618,15 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.5)',
+                    borderColor: 'rgba(255,215,0,0.8)',
                     marginTop: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(201,162,39,0.25)',
                     overflow: 'hidden',
                     shadowColor: '#FFD700',
                     shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.15,
+                    shadowOpacity: 0.25,
                     shadowRadius: 20,
-                    elevation: 8,
+                    elevation: 12,
                   }]}>
                     {/* Golden Bushido — lion face card */}
                     <Image

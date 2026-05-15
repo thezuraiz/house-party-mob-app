@@ -17,7 +17,8 @@
       "**/*"
     ],
     "updates": {
-      "enabled": false
+      "enabled": false,
+      "url": "https://u.expo.dev/238fdf90-f4b5-4337-b1d7-a2453a16dfff"
     },
     "ios": {
       "supportsTablet": true,
@@ -32,10 +33,17 @@
             "CFBundleURLSchemes": [
               "houseparty"
             ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "houseparty"
+            ]
           }
         ]
       },
       "associatedDomains": [
+        "applinks:houseparty.app",
+        "applinks:*.houseparty.app",
         "applinks:houseparty.app",
         "applinks:*.houseparty.app"
       ]
@@ -43,7 +51,7 @@
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#0F172A"
       },
       "package": "com.houseparty.scoretracker",
@@ -117,7 +125,77 @@
             "BROWSABLE",
             "DEFAULT"
           ]
+        },
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "qqeccmwtvjjysypahgkn.supabase.co",
+              "pathPrefix": "/functions/v1/well-known"
+            },
+            {
+              "scheme": "https",
+              "host": "houseparty.app",
+              "pathPrefix": "/auth/confirm"
+            },
+            {
+              "scheme": "https",
+              "host": "houseparty.app",
+              "pathPrefix": "/auth/reset"
+            },
+            {
+              "scheme": "https",
+              "host": "houseparty.app",
+              "pathPrefix": "/invite"
+            },
+            {
+              "scheme": "https",
+              "host": "houseparty.app",
+              "pathPrefix": "/house"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "houseparty",
+              "host": "yoco"
+            },
+            {
+              "scheme": "houseparty",
+              "host": "confirm-email"
+            },
+            {
+              "scheme": "houseparty",
+              "host": "reset-password"
+            },
+            {
+              "scheme": "houseparty",
+              "host": "auth-redirect"
+            },
+            {
+              "scheme": "houseparty",
+              "host": "signup"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
+      ],
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -155,11 +233,12 @@
       "typedRoutes": true
     },
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "b264b4c4-76ac-4557-a272-db5f97cad31d"
-      },
-      "router": {}
+        "projectId": "238fdf90-f4b5-4337-b1d7-a2453a16dfff"
+      }
     },
-    "owner": "elandre"
+    "owner": "thezuraiz",
+    "runtimeVersion": "1.0.0"
   }
 }
