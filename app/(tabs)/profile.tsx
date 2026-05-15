@@ -628,13 +628,7 @@ export default function ProfileScreen() {
                     shadowRadius: 20,
                     elevation: 12,
                   }]}>
-                    {/* Golden Bushido — lion face card */}
-                    <Image
-                      source={require('@/assets/images/lionhalfface.jpeg')}
-                      style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', borderRadius: 24 }]}
-                      resizeMode="cover"
-                    />
-                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.15)', borderRadius: 24 }]} />
+                    {/* Golden Bushido — plain gold card, no background image */}
                     <View style={s.lmcAvatarBox}>
                       <View style={s.lmcAvatarOuter}>
                         {profilePhotoUrl ? (
