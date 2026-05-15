@@ -620,7 +620,7 @@ export default function ProfileScreen() {
                     borderWidth: 1,
                     borderColor: 'rgba(255,215,0,0.8)',
                     marginTop: 0,
-                    backgroundColor: 'rgba(201,162,39,0.25)',
+                    backgroundColor: '#B8920F',
                     overflow: 'hidden',
                     shadowColor: '#FFD700',
                     shadowOffset: { width: 0, height: 4 },
