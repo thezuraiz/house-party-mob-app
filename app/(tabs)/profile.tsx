@@ -26,12 +26,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 function getRarityColor(rarity: string): string {
+  console.log
   switch (rarity) {
     case 'mythic': return '#EC4899';
-    case 'legendary': return 'rgba(0,206,209,0.85)';
-    case 'epic': return '#A855F7';
+    case 'Phantom Void': return 'rgba(0,206,209,0.85)';
+    case 'Stellar': return '#A855F7';
     case 'rare': return '#3B82F6';
     case 'uncommon': return '#22C55E';
+    case 'Obsidian Gold': return '#C9A227';
+    case "Neon Pulse": return '#00FFFF';
     default: return 'rgba(255,255,255,0.5)';
   }
 }
@@ -200,21 +203,6 @@ const NP_TEXT_SHADOW = {
   textShadowRadius: 5,
 } as const;
 
-function getNeonPulseSurface() {
-  return {
-    backgroundColor: NP_OVERLAY,
-    borderColor: 'rgba(0,255,255,0.4)',
-    borderWidth: 1,
-  } as const;
-}
-
-function getGlassKitOverlay(kitName?: string | null) {
-  if (kitName === 'Stellar') return ST_OVERLAY;
-  if (kitName === 'Phantom Void') return PV_OVERLAY;
-  if (kitName === 'Obsidian Gold') return OG_OVERLAY;
-  if (kitName === 'Neon Pulse') return NP_OVERLAY;
-  return 'rgba(0,0,0,0.45)';
-}
 
 type UserStats = {
   totalGames: number;
@@ -534,25 +522,40 @@ export default function ProfileScreen() {
   const initials = (profileDisplayName || profile?.username || 'U').charAt(0).toUpperCase();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.scroll, (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Golden Bushido') && { backgroundColor: '#000000' }, (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent' }]} style={(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') ? { backgroundColor: 'transparent', zIndex: 3 } : undefined}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.scroll]}>
       <SafeAreaView style={s.root} edges={[]}>
         {/* <StatusBar barStyle="light-content" backgroundColor="#000000" /> */}
         {/* Liquid Metal Candy — image directly in banner, not absolute */}
         {/* Neon Rift — full screen background PNG */}
         {activeKit?.name === 'Neon Rift Loadout' && (
-          <Image
-            source={require('@/assets/images/NeonBackground.jpg')}
-            style={[StyleSheet.absoluteFill, { opacity: 0.85 }]}
-            resizeMode="cover"
-          />
+          <>
+            <Image
+              source={require('@/assets/images/NeonBackground.jpg')}
+              style={[StyleSheet.absoluteFill, { opacity: 0.85 }]}
+              resizeMode="cover"
+            />
+            <LinearGradient
+              colors={[
+                'rgba(0,0,0,0)',
+                'rgba(0,0,0,0.15)',
+                'rgba(0,0,0,0.45)',
+                'rgba(0,0,0,0.85)',
+                '#000000',
+              ]}
+              locations={[0, 0.35, 0.6, 0.82, 1]}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
         )}
         {/* Ironclad Vanguard — full screen background PNG */}
         {activeKit?.name === 'Ironclad Vanguard' && (
-          <Image
-            source={require('../../ItoncladPBg.png')}
-            style={[StyleSheet.absoluteFill, { opacity: 0.9, width: '100%', height: '100%' }]}
-            resizeMode="stretch"
-          />
+          <>
+            <Image
+              source={require('../../ItoncladPBg.png')}
+              style={[StyleSheet.absoluteFill, { opacity: 0.9, width: '100%', height: '100%' }]}
+              resizeMode="stretch"
+            />
+          </>
         )}
         {/* Phantom Echo Set — full screen animated GIF background */}
         {activeKit?.name === 'Phantom Echo Set' && (
@@ -609,12 +612,18 @@ export default function ProfileScreen() {
           <>
             <Image
               source={require('@/assets/images/NeonPulse.jpg')}
-              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', opacity: 0.3 }]}
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
-              locations={[0, 0.45, 1]}
+              colors={[
+                'rgba(0,0,0,0)',
+                'rgba(0,0,0,0.15)',
+                'rgba(0,0,0,0.45)',
+                'rgba(0,0,0,0.85)',
+                '#000000',
+              ]}
+              locations={[0, 0.35, 0.6, 0.82, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
@@ -624,12 +633,18 @@ export default function ProfileScreen() {
           <>
             <Image
               source={require('@/assets/images/ObsidianGold.jpg')}
-              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', opacity: 0.3 }]}
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
-              locations={[0, 0.45, 1]}
+              colors={[
+                'rgba(0,0,0,0)',
+                'rgba(0,0,0,0.15)',
+                'rgba(0,0,0,0.45)',
+                'rgba(0,0,0,0.85)',
+                '#000000',
+              ]}
+              locations={[0, 0.35, 0.6, 0.82, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
@@ -847,7 +862,7 @@ export default function ProfileScreen() {
                     </Pressable>
                   )
                 )}
-                <Pressable style={s.settingsBtn} onPress={() => router.push('/profile-settings')}>
+                <Pressable style={[s.settingsBtn]} onPress={() => router.push('/profile-settings')}>
                   <Ionicons name="settings-outline" size={18} color="rgba(255,255,255,0.8)" />
                 </Pressable>
               </View>
@@ -1040,7 +1055,7 @@ export default function ProfileScreen() {
                       paddingVertical: 13,
                       borderRadius: 24,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#FFFFFF', fontWeight: '600' }, ST_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -1055,17 +1070,10 @@ export default function ProfileScreen() {
                   paddingHorizontal: 0,
                   zIndex: 5,
                 }}>
-                  <View style={[s.lmcCard, {
+                  <View style={[s.lmcCard, s.glossyCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(0,255,255,0.45)',
                     marginTop: 0,
-                    backgroundColor: NP_OVERLAY,
                     overflow: 'hidden',
-                    shadowColor: NP_CYAN,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 16,
-                    elevation: 12,
                   }]}>
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
@@ -1103,10 +1111,8 @@ export default function ProfileScreen() {
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill, {
-                      borderColor: 'rgba(0,255,255,0.55)',
+                    <View style={[s.lmcPill, s.glossyCard, {
                       borderWidth: 1,
-                      backgroundColor: NP_OVERLAY_PILL,
                       paddingHorizontal: 32,
                       paddingVertical: 13,
                     }]}>
@@ -1125,17 +1131,17 @@ export default function ProfileScreen() {
                   paddingHorizontal: 0,
                   zIndex: 5,
                 }}>
-                  <View style={[s.lmcCard, {
+                  <View style={[s.lmcCard, s.glossyCard, {
                     borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.45)',
                     marginTop: 0,
-                    backgroundColor: OG_OVERLAY,
                     overflow: 'hidden',
                     shadowColor: OG_GOLD,
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.3,
                     shadowRadius: 16,
                     elevation: 12,
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
                   }]}>
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
@@ -1173,10 +1179,7 @@ export default function ProfileScreen() {
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill, {
-                      borderColor: 'rgba(255,215,0,0.55)',
-                      borderWidth: 1,
-                      backgroundColor: OG_OVERLAY_PILL,
+                    <View style={[s.lmcPill, s.glossyCard, {
                       paddingHorizontal: 32,
                       paddingVertical: 13,
                     }]}>
@@ -1555,14 +1558,14 @@ export default function ProfileScreen() {
                 alignItems: 'center',
                 gap: 5,
                 borderWidth: 1,
-                borderColor: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity),
+                borderColor: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.name),
                 paddingHorizontal: 12,
                 paddingVertical: 6,
                 borderRadius: 20,
                 display: activeKit.name === 'Golden Bushido' ? 'none' : 'flex',
               }}>
-                <Ionicons name="sparkles" size={12} color={activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity)} />
-                <Text style={{ fontSize: 12, fontWeight: '700', color: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity), letterSpacing: 0.5 }}>
+                <Ionicons name="sparkles" size={12} color={activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.name)} />
+                <Text style={{ fontSize: 12, fontWeight: '700', color: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.name), letterSpacing: 0.5 }}>
                   {activeKit.rarity.toUpperCase()}
                 </Text>
               </View>
@@ -1791,15 +1794,8 @@ export default function ProfileScreen() {
                 { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
-                <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(0,255,255,0.4)',
-                  borderWidth: 1,
-                  backgroundColor: NP_OVERLAY,
+                <View key={i} style={[s.statCard, s.glossyCard, {
                   overflow: 'hidden',
-                  shadowColor: NP_CYAN,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 8,
                   elevation: 6,
                 }]}>
                   <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
@@ -1825,10 +1821,7 @@ export default function ProfileScreen() {
                 { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
-                <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(255,215,0,0.4)',
-                  borderWidth: 1,
-                  backgroundColor: OG_OVERLAY,
+                <View key={i} style={[s.statCard, s.glossyCard, {
                   overflow: 'hidden',
                   shadowColor: OG_GOLD,
                   shadowOffset: { width: 0, height: 2 },
@@ -2181,8 +2174,9 @@ const s = StyleSheet.create({
   },
   settingsBtn: {
     width: 36, height: 36, borderRadius: 18,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: "rgba(20, 20, 20, 0.9)",
+    borderColor: "rgba(255,255,255,0.3)",
+    borderWidth: 1,
     justifyContent: 'center', alignItems: 'center',
   },
   orbContainer: { overflow: 'hidden' },
@@ -2487,14 +2481,7 @@ const s = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.3)",
     padding: 18,
     // Soft glossy shadow
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.35,
-    shadowRadius: 20,
-    elevation: 12,
+    shadowRadius: 30,
     // Optional blur feel
     overflow: "hidden",
     // Slight inner glow feel
