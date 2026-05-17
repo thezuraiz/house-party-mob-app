@@ -28,7 +28,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function getRarityColor(rarity: string): string {
   switch (rarity) {
     case 'mythic': return '#EC4899';
-    case 'legendary': return '#FFD700';
+    case 'legendary': return 'rgba(0,206,209,0.85)';
     case 'epic': return '#A855F7';
     case 'rare': return '#3B82F6';
     case 'uncommon': return '#22C55E';
@@ -567,12 +567,18 @@ export default function ProfileScreen() {
           <>
             <Image
               source={require('@/assets/images/PhantomVoid.jpg')}
-              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
-              resizeMode="cover"
+              style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', opacity: 0.5 }]}
+              resizeMode="stretch"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
-              locations={[0, 0.45, 1]}
+              colors={[
+                'rgba(0,0,0,0)',
+                'rgba(0,0,0,0.15)',
+                'rgba(0,0,0,0.45)',
+                'rgba(0,0,0,0.85)',
+                '#000000',
+              ]}
+              locations={[0, 0.35, 0.6, 0.82, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
@@ -799,7 +805,7 @@ export default function ProfileScreen() {
                 )}
                 {activeKit?.name === 'Phantom Void' && (
                   isPremium ? (
-                    <View style={s.pvPremiumBtn}>
+                    <View style={[s.pvPremiumBtn, s.glossyCard,]}>
                       <Text style={s.pvPremiumBtnTxt}>Premium</Text>
                     </View>
                   ) : (
@@ -935,16 +941,9 @@ export default function ProfileScreen() {
                   paddingHorizontal: 0,
                   zIndex: 5,
                 }}>
-                  <View style={[s.lmcCard, {
-                    borderWidth: 1,
-                    borderColor: 'rgba(0,206,209,0.4)',
+                  <View style={[s.lmcCard, s.glossyCard, {
                     marginTop: 0,
-                    backgroundColor: PV_OVERLAY,
                     overflow: 'hidden',
-                    shadowColor: PV_CYAN,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 16,
                     elevation: 12,
                   }]}>
                     <View style={s.lmcAvatarBox}>
@@ -983,10 +982,7 @@ export default function ProfileScreen() {
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill, {
-                      borderColor: 'rgba(0,206,209,0.55)',
-                      borderWidth: 1,
-                      backgroundColor: PV_OVERLAY_PILL,
+                    <View style={[s.lmcPill, s.glossyCard, {
                       paddingHorizontal: 32,
                       paddingVertical: 13,
                     }]}>
@@ -1558,7 +1554,6 @@ export default function ProfileScreen() {
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 5,
-                backgroundColor: (activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity)) + '33',
                 borderWidth: 1,
                 borderColor: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity),
                 paddingHorizontal: 12,
@@ -1742,15 +1737,8 @@ export default function ProfileScreen() {
                 { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
-                <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(0,206,209,0.35)',
-                  borderWidth: 1,
-                  backgroundColor: PV_OVERLAY,
+                <View key={i} style={[s.statCard, s.glossyCard, {
                   overflow: 'hidden',
-                  shadowColor: PV_CYAN,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 8,
                   elevation: 6,
                 }]}>
                   <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
@@ -2439,9 +2427,6 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(0,206,209,0.5)',
-    backgroundColor: PV_OVERLAY,
   },
   pvPremiumBtnTxt: {
     fontSize: 13,
@@ -2517,7 +2502,7 @@ const s = StyleSheet.create({
   },
   lmcAvatarBox: { position: 'relative', overflow: 'visible' },
   lmcAvatarOuter: {
-    width: 90, height: 90, borderRadius: 45,
+    width: 80, height: 80, borderRadius: 45,
     overflow: 'hidden',
     borderWidth: 2.5,
     borderColor: 'rgba(255,255,255,0.28)',
@@ -2528,9 +2513,6 @@ const s = StyleSheet.create({
   lmcCardBio: { fontSize: 13, color: 'rgba(255,255,255,0.6)' },
   lmcPillWrap: { alignItems: 'center', marginTop: 14, marginBottom: 4 },
   lmcPill: {
-    borderWidth: 1,
-    borderColor: 'rgba(167,139,250,0.5)',
-    backgroundColor: 'rgba(10,10,20,0.6)',
     paddingHorizontal: 24, paddingVertical: 10,
     borderRadius: 30,
   },
