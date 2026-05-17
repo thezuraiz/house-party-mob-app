@@ -809,7 +809,7 @@ export default function ProfileScreen() {
                 )}
                 {activeKit?.name === 'Stellar' && (
                   isPremium ? (
-                    <View style={s.stPremiumBtn}>
+                    <View style={[s.stPremiumBtn, s.glossyCard]}>
                       <Text style={s.stPremiumBtnTxt}>Premium</Text>
                     </View>
                   ) : (
@@ -2405,8 +2405,6 @@ const s = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.4)',
-    backgroundColor: ST_OVERLAY,
   },
   stPremiumBtnTxt: {
     fontSize: 13,
