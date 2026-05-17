@@ -1,8 +1,8 @@
 /**
  * KitBorder — simple border for house cards and player profiles.
  */
-import { View, StyleSheet } from 'react-native';
 import { ReactNode } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 type Props = {
   rarity: string;
@@ -45,9 +45,9 @@ export default function KitBorder({ rarity, kitName, colors, children, borderRad
       style={[
         styles.wrapper,
         {
-          borderRadius,
-          borderWidth,
-          borderColor: glow ? borderColor + '99' : borderColor,
+          // borderRadius,
+          // borderWidth,
+          // borderColor: glow ? borderColor + '99' : borderColor,
           ...(glow ? {
             shadowColor: borderColor,
             shadowOffset: { width: 0, height: 0 },
