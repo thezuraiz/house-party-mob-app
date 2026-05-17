@@ -35,6 +35,7 @@ function getRarityColor(rarity: string): string {
     case 'uncommon': return '#22C55E';
     case 'Obsidian Gold': return '#C9A227';
     case "Neon Pulse": return '#00FFFF';
+    case "Starlight Prowler": return '#75D5E3';
     default: return 'rgba(255,255,255,0.5)';
   }
 }
@@ -765,7 +766,7 @@ export default function ProfileScreen() {
               }}>
                 {activeKit?.name === 'Starlight Prowler' && (
                   isPremium ? (
-                    <View style={s.spPremiumBtn}>
+                    <View style={[s.glossyCard, s.spPremiumBtn]}>
                       <Text style={s.spPremiumBtnTxt}>Premium</Text>
                     </View>
                   ) : (
@@ -787,8 +788,8 @@ export default function ProfileScreen() {
                 )}
                 {activeKit?.name === 'Chaos Theory' && (
                   isPremium ? (
-                    <View style={s.ctPremiumBtn}>
-                      <Text style={s.ctPremiumBtnTxt}>Premium</Text>
+                    <View style={[s.ctPremiumBtn, s.glossyCard, { borderColor: '#AAFF00' }]}>
+                      <Text style={[s.ctPremiumBtnTxt]}>Premium</Text>
                     </View>
                   ) : (
                     <Pressable style={s.ctPremiumBtn} onPress={() => setShowPremiumModal(true)}>
@@ -1272,16 +1273,11 @@ export default function ProfileScreen() {
                   paddingHorizontal: 0,
                   zIndex: 5,
                 }}>
-                  <View style={[s.lmcCard, {
+                  <View style={[s.lmcCard, s.glossyCard, {
                     marginTop: 0,
-                    backgroundColor: SP_CYAN,
-                    borderWidth: 0,
                     overflow: 'hidden',
-                    shadowColor: SP_CYAN,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.35,
-                    shadowRadius: 16,
-                    elevation: 10,
+                    borderColor: getRarityColor(activeKit.name) + 88,
+                    borderWidth: 1,
                   }]}>
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name), {
@@ -1311,19 +1307,12 @@ export default function ProfileScreen() {
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
-                      <Text style={s.lmcCardBio}>Short bio ......</Text>
+                      <Text style={s.lmcCardName} numberOfLines={1}>{user?.email || profileDisplayName || profile?.username}</Text>
+                      <Text style={s.lmcCardBio}>{profileDisplayName || profile?.username}</Text>
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill, {
-                      borderColor: SP_CYAN,
-                      borderWidth: 1.5,
-                      backgroundColor: 'transparent',
-                      shadowColor: SP_CYAN,
-                      shadowOpacity: 0.35,
-                      shadowRadius: 10,
-                      elevation: 4,
+                    <View style={[s.lmcPill, s.glossyCard, {
                       paddingHorizontal: 32,
                       paddingVertical: 13,
                     }]}>
@@ -1335,23 +1324,17 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  backgroundColor: '#000000',
                   borderTopLeftRadius: 32,
                   borderTopRightRadius: 32,
                   paddingTop: 20,
                   paddingHorizontal: 0,
                   zIndex: 5,
                 }}>
-                  <View style={[s.lmcCard, {
+                  <View style={[s.lmcCard, s.glossyCard, {
                     marginTop: 0,
                     backgroundColor: CT_LIME,
-                    borderWidth: 0,
-                    overflow: 'hidden',
-                    shadowColor: CT_LIME,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.45,
-                    shadowRadius: 16,
-                    elevation: 10,
+                    borderWidth: 1,
+                    borderRadius: 40,
                   }]}>
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
@@ -1378,19 +1361,12 @@ export default function ProfileScreen() {
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={[s.lmcCardName, { color: '#000000' }]}>{profileDisplayName || profile?.username}</Text>
-                      <Text style={[s.lmcCardBio, { color: 'rgba(0,0,0,0.65)' }]}>Short bio ......</Text>
+                      <Text style={[s.lmcCardName, { color: '#000000' }]} numberOfLines={1}>{user?.email || profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardBio, { color: 'rgba(0,0,0,0.65)' }]}>{profileDisplayName || profile?.username}</Text>
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill, {
-                      borderColor: CT_LIME,
-                      borderWidth: 1.5,
-                      backgroundColor: '#000000',
-                      shadowColor: CT_LIME,
-                      shadowOpacity: 0.5,
-                      shadowRadius: 10,
-                      elevation: 4,
+                    <View style={[s.lmcPill, s.glossyCard, {
                       paddingHorizontal: 32,
                       paddingVertical: 13,
                     }]}>
@@ -1535,8 +1511,8 @@ export default function ProfileScreen() {
         </View>
 
         {/* ── ACTIVE KIT SHOWCASE ── */}
-        {activeKit && activeKit.name !== 'Custom' && activeKit.name !== 'Starlight Prowler' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Chaos Theory' && activeKit.name !== 'Prismatic' && (
-          <View style={{ marginHorizontal: 16, marginBottom: 16, marginTop: 8 }}>
+        {activeKit && activeKit.name !== 'Chaos Theory' && (
+          <View style={{ marginHorizontal: 16, marginBottom: 16 }}>
             <View style={[s.glossyCard, {
               flex: 1,
               flexDirection: 'row',
@@ -1544,6 +1520,7 @@ export default function ProfileScreen() {
               justifyContent: 'space-between',
               paddingHorizontal: 20,
               borderRadius: 16,
+              borderColor: getRarityColor(activeKit.name) + '88',
             }]}>
               <View>
                 <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: '600', marginBottom: 3, letterSpacing: 0.5 }}>
@@ -1577,8 +1554,7 @@ export default function ProfileScreen() {
         {activeKit?.name === 'Chaos Theory' ? (
           <View style={{
             marginHorizontal: 0,
-            marginTop: 0,
-            backgroundColor: '#000000',
+            // marginTop: 0,
             paddingHorizontal: 16,
             paddingBottom: 20,
             paddingTop: 8,
@@ -1592,13 +1568,9 @@ export default function ProfileScreen() {
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
                   borderColor: 'rgba(170,255,0,0.8)',
-                  borderWidth: 1.5,
+                  borderWidth: 1,
                   backgroundColor: '#0A0A0A',
                   overflow: 'hidden',
-                  shadowColor: CT_LIME,
-                  shadowOffset: { width: 0, height: 0 },
-                  shadowOpacity: 0.15,
-                  shadowRadius: 8,
                   elevation: 4,
                 }]}>
                   <Image
@@ -1607,9 +1579,7 @@ export default function ProfileScreen() {
                       position: 'absolute',
                       width: 280,
                       height: 280,
-                      top: i < 2 ? -40 : -120,
-                      left: i % 2 === 0 ? -50 : -120,
-                      opacity: 0.22,
+                      opacity: 0.9,
                     }}
                     resizeMode="cover"
                   />
@@ -1617,7 +1587,7 @@ export default function ProfileScreen() {
                     colors={['rgba(0,0,0,0.55)', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.95)']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
-                    style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
+                    style={[StyleSheet.absoluteFill,]}
                   />
                   <Ionicons name={st.icon} size={22} color="#FFFFFF" style={{ marginBottom: 8 }} />
                   <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
@@ -1642,7 +1612,6 @@ export default function ProfileScreen() {
                 { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Winning Rate' },
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => {
-                const isPurpleTint = i === 0 || i === 3;
                 return (
                   <View key={i} style={[s.statCard, {
                     borderColor: 'rgba(117,213,227,0.75)',
@@ -1656,19 +1625,9 @@ export default function ProfileScreen() {
                         position: 'absolute',
                         width: 280,
                         height: 280,
-                        top: i < 2 ? -40 : -120,
-                        left: i % 2 === 0 ? -50 : -120,
-                        opacity: 0.55,
+                        opacity: 0.3,
                       }}
                       resizeMode="cover"
-                    />
-                    <LinearGradient
-                      colors={isPurpleTint
-                        ? ['rgba(168,85,247,0.42)', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.95)']
-                        : ['rgba(117,213,227,0.35)', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.95)']}
-                      start={{ x: 1, y: 0 }}
-                      end={{ x: 0, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
                     />
                     <Ionicons name={st.icon} size={22} color="#FFFFFF" style={{ marginBottom: 8 }} />
                     <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
@@ -2255,7 +2214,6 @@ const s = StyleSheet.create({
     borderRadius: 16,
     padding: 18,
     marginBottom: 12,
-
     alignItems: 'flex-start',
     overflow: 'hidden',
   },
@@ -2362,7 +2320,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 20,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: '#75D5E3',
     backgroundColor: 'rgba(0,0,0,0.35)',
   },
@@ -2382,7 +2340,7 @@ const s = StyleSheet.create({
     borderColor: '#AAFF00',
     backgroundColor: 'rgba(220,220,220,0.92)',
   },
-  ctPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#000000', letterSpacing: 0.2 },
+  ctPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#fff', letterSpacing: 0.2 },
   prPremiumBtn: {
     paddingHorizontal: 14,
     paddingVertical: 7,
