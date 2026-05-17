@@ -50,10 +50,6 @@
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.png",
-        "backgroundColor": "#0F172A"
-      },
       "package": "com.houseparty.scoretracker",
       "versionCode": 7,
       "androidStatusBar": {
