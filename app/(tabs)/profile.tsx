@@ -37,6 +37,186 @@ function getRarityColor(rarity: string): string {
   }
 }
 
+function getGlassCardBorder(accentRgb: string) {
+  return {
+    borderWidth: 1,
+    borderColor: accentRgb,
+    shadowColor: accentRgb,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 8,
+  } as const;
+}
+
+function getGlassAvatarRing(kitName?: string | null) {
+  if (kitName === 'Obsidian Gold') {
+    return {
+      backgroundColor: 'rgba(0,0,0,0.42)',
+      borderColor: 'rgba(255,215,0,0.55)',
+    };
+  }
+  if (kitName === 'Phantom Void') {
+    return { backgroundColor: 'rgba(0,0,0,0.42)', borderColor: 'rgba(0,206,209,0.55)' };
+  }
+  if (kitName === 'Neon Pulse') {
+    return { backgroundColor: 'rgba(0,0,0,0.42)', borderColor: 'rgba(0,255,255,0.55)' };
+  }
+  if (kitName === 'Prismatic') {
+    return { backgroundColor: 'rgba(0,0,0,0.42)', borderColor: 'rgba(157,0,255,0.55)' };
+  }
+  if (kitName === 'Stellar') {
+    return { backgroundColor: 'rgba(0,0,0,0.42)', borderColor: 'rgba(192,192,192,0.55)' };
+  }
+  if (kitName === 'Starlight Prowler') {
+    return { backgroundColor: 'rgba(0,0,0,0.42)', borderColor: 'rgba(117,213,227,0.55)' };
+  }
+  if (kitName === 'Golden Bushido') {
+    return { backgroundColor: 'rgba(0,0,0,0.25)', borderColor: 'rgba(255,255,255,0.45)' };
+  }
+  if (kitName === 'Chaos Theory') {
+    return { backgroundColor: 'rgba(0,0,0,0.2)', borderColor: 'rgba(0,0,0,0.35)' };
+  }
+  return {
+    backgroundColor: 'rgba(0,0,0,0.38)',
+    borderColor: 'rgba(255,255,255,0.28)',
+  };
+}
+
+function getGlassCameraBtn(kitName?: string | null) {
+  if (kitName === 'Golden Bushido') {
+    return {
+      backgroundColor: 'rgba(255,255,255,0.95)',
+      borderColor: 'rgba(255,255,255,1)',
+      iconColor: '#1A1A1A',
+    };
+  }
+  if (kitName === 'Starlight Prowler') {
+    return { backgroundColor: 'rgba(255,255,255,0.9)', borderColor: 'rgba(255,255,255,0.95)', iconColor: '#1A1A1A' };
+  }
+  if (kitName === 'Chaos Theory') {
+    return { backgroundColor: 'rgba(255,255,255,0.95)', borderColor: 'rgba(255,255,255,1)', iconColor: '#000000' };
+  }
+  if (kitName === 'Prismatic') {
+    return { backgroundColor: PR_OVERLAY, borderColor: 'rgba(157,0,255,0.7)', iconColor: '#FFFFFF' };
+  }
+  if (kitName === 'Stellar') {
+    return { backgroundColor: ST_OVERLAY, borderColor: 'rgba(255,255,255,0.35)', iconColor: '#FFFFFF' };
+  }
+  if (kitName === 'Phantom Void') {
+    return { backgroundColor: PV_OVERLAY, borderColor: 'rgba(0,206,209,0.5)', iconColor: PV_CYAN };
+  }
+  if (kitName === 'Obsidian Gold') {
+    return { backgroundColor: OG_OVERLAY, borderColor: 'rgba(255,215,0,0.55)', iconColor: OG_GOLD };
+  }
+  if (kitName === 'Neon Pulse') {
+    return { backgroundColor: NP_OVERLAY, borderColor: 'rgba(0,255,255,0.55)', iconColor: NP_CYAN };
+  }
+  return {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderColor: 'rgba(255,255,255,0.35)',
+    iconColor: '#FFFFFF',
+  };
+}
+
+const SP_CYAN = '#75D5E3';
+const SP_PURPLE = '#A855F7';
+const GB_GOLD = '#C9A227';
+const CT_LIME = '#AAFF00';
+const PR_VIOLET = '#9D00FF';
+/** Semi-transparent overlay — background image dikhe, text readable rahe */
+const PR_OVERLAY = 'rgba(0,0,0,0.42)';
+const PR_OVERLAY_LIGHT = 'rgba(0,0,0,0.32)';
+const PR_TEXT_SHADOW = {
+  textShadowColor: 'rgba(0,0,0,0.9)',
+  textShadowOffset: { width: 0, height: 1 },
+  textShadowRadius: 6,
+} as const;
+
+function getPrismaticSurface() {
+  return {
+    backgroundColor: PR_OVERLAY,
+    borderColor: 'rgba(157,0,255,0.55)',
+    borderWidth: 1,
+  } as const;
+}
+
+const ST_SILVER = '#C0C0C0';
+const ST_OVERLAY = 'rgba(0,0,0,0.75)';
+const ST_OVERLAY_PILL = 'rgba(0,0,0,0.22)';
+const ST_TEXT_SHADOW = {
+  textShadowColor: 'rgba(0,0,0,0.9)',
+  textShadowOffset: { width: 0, height: 1 },
+  textShadowRadius: 5,
+} as const;
+
+function getStellarSurface() {
+  return {
+    backgroundColor: ST_OVERLAY,
+    borderColor: 'rgba(255,255,255,0.2)',
+    borderWidth: 1,
+  } as const;
+}
+
+const PV_CYAN = '#00CED1';
+const PV_OVERLAY = 'rgba(0,0,0,0.75)';
+const PV_OVERLAY_PILL = 'rgba(0,0,0,0.22)';
+const PV_TEXT_SHADOW = {
+  textShadowColor: 'rgba(0,0,0,0.9)',
+  textShadowOffset: { width: 0, height: 1 },
+  textShadowRadius: 5,
+} as const;
+
+function getPhantomVoidSurface() {
+  return {
+    backgroundColor: PV_OVERLAY,
+    borderColor: 'rgba(0,206,209,0.35)',
+    borderWidth: 1,
+  } as const;
+}
+
+const OG_GOLD = '#FFD700';
+const OG_OVERLAY = 'rgba(0,0,0,0.75)';
+const OG_OVERLAY_PILL = 'rgba(0,0,0,0.22)';
+const OG_TEXT_SHADOW = {
+  textShadowColor: 'rgba(0,0,0,0.9)',
+  textShadowOffset: { width: 0, height: 1 },
+  textShadowRadius: 5,
+} as const;
+
+function getObsidianGoldSurface() {
+  return {
+    backgroundColor: OG_OVERLAY,
+    borderColor: 'rgba(255,215,0,0.4)',
+    borderWidth: 1,
+  } as const;
+}
+
+const NP_CYAN = '#00FFFF';
+const NP_OVERLAY = 'rgba(0,0,0,0.75)';
+const NP_OVERLAY_PILL = 'rgba(0,0,0,0.22)';
+const NP_TEXT_SHADOW = {
+  textShadowColor: 'rgba(0,0,0,0.9)',
+  textShadowOffset: { width: 0, height: 1 },
+  textShadowRadius: 5,
+} as const;
+
+function getNeonPulseSurface() {
+  return {
+    backgroundColor: NP_OVERLAY,
+    borderColor: 'rgba(0,255,255,0.4)',
+    borderWidth: 1,
+  } as const;
+}
+
+function getGlassKitOverlay(kitName?: string | null) {
+  if (kitName === 'Stellar') return ST_OVERLAY;
+  if (kitName === 'Phantom Void') return PV_OVERLAY;
+  if (kitName === 'Obsidian Gold') return OG_OVERLAY;
+  if (kitName === 'Neon Pulse') return NP_OVERLAY;
+  return 'rgba(0,0,0,0.45)';
+}
+
 type UserStats = {
   totalGames: number;
   totalWins: number;
@@ -355,7 +535,7 @@ export default function ProfileScreen() {
   const initials = (profileDisplayName || profile?.username || 'U').charAt(0).toUpperCase();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.scroll, (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory') && { backgroundColor: '#000000' }, (activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent' }]} style={(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') ? { backgroundColor: 'transparent', zIndex: 3 } : undefined}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.scroll, (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Golden Bushido') && { backgroundColor: '#000000' }, (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent' }]} style={(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') ? { backgroundColor: 'transparent', zIndex: 3 } : undefined}>
       <SafeAreaView style={s.root} edges={[]}>
         {/* <StatusBar barStyle="light-content" backgroundColor="#000000" /> */}
         {/* Liquid Metal Candy — image directly in banner, not absolute */}
@@ -364,42 +544,6 @@ export default function ProfileScreen() {
           <Image
             source={require('@/assets/images/NeonBackground.jpg')}
             style={[StyleSheet.absoluteFill, { opacity: 0.85 }]}
-            resizeMode="cover"
-          />
-        )}
-        {/* Golden Bushido — full screen image + gradient overlay */}
-        {activeKit?.name === 'Golden Bushido' && (
-          <>
-            <Image
-              source={require('@/assets/images/lionheader.jpeg')}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                width: '100%',
-                height: Platform.OS === 'android' ? 280 + (StatusBar.currentHeight || 24) : 280,
-              }}
-              resizeMode="cover"
-            />
-            <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,1)']}
-              locations={[0.4, 0.7, 1]}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: Platform.OS === 'android' ? 320 + (StatusBar.currentHeight || 24) : 320,
-              }}
-            />
-          </>
-        )}
-        {/* Chaos Theory — full screen background image */}
-        {activeKit?.name === 'Chaos Theory' && (
-          <Image
-            source={require('@/assets/images/ChaosTheory.jpeg')}
-            style={[StyleSheet.absoluteFill, { opacity: 0.9, width: '100%', height: '100%' }]}
             resizeMode="cover"
           />
         )}
@@ -428,8 +572,8 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
-              locations={[0, 0.4, 0.65, 1]}
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
+              locations={[0, 0.45, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
@@ -443,8 +587,8 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
-              locations={[0, 0.4, 0.65, 1]}
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
+              locations={[0, 0.45, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
@@ -458,8 +602,8 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
-              locations={[0, 0.4, 0.65, 1]}
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
+              locations={[0, 0.45, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
@@ -473,13 +617,13 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
-              locations={[0, 0.4, 0.65, 1]}
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.22)', 'rgba(0,0,0,0.42)']}
+              locations={[0, 0.45, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
         )}
-        {/* Prismatic — full screen background image */}
+        {/* Prismatic — full screen background */}
         {activeKit?.name === 'Prismatic' && (
           <>
             <Image
@@ -488,25 +632,24 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.25)', 'rgba(0,0,0,0.75)', 'rgba(0,0,0,0.92)']}
-              locations={[0, 0.4, 0.65, 1]}
+              colors={['rgba(0,0,0,0.12)', 'rgba(0,0,0,0.28)', 'rgba(0,0,0,0.48)']}
+              locations={[0, 0.45, 1]}
               style={StyleSheet.absoluteFill}
             />
           </>
         )}
-
 
         {/* AVATAR HERO — header merged into banner */}
         <View style={s.heroSection}>
           {/* Kit banner — full top section */}
           <View style={[
             s.heroBanner,
-            (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory') && {
+            (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Golden Bushido') && {
               backgroundColor: 'transparent',
               overflow: 'visible',
               height: Platform.OS === 'android' ? 260 + (StatusBar.currentHeight || 24) : 260,
             },
-            (activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && {
+            (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && {
               backgroundColor: 'transparent',
               overflow: 'visible',
               height: Platform.OS === 'android' ? 250 + (StatusBar.currentHeight || 24) : 250,
@@ -530,12 +673,23 @@ export default function ProfileScreen() {
                     </>
                   )}
                   {activeKit.name === 'Golden Bushido' && (
-                    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} />
+                    <>
+                      <Image
+                        source={require('@/assets/images/lionheader.jpeg')}
+                        style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+                        resizeMode="cover"
+                      />
+                      <View style={s.lmcDarkSheet} />
+                    </>
                   )}
                   {activeKit.name === 'Chaos Theory' && (
                     <>
-                      <Image source={require('@/assets/images/ChaosTheory.jpeg')}
-                        style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]} resizeMode="cover" />
+                      <Image
+                        source={require('@/assets/images/ChaosTheory.jpeg')}
+                        style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
+                        resizeMode="cover"
+                      />
+                      <View style={s.lmcDarkSheet} />
                     </>
                   )}
                   {activeKit.name === 'Phantom Void' && (
@@ -583,7 +737,95 @@ export default function ProfileScreen() {
                 flexDirection: 'row', alignItems: 'center', gap: 8,
                 zIndex: 10,
               }}>
-                {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler' || activeKit?.name === 'Golden Bushido' || activeKit?.name === 'Chaos Theory' || activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && (
+                {activeKit?.name === 'Starlight Prowler' && (
+                  isPremium ? (
+                    <View style={s.spPremiumBtn}>
+                      <Text style={s.spPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.spPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.spPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Golden Bushido' && (
+                  isPremium ? (
+                    <View style={s.gbPremiumBtn}>
+                      <Text style={s.gbPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.gbPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.gbPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Chaos Theory' && (
+                  isPremium ? (
+                    <View style={s.ctPremiumBtn}>
+                      <Text style={s.ctPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.ctPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.ctPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Prismatic' && (
+                  isPremium ? (
+                    <View style={s.prPremiumBtn}>
+                      <Text style={s.prPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.prPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.prPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Stellar' && (
+                  isPremium ? (
+                    <View style={s.stPremiumBtn}>
+                      <Text style={s.stPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.stPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.stPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Phantom Void' && (
+                  isPremium ? (
+                    <View style={s.pvPremiumBtn}>
+                      <Text style={s.pvPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.pvPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.pvPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Obsidian Gold' && (
+                  isPremium ? (
+                    <View style={s.ogPremiumBtn}>
+                      <Text style={s.ogPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.ogPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.ogPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Neon Pulse' && (
+                  isPremium ? (
+                    <View style={s.npPremiumBtn}>
+                      <Text style={s.npPremiumBtnTxt}>Premium</Text>
+                    </View>
+                  ) : (
+                    <Pressable style={s.npPremiumBtn} onPress={() => setShowPremiumModal(true)}>
+                      <Text style={s.npPremiumBtnTxt}>Premium</Text>
+                    </Pressable>
+                  )
+                )}
+                {activeKit?.name === 'Liquid Metal Candy' && (
                   isPremium ? (
                     <View style={s.lmcPremiumBtn}>
                       <Ionicons name="diamond" size={18} color="#FFD700" />
@@ -617,51 +859,63 @@ export default function ProfileScreen() {
                   zIndex: 5,
                 }}>
                   <View style={[s.lmcCard, {
-                    borderWidth: 1,
-                    borderColor: 'rgba(255,215,0,0.8)',
+                    borderWidth: 0,
                     marginTop: 0,
                     backgroundColor: '#B8920F',
                     overflow: 'hidden',
                     shadowColor: '#FFD700',
                     shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.25,
+                    shadowOpacity: 0.3,
                     shadowRadius: 20,
                     elevation: 12,
                   }]}>
-                    {/* Golden Bushido — plain gold card, no background image */}
+                    <Image
+                      source={require('@/assets/images/GoldenBushido.jpeg')}
+                      style={[StyleSheet.absoluteFill, { opacity: 0.38 }]}
+                      resizeMode="cover"
+                    />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
-                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(255,255,255,0.15)' }]}>
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
                             <Text style={s.avatarInitial}>{initials}</Text>
                           </View>
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#000000" />
-                          : <Ionicons name="camera" size={12} color="#000000" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
                       <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={s.lmcCardBio}>Short bio .....</Text>
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: '#C9A227', borderWidth: 2,
-                      backgroundColor: 'rgba(5,3,0,0.6)',
-                      shadowColor: '#354458', shadowOpacity: 0.4, shadowRadius: 8,
-                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                      borderColor: GB_GOLD,
+                      borderWidth: 1.5,
+                      backgroundColor: 'rgba(5,3,0,0.85)',
+                      shadowColor: GB_GOLD,
+                      shadowOpacity: 0.35,
+                      shadowRadius: 10,
+                      elevation: 4,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#fff', textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 1 }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: GB_GOLD }]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -677,55 +931,61 @@ export default function ProfileScreen() {
                   zIndex: 5,
                 }}>
                   <View style={[s.lmcCard, {
-                    borderWidth: 1.5,
-                    borderColor: 'rgba(0,206,209,0.8)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(0,206,209,0.4)',
                     marginTop: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: PV_OVERLAY,
                     overflow: 'hidden',
-                    shadowColor: '#00CED1',
-                    shadowOffset: { width: 0, height: 0 },
+                    shadowColor: PV_CYAN,
+                    shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.3,
                     shadowRadius: 16,
-                    elevation: 10,
+                    elevation: 12,
                   }]}>
-                    <LinearGradient
-                      colors={['rgba(0,206,209,0.12)', 'transparent', 'rgba(0,206,209,0.08)']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
-                    />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
-                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,206,209,0.15)' }]}>
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,206,209,0.2)' }]}>
                             <Text style={s.avatarInitial}>{initials}</Text>
                           </View>
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#FFFFFF" />
-                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardName, PV_TEXT_SHADOW]} numberOfLines={1}>
+                        {user?.email || profileDisplayName || profile?.username}
+                      </Text>
+                      {(user?.email && (profileDisplayName || profile?.username)) && (
+                        <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.55)' }, PV_TEXT_SHADOW]} numberOfLines={1}>
+                          {profileDisplayName || profile?.username}
+                        </Text>
+                      )}
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(0,206,209,0.8)', borderWidth: 1.5,
-                      backgroundColor: 'transparent',
-                      shadowColor: '#00CED1', shadowOpacity: 0.4, shadowRadius: 10,
-                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                      borderColor: 'rgba(0,206,209,0.55)',
+                      borderWidth: 1,
+                      backgroundColor: PV_OVERLAY_PILL,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#00CED1' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: PV_CYAN, fontWeight: '600' }, PV_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -741,55 +1001,61 @@ export default function ProfileScreen() {
                   zIndex: 5,
                 }}>
                   <View style={[s.lmcCard, {
-                    borderWidth: 1.5,
-                    borderColor: 'rgba(192,192,192,0.8)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.18)',
                     marginTop: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: ST_OVERLAY,
                     overflow: 'hidden',
-                    shadowColor: '#C0C0C0',
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.3,
+                    shadowColor: '#000000',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.35,
                     shadowRadius: 16,
-                    elevation: 10,
+                    elevation: 12,
                   }]}>
-                    <LinearGradient
-                      colors={['rgba(192,192,192,0.12)', 'transparent', 'rgba(192,192,192,0.08)']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
-                    />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
-                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(192,192,192,0.15)' }]}>
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(255,255,255,0.12)' }]}>
                             <Text style={s.avatarInitial}>{initials}</Text>
                           </View>
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#FFFFFF" />
-                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardName, ST_TEXT_SHADOW]} numberOfLines={1}>
+                        {user?.email || profileDisplayName || profile?.username}
+                      </Text>
+                      {user?.email && (profileDisplayName || profile?.username) && (
+                        <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.55)' }, ST_TEXT_SHADOW]} numberOfLines={1}>
+                          {profileDisplayName || profile?.username}
+                        </Text>
+                      )}
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(192,192,192,0.8)', borderWidth: 1.5,
-                      backgroundColor: 'transparent',
-                      shadowColor: '#C0C0C0', shadowOpacity: 0.4, shadowRadius: 10,
-                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                      borderColor: 'rgba(255,255,255,0.35)',
+                      borderWidth: 1,
+                      backgroundColor: ST_OVERLAY_PILL,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#C0C0C0' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: '#FFFFFF', fontWeight: '600' }, ST_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -805,55 +1071,61 @@ export default function ProfileScreen() {
                   zIndex: 5,
                 }}>
                   <View style={[s.lmcCard, {
-                    borderWidth: 1.5,
-                    borderColor: 'rgba(0,255,255,0.8)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(0,255,255,0.45)',
                     marginTop: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: NP_OVERLAY,
                     overflow: 'hidden',
-                    shadowColor: '#00FFFF',
-                    shadowOffset: { width: 0, height: 0 },
+                    shadowColor: NP_CYAN,
+                    shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.3,
                     shadowRadius: 16,
-                    elevation: 10,
+                    elevation: 12,
                   }]}>
-                    <LinearGradient
-                      colors={['rgba(0,255,255,0.12)', 'transparent', 'rgba(0,255,255,0.08)']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
-                    />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
-                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,255,255,0.15)' }]}>
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,255,255,0.2)' }]}>
                             <Text style={s.avatarInitial}>{initials}</Text>
                           </View>
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#FFFFFF" />
-                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardName, NP_TEXT_SHADOW]} numberOfLines={1}>
+                        {user?.email || profileDisplayName || profile?.username}
+                      </Text>
+                      {(user?.email && (profileDisplayName || profile?.username)) && (
+                        <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.55)' }, NP_TEXT_SHADOW]} numberOfLines={1}>
+                          {profileDisplayName || profile?.username}
+                        </Text>
+                      )}
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(0,255,255,0.8)', borderWidth: 1.5,
-                      backgroundColor: 'transparent',
-                      shadowColor: '#00FFFF', shadowOpacity: 0.4, shadowRadius: 10,
-                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                      borderColor: 'rgba(0,255,255,0.55)',
+                      borderWidth: 1,
+                      backgroundColor: NP_OVERLAY_PILL,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#00FFFF' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: NP_CYAN, fontWeight: '600' }, NP_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -869,55 +1141,61 @@ export default function ProfileScreen() {
                   zIndex: 5,
                 }}>
                   <View style={[s.lmcCard, {
-                    borderWidth: 1.5,
-                    borderColor: 'rgba(255,215,0,0.8)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,215,0,0.45)',
                     marginTop: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: OG_OVERLAY,
                     overflow: 'hidden',
-                    shadowColor: '#FFD700',
-                    shadowOffset: { width: 0, height: 0 },
+                    shadowColor: OG_GOLD,
+                    shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.3,
                     shadowRadius: 16,
-                    elevation: 10,
+                    elevation: 12,
                   }]}>
-                    <LinearGradient
-                      colors={['rgba(255,215,0,0.12)', 'transparent', 'rgba(255,215,0,0.08)']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
-                    />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
-                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(255,215,0,0.15)' }]}>
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(255,215,0,0.2)' }]}>
                             <Text style={s.avatarInitial}>{initials}</Text>
                           </View>
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#FFFFFF" />
-                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardName, OG_TEXT_SHADOW]} numberOfLines={1}>
+                        {user?.email || profileDisplayName || profile?.username}
+                      </Text>
+                      {(user?.email && (profileDisplayName || profile?.username)) && (
+                        <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.55)' }, OG_TEXT_SHADOW]} numberOfLines={1}>
+                          {profileDisplayName || profile?.username}
+                        </Text>
+                      )}
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(255,215,0,0.8)', borderWidth: 1.5,
-                      backgroundColor: 'transparent',
-                      shadowColor: '#FFD700', shadowOpacity: 0.4, shadowRadius: 10,
-                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                      borderColor: 'rgba(255,215,0,0.55)',
+                      borderWidth: 1,
+                      backgroundColor: OG_OVERLAY_PILL,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#FFD700' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: OG_GOLD, fontWeight: '600' }, OG_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
@@ -934,76 +1212,214 @@ export default function ProfileScreen() {
                 }}>
                   <View style={[s.lmcCard, {
                     borderWidth: 1.5,
-                    borderColor: 'rgba(157,0,255,0.8)',
+                    borderColor: 'rgba(157,0,255,0.75)',
                     marginTop: 0,
                     backgroundColor: 'transparent',
                     overflow: 'hidden',
-                    shadowColor: '#9D00FF',
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.3,
+                    shadowColor: PR_VIOLET,
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.25,
                     shadowRadius: 16,
                     elevation: 10,
                   }]}>
                     <LinearGradient
-                      colors={['rgba(157,0,255,0.12)', 'transparent', 'rgba(157,0,255,0.08)']}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 28, opacity: 0 }]}
+                      colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.38)', 'rgba(157,0,255,0.12)']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 24 }]}
                     />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
-                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(157,0,255,0.15)' }]}>
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(157,0,255,0.25)' }]}>
                             <Text style={s.avatarInitial}>{initials}</Text>
                           </View>
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#FFFFFF" />
-                          : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={[s.lmcCardName, PR_TEXT_SHADOW]}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.78)' }, PR_TEXT_SHADOW]}>Short bio ......</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: 'rgba(157,0,255,0.75)',
+                      borderWidth: 1.5,
+                      backgroundColor: PR_OVERLAY,
+                      shadowColor: PR_VIOLET,
+                      shadowOpacity: 0.3,
+                      shadowRadius: 10,
+                      elevation: 4,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: '#FFFFFF', fontWeight: '700' }, PR_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Starlight Prowler' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: '#000000',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    marginTop: 0,
+                    backgroundColor: SP_CYAN,
+                    borderWidth: 0,
+                    overflow: 'hidden',
+                    shadowColor: SP_CYAN,
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.35,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <View style={s.lmcAvatarBox}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name), {
+                        borderColor: 'rgba(255,255,255,0.45)',
+                        backgroundColor: 'rgba(0,0,0,0.15)',
+                      }]}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
+                            <Text style={s.avatarInitial}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
                       <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={s.lmcCardBio}>Short bio ......</Text>
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
                     <View style={[s.lmcPill, {
-                      borderColor: 'rgba(157,0,255,0.8)', borderWidth: 1.5,
+                      borderColor: SP_CYAN,
+                      borderWidth: 1.5,
                       backgroundColor: 'transparent',
-                      shadowColor: '#9D00FF', shadowOpacity: 0.4, shadowRadius: 10,
-                      elevation: 4, paddingHorizontal: 32, paddingVertical: 13,
+                      shadowColor: SP_CYAN,
+                      shadowOpacity: 0.35,
+                      shadowRadius: 10,
+                      elevation: 4,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
                     }]}>
-                      <Text style={[s.lmcPillTxt, { color: '#9D00FF' }]}>** {activeKit?.name} **</Text>
+                      <Text style={[s.lmcPillTxt, { color: SP_CYAN }]}>** {activeKit?.name} **</Text>
+                    </View>
+                  </View>
+                </View>
+              ) : activeKit?.name === 'Chaos Theory' ? (
+                <View style={{
+                  marginHorizontal: 0,
+                  marginTop: -32,
+                  backgroundColor: '#000000',
+                  borderTopLeftRadius: 32,
+                  borderTopRightRadius: 32,
+                  paddingTop: 20,
+                  paddingHorizontal: 0,
+                  zIndex: 5,
+                }}>
+                  <View style={[s.lmcCard, {
+                    marginTop: 0,
+                    backgroundColor: CT_LIME,
+                    borderWidth: 0,
+                    overflow: 'hidden',
+                    shadowColor: CT_LIME,
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.45,
+                    shadowRadius: 16,
+                    elevation: 10,
+                  }]}>
+                    <View style={s.lmcAvatarBox}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
+                        {profilePhotoUrl ? (
+                          <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
+                        ) : (
+                          <View style={[s.avatarFallback, { backgroundColor: 'rgba(0,0,0,0.15)' }]}>
+                            <Text style={[s.avatarInitial, { color: '#000000' }]}>{initials}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <Pressable
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
+                        onPress={uploadingPhoto ? undefined : pickImageFromDevice}
+                        disabled={uploadingPhoto}
+                      >
+                        {uploadingPhoto
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                        }
+                      </Pressable>
+                    </View>
+                    <View style={s.lmcCardInfo}>
+                      <Text style={[s.lmcCardName, { color: '#000000' }]}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={[s.lmcCardBio, { color: 'rgba(0,0,0,0.65)' }]}>Short bio ......</Text>
+                    </View>
+                  </View>
+                  <View style={s.lmcPillWrap}>
+                    <View style={[s.lmcPill, {
+                      borderColor: CT_LIME,
+                      borderWidth: 1.5,
+                      backgroundColor: '#000000',
+                      shadowColor: CT_LIME,
+                      shadowOpacity: 0.5,
+                      shadowRadius: 10,
+                      elevation: 4,
+                      paddingHorizontal: 32,
+                      paddingVertical: 13,
+                    }]}>
+                      <Text style={[s.lmcPillTxt, { color: CT_LIME }]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </View>
               ) : (
                 <>
-                  <View style={[s.lmcCard,
-                  activeKit?.name === 'Chaos Theory' && {
-                    borderWidth: 2, borderColor: '#AAFF00',
-                    shadowColor: '#AAFF00', shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.8, shadowRadius: 12, elevation: 10,
-                  }]}>
+                  <View style={[s.lmcCard, { backgroundColor: '#7B5EA7' }]}>
                     <LinearGradient
-                      colors={activeKit?.name === 'Starlight Prowler'
-                        ? ['#0ABFBC', '#0ABFBC', '#0ABFBC']
-                        : activeKit?.name === 'Chaos Theory'
-                          ? ['#AAFF00', '#CCFF00', '#AAFF00']
-                          : ['#7B5EA7', '#9B6FBF', '#8B65AF']}
+                      colors={['#7B5EA7', '#9B6FBF', '#8B65AF']}
                       start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                      style={StyleSheet.absoluteFill}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 24 }]}
                     />
                     <View style={s.lmcAvatarBox}>
-                      <View style={s.lmcAvatarOuter}>
+                      <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
                           <Image source={{ uri: profilePhotoUrl }} style={s.avatarImg} resizeMode="cover" />
                         ) : (
@@ -1013,13 +1429,16 @@ export default function ProfileScreen() {
                         )}
                       </View>
                       <Pressable
-                        style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                        style={[s.cameraBtn, {
+                          backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                          borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                        }, uploadingPhoto && { opacity: 0.6 }]}
                         onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                         disabled={uploadingPhoto}
                       >
                         {uploadingPhoto
-                          ? <ActivityIndicator size="small" color="#000000" />
-                          : <Ionicons name="camera" size={12} color="#000000" />
+                          ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                          : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                         }
                       </Pressable>
                     </View>
@@ -1028,14 +1447,8 @@ export default function ProfileScreen() {
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill,
-                    activeKit?.name === 'Chaos Theory' && {
-                      borderColor: '#AAFF00', borderWidth: 1.5,
-                      shadowColor: '#AAFF00', shadowOpacity: 0.6, shadowRadius: 8,
-                    }]}>
-                      <Text style={[s.lmcPillTxt,
-                      activeKit?.name === 'Chaos Theory' && { color: '#AAFF00' },
-                      ]}>** {activeKit?.name} **</Text>
+                    <View style={s.lmcPill}>
+                      <Text style={s.lmcPillTxt}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </>
@@ -1075,13 +1488,16 @@ export default function ProfileScreen() {
                     )}
                   </View>
                   <Pressable
-                    style={[s.cameraBtn, uploadingPhoto && { opacity: 0.6 }]}
+                    style={[s.cameraBtn, {
+                      backgroundColor: getGlassCameraBtn(activeKit?.name).backgroundColor,
+                      borderColor: getGlassCameraBtn(activeKit?.name).borderColor,
+                    }, uploadingPhoto && { opacity: 0.6 }]}
                     onPress={uploadingPhoto ? undefined : pickImageFromDevice}
                     disabled={uploadingPhoto}
                   >
                     {uploadingPhoto
-                      ? <ActivityIndicator size="small" color="#FFFFFF" />
-                      : <Ionicons name="camera" size={12} color="#FFFFFF" />
+                      ? <ActivityIndicator size="small" color={getGlassCameraBtn(activeKit?.name).iconColor} />
+                      : <Ionicons name="camera" size={12} color={getGlassCameraBtn(activeKit?.name).iconColor} />
                     }
                   </Pressable>
                 </View>
@@ -1131,7 +1547,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* ── ACTIVE KIT SHOWCASE ── */}
-        {activeKit && activeKit.name !== 'Custom' && (
+        {activeKit && activeKit.name !== 'Custom' && activeKit.name !== 'Starlight Prowler' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Chaos Theory' && activeKit.name !== 'Prismatic' && (
           <View style={{ marginHorizontal: 16, marginBottom: 16, marginTop: 8 }}>
             <KitBorder
               rarity={activeKit.rarity}
@@ -1172,8 +1588,10 @@ export default function ProfileScreen() {
                     style={StyleSheet.absoluteFill}
                   />
                 )}
-                {/* Dark overlay */}
-                <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.45)' }]} />
+                {/* Dark overlay — Stellar uses heavier glass opacity */}
+                <View style={[StyleSheet.absoluteFill, {
+                  backgroundColor: getGlassKitOverlay(activeKit.name),
+                }]} />
                 {/* Content */}
                 <View style={{
                   flex: 1,
@@ -1194,16 +1612,16 @@ export default function ProfileScreen() {
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 5,
-                    backgroundColor: getRarityColor(activeKit.rarity) + '33',
+                    backgroundColor: (activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity)) + '33',
                     borderWidth: 1,
-                    borderColor: getRarityColor(activeKit.rarity),
+                    borderColor: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity),
                     paddingHorizontal: 12,
                     paddingVertical: 6,
                     borderRadius: 20,
                     display: activeKit.name === 'Golden Bushido' ? 'none' : 'flex',
                   }}>
-                    <Ionicons name="sparkles" size={12} color={getRarityColor(activeKit.rarity)} />
-                    <Text style={{ fontSize: 12, fontWeight: '700', color: getRarityColor(activeKit.rarity), letterSpacing: 0.5 }}>
+                    <Ionicons name="sparkles" size={12} color={activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity)} />
+                    <Text style={{ fontSize: 12, fontWeight: '700', color: activeKit.name === 'Chaos Theory' ? '#AAFF00' : getRarityColor(activeKit.rarity), letterSpacing: 0.5 }}>
                       {activeKit.rarity.toUpperCase()}
                     </Text>
                   </View>
@@ -1214,10 +1632,11 @@ export default function ProfileScreen() {
         )}
 
         {/* STAT CARDS */}
-        {activeKit?.name === 'Golden Bushido' ? (
+        {activeKit?.name === 'Chaos Theory' ? (
           <View style={{
             marginHorizontal: 0,
             marginTop: 0,
+            backgroundColor: '#000000',
             paddingHorizontal: 16,
             paddingBottom: 20,
             paddingTop: 8,
@@ -1226,27 +1645,139 @@ export default function ProfileScreen() {
               {[
                 { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
                 { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
-                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Winning Rate' },
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(255,215,0,0.8)',
-                  borderWidth: 1,
-                  backgroundColor: 'rgba(15,23,42,0.95)',
-                  shadowColor: '#FFD700',
+                  borderColor: 'rgba(170,255,0,0.8)',
+                  borderWidth: 1.5,
+                  backgroundColor: '#0A0A0A',
+                  overflow: 'hidden',
+                  shadowColor: CT_LIME,
                   shadowOffset: { width: 0, height: 0 },
                   shadowOpacity: 0.15,
-                  shadowRadius: 12,
+                  shadowRadius: 8,
                   elevation: 4,
                 }]}>
+                  <Image
+                    source={require('@/assets/images/ChaosTheory.jpeg')}
+                    style={{
+                      position: 'absolute',
+                      width: 280,
+                      height: 280,
+                      top: i < 2 ? -40 : -120,
+                      left: i % 2 === 0 ? -50 : -120,
+                      opacity: 0.22,
+                    }}
+                    resizeMode="cover"
+                  />
                   <LinearGradient
-                    colors={['rgba(255,215,0,0.06)', 'transparent']}
-                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                    colors={['rgba(0,0,0,0.55)', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.95)']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
                     style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
                   />
                   <Ionicons name={st.icon} size={22} color="#FFFFFF" style={{ marginBottom: 8 }} />
                   <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
-                  <Text style={[s.statLabel, { color: 'rgba(200,200,200,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.85)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : activeKit?.name === 'Starlight Prowler' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: '#000000',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Winning Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => {
+                const isPurpleTint = i === 0 || i === 3;
+                return (
+                  <View key={i} style={[s.statCard, {
+                    borderColor: 'rgba(117,213,227,0.75)',
+                    borderWidth: 1,
+                    backgroundColor: '#0A0A0A',
+                    overflow: 'hidden',
+                  }]}>
+                    <Image
+                      source={require('@/assets/images/StarlightProwler.jpeg')}
+                      style={{
+                        position: 'absolute',
+                        width: 280,
+                        height: 280,
+                        top: i < 2 ? -40 : -120,
+                        left: i % 2 === 0 ? -50 : -120,
+                        opacity: 0.55,
+                      }}
+                      resizeMode="cover"
+                    />
+                    <LinearGradient
+                      colors={isPurpleTint
+                        ? ['rgba(168,85,247,0.42)', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.95)']
+                        : ['rgba(117,213,227,0.35)', 'rgba(0,0,0,0.88)', 'rgba(0,0,0,0.95)']}
+                      start={{ x: 1, y: 0 }}
+                      end={{ x: 0, y: 1 }}
+                      style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
+                    />
+                    <Ionicons name={st.icon} size={22} color="#FFFFFF" style={{ marginBottom: 8 }} />
+                    <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                    <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.75)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        ) : activeKit?.name === 'Golden Bushido' ? (
+          <View style={{
+            marginHorizontal: 0,
+            marginTop: 0,
+            backgroundColor: '#000000',
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            paddingTop: 8,
+          }}>
+            <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
+              {[
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Winning Rate' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+              ].map((st, i) => (
+                <View key={i} style={[s.statCard, {
+                  borderColor: 'rgba(255,215,0,0.75)',
+                  borderWidth: 1,
+                  backgroundColor: '#0A0A0F',
+                  overflow: 'hidden',
+                  shadowColor: '#FFD700',
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 10,
+                  elevation: 4,
+                }]}>
+                  <LinearGradient
+                    colors={['#0F172A', '#080810', '#000000']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
+                  />
+                  <LinearGradient
+                    colors={['rgba(201,162,39,0.12)', 'transparent']}
+                    start={{ x: 1, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
+                  />
+                  <Ionicons name={st.icon} size={22} color="#FFFFFF" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: GB_GOLD, fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: GB_GOLD, letterSpacing: 0.8 }]}>{st.label}</Text>
                 </View>
               ))}
             </View>
@@ -1262,19 +1793,25 @@ export default function ProfileScreen() {
           }}>
             <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
               {[
-                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
-                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
-                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
-                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games', iconColor: '#FF9F43' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins', iconColor: PV_CYAN },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(0,206,209,0.8)',
+                  borderColor: 'rgba(0,206,209,0.35)',
                   borderWidth: 1,
-                  backgroundColor: 'transparent',
+                  backgroundColor: PV_OVERLAY,
+                  overflow: 'hidden',
+                  shadowColor: PV_CYAN,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 8,
+                  elevation: 6,
                 }]}>
-                  <Ionicons name={st.icon} size={22} color="#00CED1" style={{ marginBottom: 8 }} />
-                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
-                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, PV_TEXT_SHADOW]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
                 </View>
               ))}
             </View>
@@ -1290,19 +1827,25 @@ export default function ProfileScreen() {
           }}>
             <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
               {[
-                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
-                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
-                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
-                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games', iconColor: '#FF9F43' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins', iconColor: ST_SILVER },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(192,192,192,0.8)',
+                  borderColor: 'rgba(255,255,255,0.15)',
                   borderWidth: 1,
-                  backgroundColor: 'transparent',
+                  backgroundColor: ST_OVERLAY,
+                  overflow: 'hidden',
+                  shadowColor: '#000000',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 8,
+                  elevation: 6,
                 }]}>
-                  <Ionicons name={st.icon} size={22} color="#C0C0C0" style={{ marginBottom: 8 }} />
-                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
-                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, ST_TEXT_SHADOW]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
                 </View>
               ))}
             </View>
@@ -1318,19 +1861,25 @@ export default function ProfileScreen() {
           }}>
             <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
               {[
-                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
-                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
-                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
-                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games', iconColor: '#FF9F43' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins', iconColor: NP_CYAN },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(0,255,255,0.8)',
+                  borderColor: 'rgba(0,255,255,0.4)',
                   borderWidth: 1,
-                  backgroundColor: 'transparent',
+                  backgroundColor: NP_OVERLAY,
+                  overflow: 'hidden',
+                  shadowColor: NP_CYAN,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 8,
+                  elevation: 6,
                 }]}>
-                  <Ionicons name={st.icon} size={22} color="#00FFFF" style={{ marginBottom: 8 }} />
-                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
-                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, NP_TEXT_SHADOW]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
                 </View>
               ))}
             </View>
@@ -1346,19 +1895,25 @@ export default function ProfileScreen() {
           }}>
             <View style={[s.statGrid, { paddingHorizontal: 0, marginBottom: 0 }]}>
               {[
-                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
-                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
-                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
-                { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
+                { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games', iconColor: '#FF9F43' },
+                { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins', iconColor: OG_GOLD },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate', iconColor: '#4ADE80' },
+                { icon: 'home' as const, value: stats.housesCount, label: 'Houses', iconColor: '#FACC15' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(255,215,0,0.8)',
+                  borderColor: 'rgba(255,215,0,0.4)',
                   borderWidth: 1,
-                  backgroundColor: 'transparent',
+                  backgroundColor: OG_OVERLAY,
+                  overflow: 'hidden',
+                  shadowColor: OG_GOLD,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 8,
+                  elevation: 6,
                 }]}>
-                  <Ionicons name={st.icon} size={22} color="#FFD700" style={{ marginBottom: 8 }} />
-                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
-                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, OG_TEXT_SHADOW]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
                 </View>
               ))}
             </View>
@@ -1376,17 +1931,29 @@ export default function ProfileScreen() {
               {[
                 { icon: 'game-controller' as const, value: stats.totalGames, label: 'Total Games' },
                 { icon: 'trophy' as const, value: stats.totalWins, label: 'Total Wins' },
-                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Win Rate' },
+                { icon: 'trending-up' as const, value: `${stats.winRate.toFixed(0)}%`, label: 'Winning Rate' },
                 { icon: 'home' as const, value: stats.housesCount, label: 'Houses' },
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, {
-                  borderColor: 'rgba(157,0,255,0.8)',
+                  borderColor: 'rgba(157,0,255,0.7)',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
+                  overflow: 'hidden',
+                  shadowColor: PR_VIOLET,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 8,
+                  elevation: 4,
                 }]}>
-                  <Ionicons name={st.icon} size={22} color="#9D00FF" style={{ marginBottom: 8 }} />
-                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }]}>{st.value}</Text>
-                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.7)', letterSpacing: 0.8 }]}>{st.label}</Text>
+                  <LinearGradient
+                    colors={['rgba(0,0,0,0.48)', 'rgba(0,0,0,0.4)']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
+                  />
+                  <Ionicons name={st.icon} size={22} color="#FFFFFF" style={{ marginBottom: 8 }} />
+                  <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, PR_TEXT_SHADOW]}>{st.value}</Text>
+                  <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.9)', letterSpacing: 0.8 }, PR_TEXT_SHADOW]}>{st.label}</Text>
                 </View>
               ))}
             </View>
@@ -1401,26 +1968,19 @@ export default function ProfileScreen() {
             ].map((st, i) => (
               <View key={i} style={[
                 s.statCard,
-                (activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler') && s.lmcStatCard,
-                activeKit?.name === 'Chaos Theory' && {
-                  borderColor: '#AAFF00',
-                  borderWidth: 1.5,
-                  backgroundColor: '#0D0D0D',
-                },
+                activeKit?.name === 'Liquid Metal Candy' && s.lmcStatCard,
                 activeKit?.name === 'Golden Bushido' && {
                   borderColor: '#354458',
                   borderWidth: 1.5,
                   backgroundColor: '#0D0D0D',
                   overflow: 'hidden',
                 },
-                activeKit && activeKit.name !== 'Liquid Metal Candy' && activeKit.name !== 'Starlight Prowler' && activeKit.name !== 'Chaos Theory' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Phantom Void' && i === 0 && { borderColor: activeKit.colors[activeKit.colors.length - 1] + '44' }
+                activeKit && activeKit.name !== 'Liquid Metal Candy' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Phantom Void' && i === 0 && { borderColor: activeKit.colors[activeKit.colors.length - 1] + '44' }
               ]}>
-                {(activeKit?.name === 'Liquid Metal Candy' || activeKit?.name === 'Starlight Prowler') && (
+                {activeKit?.name === 'Liquid Metal Candy' && (
                   <>
                     <Image
-                      source={activeKit?.name === 'Starlight Prowler'
-                        ? require('@/assets/images/StarlightProwler.jpeg')
-                        : require('@/assets/images/LiquidMetalProfile.jpeg')}
+                      source={require('@/assets/images/LiquidMetalProfile.jpeg')}
                       style={{
                         position: 'absolute',
                         width: 320, height: 320,
@@ -1471,7 +2031,7 @@ export default function ProfileScreen() {
         {gameHistory.length > 0 && (
           <View style={s.section}>
             <View style={s.sectionHead}>
-              <Text style={s.sectionTitle}>Recent Games</Text>
+              <Text style={[s.sectionTitle, activeKit?.name === 'Prismatic' && PR_TEXT_SHADOW]}>Recent Games</Text>
               {gameHistory.length >= 10 && (
                 <Pressable onPress={() => setShowAllHistory(!showAllHistory)}>
                   <Text style={s.seeAll}>{showAllHistory ? 'Less' : 'See All'}</Text>
@@ -1481,10 +2041,18 @@ export default function ProfileScreen() {
             <View style={s.gap}>
               {gameHistory.map((game) => (
                 <View key={game.id} style={[s.historyRow, game.isWinner && s.historyWin,
-                (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+                activeKit?.name === 'Obsidian Gold' && getObsidianGoldSurface(),
+                activeKit?.name === 'Prismatic' && getPrismaticSurface(),
+                activeKit?.name === 'Stellar' && getStellarSurface(),
+                activeKit?.name === 'Phantom Void' && getPhantomVoidSurface(),
+                activeKit?.name === 'Neon Pulse' && getNeonPulseSurface(),
                 ]}>
                   <View style={[s.historyEmojiBg,
-                  (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.2)' }
+                  activeKit?.name === 'Prismatic' && { backgroundColor: PR_OVERLAY_LIGHT, borderColor: 'rgba(157,0,255,0.45)' },
+                  activeKit?.name === 'Stellar' && { backgroundColor: ST_OVERLAY, borderColor: 'rgba(255,255,255,0.2)' },
+                  activeKit?.name === 'Phantom Void' && { backgroundColor: PV_OVERLAY, borderColor: 'rgba(0,206,209,0.35)' },
+                  activeKit?.name === 'Obsidian Gold' && { backgroundColor: OG_OVERLAY, borderColor: 'rgba(255,215,0,0.35)' },
+                  activeKit?.name === 'Neon Pulse' && { backgroundColor: NP_OVERLAY, borderColor: 'rgba(0,255,255,0.35)' }
                   ]}>
                     <Text style={{ fontSize: 22 }}>{game.gameEmoji}</Text>
                   </View>
@@ -1519,12 +2087,16 @@ export default function ProfileScreen() {
         {leaderboard.length > 0 && (
           <View style={s.section}>
             <View style={s.sectionHead}>
-              <Text style={s.sectionTitle}>Friends Leaderboard</Text>
+              <Text style={[s.sectionTitle, activeKit?.name === 'Prismatic' && PR_TEXT_SHADOW]}>Friends Leaderboard</Text>
             </View>
             <View style={s.gap}>
               {leaderboard.map((entry, i) => (
                 <View key={entry.id} style={[s.lbRow,
-                (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.15)' }
+                activeKit?.name === 'Prismatic' && getPrismaticSurface(),
+                activeKit?.name === 'Stellar' && getStellarSurface(),
+                activeKit?.name === 'Phantom Void' && getPhantomVoidSurface(),
+                activeKit?.name === 'Obsidian Gold' && getObsidianGoldSurface(),
+                activeKit?.name === 'Neon Pulse' && getNeonPulseSurface(),
                 ]}>
                   <View style={[s.lbRank, i === 0 && s.lbGold, i === 1 && s.lbSilver, i === 2 && s.lbBronze]}>
                     <Text style={s.lbRankText}>{i + 1}</Text>
@@ -1553,7 +2125,11 @@ export default function ProfileScreen() {
         {/* MENU */}
         <View style={s.section}>
           <View style={[s.menuCard,
-          (activeKit?.name === 'Phantom Void' || activeKit?.name === 'Stellar' || activeKit?.name === 'Neon Pulse' || activeKit?.name === 'Obsidian Gold' || activeKit?.name === 'Prismatic') && { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.8)' }
+          activeKit?.name === 'Prismatic' && { ...getPrismaticSurface(), borderColor: 'rgba(157,0,255,0.5)' },
+          activeKit?.name === 'Stellar' && { ...getStellarSurface(), borderColor: 'rgba(255,255,255,0.22)' },
+          activeKit?.name === 'Phantom Void' && { ...getPhantomVoidSurface(), borderColor: 'rgba(0,206,209,0.4)' },
+          activeKit?.name === 'Obsidian Gold' && { ...getObsidianGoldSurface(), borderColor: 'rgba(255,215,0,0.45)' },
+          activeKit?.name === 'Neon Pulse' && { ...getNeonPulseSurface(), borderColor: 'rgba(0,255,255,0.45)' }
           ]}>
             {[
               { icon: 'settings-outline', label: 'Profile Settings', sub: 'Edit name, photo & kit', onPress: () => router.push('/profile-settings') },
@@ -1729,11 +2305,11 @@ const s = StyleSheet.create({
   },
   avatarInitial: { fontSize: 40, fontWeight: '800', color: '#FFFFFF' },
   cameraBtn: {
-    position: 'absolute', bottom: 28, right: -8,
-    width: 30, height: 30, borderRadius: 15,
-    backgroundColor: '#FFFFFF',
+    position: 'absolute', bottom: 0, right: 0,
+    width: 28, height: 28, borderRadius: 14,
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center', alignItems: 'center',
-    borderWidth: 2, borderColor: '#000000',
+    borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.35)',
     zIndex: 10,
     elevation: 10,
   },
@@ -1894,6 +2470,116 @@ const s = StyleSheet.create({
     justifyContent: 'center', alignItems: 'center',
   },
   lmcPremiumBtnTxt: { fontSize: 13, fontWeight: '800', color: '#000000' },
+  spPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: '#75D5E3',
+    backgroundColor: 'rgba(0,0,0,0.35)',
+  },
+  spPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#FFFFFF', letterSpacing: 0.2 },
+  gbPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+  },
+  gbPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#000000', letterSpacing: 0.2 },
+  ctPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: '#AAFF00',
+    backgroundColor: 'rgba(220,220,220,0.92)',
+  },
+  ctPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#000000', letterSpacing: 0.2 },
+  prPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: 'rgba(157,0,255,0.75)',
+    backgroundColor: PR_OVERLAY,
+  },
+  prPremiumBtnTxt: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.2,
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+  stPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: ST_OVERLAY,
+  },
+  stPremiumBtnTxt: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.2,
+    textShadowColor: 'rgba(0,0,0,0.85)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  pvPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(0,206,209,0.5)',
+    backgroundColor: PV_OVERLAY,
+  },
+  pvPremiumBtnTxt: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.2,
+    textShadowColor: 'rgba(0,0,0,0.85)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  ogPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.55)',
+    backgroundColor: OG_OVERLAY,
+  },
+  ogPremiumBtnTxt: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.2,
+    textShadowColor: 'rgba(0,0,0,0.85)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  npPremiumBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(0,255,255,0.55)',
+    backgroundColor: NP_OVERLAY,
+  },
+  npPremiumBtnTxt: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.2,
+    textShadowColor: 'rgba(0,0,0,0.85)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
   lmcCard: {
     marginHorizontal: 24,
     marginTop: -10,
@@ -1910,8 +2596,9 @@ const s = StyleSheet.create({
   lmcAvatarOuter: {
     width: 90, height: 90, borderRadius: 45,
     overflow: 'hidden',
-    borderWidth: 3, borderColor: 'rgba(255,255,255,0.3)',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderWidth: 2.5,
+    borderColor: 'rgba(255,255,255,0.28)',
+    backgroundColor: 'rgba(0,0,0,0.38)',
   },
   lmcCardInfo: { flex: 1, gap: 4 },
   lmcCardName: { fontSize: 24, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.3 },
