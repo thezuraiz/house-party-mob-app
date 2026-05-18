@@ -959,6 +959,7 @@ export default function ProfileScreen() {
                     marginTop: 0,
                     overflow: 'hidden',
                     elevation: 12,
+                    borderRadius: 16,
                   }]}>
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
@@ -986,11 +987,11 @@ export default function ProfileScreen() {
                     </View>
                     <View style={s.lmcCardInfo}>
                       <Text style={[s.lmcCardName, PV_TEXT_SHADOW]} numberOfLines={1}>
-                        {user?.email || profileDisplayName || profile?.username}
+                        {profileDisplayName || profile?.username}
                       </Text>
                       {(user?.email && (profileDisplayName || profile?.username)) && (
                         <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.55)' }, PV_TEXT_SHADOW]} numberOfLines={1}>
-                          {profileDisplayName || profile?.username}
+                          {user?.email || profileDisplayName || profile?.username}
                         </Text>
                       )}
                     </View>
