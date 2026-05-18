@@ -1135,14 +1135,15 @@ export default function ProfileScreen() {
                     borderWidth: 1,
                     marginTop: 0,
                     overflow: 'hidden',
-                    shadowColor: OG_GOLD,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 16,
-                    elevation: 12,
+                    borderRadius: 16,
                     paddingHorizontal: 16,
                     paddingVertical: 12,
                   }]}>
+                    <BlurView
+                      intensity={10}
+                      tint="dark"
+                      style={StyleSheet.absoluteFill}
+                    />
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
@@ -1168,12 +1169,13 @@ export default function ProfileScreen() {
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
+
                       <Text style={[s.lmcCardName, OG_TEXT_SHADOW]} numberOfLines={1}>
-                        {user?.email || profileDisplayName || profile?.username}
+                        {profileDisplayName || profile?.username}
                       </Text>
                       {(user?.email && (profileDisplayName || profile?.username)) && (
                         <Text style={[s.lmcCardBio, { color: 'rgba(255,255,255,0.55)' }, OG_TEXT_SHADOW]} numberOfLines={1}>
-                          {profileDisplayName || profile?.username}
+                          {user?.email || profileDisplayName || profile?.username}
                         </Text>
                       )}
                     </View>
@@ -1183,6 +1185,11 @@ export default function ProfileScreen() {
                       paddingHorizontal: 32,
                       paddingVertical: 13,
                     }]}>
+                      <BlurView
+                        intensity={10}
+                        tint="dark"
+                        style={StyleSheet.absoluteFill}
+                      />
                       <Text style={[s.lmcPillTxt, { color: OG_GOLD, fontWeight: '600' }, OG_TEXT_SHADOW]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
@@ -1522,6 +1529,11 @@ export default function ProfileScreen() {
               borderRadius: 16,
               borderColor: getRarityColor(activeKit.name) + '88',
             }]}>
+              <BlurView
+                intensity={10}
+                tint="dark"
+                style={StyleSheet.absoluteFill}
+              />
               <View>
                 <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: '600', marginBottom: 3, letterSpacing: 0.5 }}>
                   Active Kit
@@ -1782,12 +1794,13 @@ export default function ProfileScreen() {
               ].map((st, i) => (
                 <View key={i} style={[s.statCard, s.glossyCard, {
                   overflow: 'hidden',
-                  shadowColor: OG_GOLD,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 8,
-                  elevation: 6,
+                  // elevation: 6,
                 }]}>
+                  <BlurView
+                    intensity={10}
+                    tint="dark"
+                    style={StyleSheet.absoluteFill}
+                  />
                   <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
                   <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, OG_TEXT_SHADOW]}>{st.value}</Text>
                   <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
@@ -2440,7 +2453,7 @@ const s = StyleSheet.create({
     zIndex: 5,
   },
   glossyCard: {
-    backgroundColor: "rgba(20, 20, 20, 0.9)",
+    backgroundColor: "rgba(20, 20, 20, 0.8)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.3)",
     padding: 18,
