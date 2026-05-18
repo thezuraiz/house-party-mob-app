@@ -600,9 +600,9 @@ export default function ProfileScreen() {
             <LinearGradient
               colors={[
                 'rgba(0,0,0,0)',
-                'rgba(0,0,0,0.15)',
-                'rgba(0,0,0,0.45)',
-                'rgba(0,0,0,0.85)',
+                'rgba(0,0,0,0.4)',
+                'rgba(0,0,0,0.6)',
+                'rgba(0,0,0,0.9)',
                 '#000000',
               ]}
               locations={[0, 0.35, 0.6, 0.82, 1]}
@@ -1014,6 +1014,11 @@ export default function ProfileScreen() {
                   zIndex: 5,
                 }}>
                   <View style={[s.lmcCard, s.glossyCard, { borderRadius: 16 }]}>
+                    <BlurView
+                      intensity={10}
+                      tint="dark"
+                      style={StyleSheet.absoluteFill}
+                    />
                     <View style={s.lmcAvatarBox}>
                       <View style={[s.lmcAvatarOuter, getGlassAvatarRing(activeKit?.name)]}>
                         {profilePhotoUrl ? (
@@ -1055,6 +1060,11 @@ export default function ProfileScreen() {
                       paddingVertical: 13,
                       borderRadius: 24,
                     }]}>
+                      <BlurView
+                        intensity={10}
+                        tint="dark"
+                        style={StyleSheet.absoluteFill}
+                      />
                       <Text style={[s.lmcPillTxt]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
@@ -1742,6 +1752,11 @@ export default function ProfileScreen() {
                   overflow: 'hidden',
                   elevation: 6,
                 }]}>
+                  <BlurView
+                    intensity={10}
+                    tint="dark"
+                    style={StyleSheet.absoluteFill}
+                  />
                   <Ionicons name={st.icon} size={22} color={st.iconColor} style={{ marginBottom: 8 }} />
                   <Text style={[s.statValue, { color: '#FFFFFF', fontWeight: '900', fontSize: 28 }, ST_TEXT_SHADOW]}>{st.value}</Text>
                   <Text style={[s.statLabel, { color: 'rgba(255,255,255,0.55)', letterSpacing: 0.8 }]}>{st.label}</Text>
