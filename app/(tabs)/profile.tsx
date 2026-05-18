@@ -6,6 +6,7 @@ import { usePremium } from '@/contexts/PremiumContext';
 import { useProfile } from '@/contexts/ProfileContext';
 import { supabase } from '@/lib/supabase';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { BlurView } from 'expo-blur';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useRouter } from 'expo-router';
@@ -26,7 +27,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 function getRarityColor(rarity: string): string {
-  console.log
   switch (rarity) {
     case 'mythic': return '#EC4899';
     case 'Phantom Void': return 'rgba(0,206,209,0.85)';
@@ -36,6 +36,8 @@ function getRarityColor(rarity: string): string {
     case 'Obsidian Gold': return '#C9A227';
     case "Neon Pulse": return '#00FFFF';
     case "Starlight Prowler": return '#75D5E3';
+    case "Golden Bushido": return '#C9A227';
+    case "Liquid Metal Candy": return '#7B5EA7';
     default: return 'rgba(255,255,255,0.5)';
   }
 }
@@ -777,7 +779,7 @@ export default function ProfileScreen() {
                 )}
                 {activeKit?.name === 'Golden Bushido' && (
                   isPremium ? (
-                    <View style={s.gbPremiumBtn}>
+                    <View style={[s.gbPremiumBtn, s.glossyCard, { borderColor: '#B8920F' }]}>
                       <Text style={s.gbPremiumBtnTxt}>Premium</Text>
                     </View>
                   ) : (
@@ -854,8 +856,13 @@ export default function ProfileScreen() {
                 )}
                 {activeKit?.name === 'Liquid Metal Candy' && (
                   isPremium ? (
-                    <View style={s.lmcPremiumBtn}>
-                      <Ionicons name="diamond" size={18} color="#FFD700" />
+                    <View style={[s.lmcPremiumBtn, { overflow: 'hidden' }]}>
+                      <BlurView
+                        intensity={40}
+                        tint="dark"
+                        style={StyleSheet.absoluteFill}
+                      />
+                      <Text style={[s.lmcPremiumBtnTxt]}>Premium</Text>
                     </View>
                   ) : (
                     <Pressable style={s.lmcPremiumBtn} onPress={() => setShowPremiumModal(true)}>
@@ -878,9 +885,6 @@ export default function ProfileScreen() {
                 <View style={{
                   marginHorizontal: 0,
                   marginTop: -32,
-                  backgroundColor: '#000000',
-                  borderTopLeftRadius: 32,
-                  borderTopRightRadius: 32,
                   paddingTop: 20,
                   paddingHorizontal: 0,
                   zIndex: 5,
@@ -931,13 +935,7 @@ export default function ProfileScreen() {
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={[s.lmcPill, {
-                      borderColor: GB_GOLD,
-                      borderWidth: 1.5,
-                      backgroundColor: 'rgba(5,3,0,0.85)',
-                      shadowColor: GB_GOLD,
-                      shadowOpacity: 0.35,
-                      shadowRadius: 10,
+                    <View style={[s.lmcPill, s.glossyCard, {
                       elevation: 4,
                       paddingHorizontal: 32,
                       paddingVertical: 13,
@@ -1376,7 +1374,7 @@ export default function ProfileScreen() {
                 </View>
               ) : (
                 <>
-                  <View style={[s.lmcCard, { backgroundColor: '#7B5EA7' }]}>
+                  <View style={[s.lmcCard, s.glossyCard, { backgroundColor: '#7B5EA7', borderRadius: 40 }]}>
                     <LinearGradient
                       colors={['#7B5EA7', '#9B6FBF', '#8B65AF']}
                       start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
@@ -1407,12 +1405,13 @@ export default function ProfileScreen() {
                       </Pressable>
                     </View>
                     <View style={s.lmcCardInfo}>
-                      <Text style={s.lmcCardName}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={s.lmcCardName} numberOfLines={1}>{profileDisplayName || profile?.username}</Text>
+                      <Text style={s.lmcCardBio}>{user?.email || profileDisplayName || profile?.username} </Text>
                     </View>
                   </View>
                   <View style={s.lmcPillWrap}>
-                    <View style={s.lmcPill}>
-                      <Text style={s.lmcPillTxt}>** {activeKit?.name} **</Text>
+                    <View style={[s.lmcPill, s.glossyCard, { borderColor: getRarityColor(activeKit?.name) + '80', borderWidth: 1 }]}>
+                      <Text style={[s.lmcPillTxt, { color: getRarityColor(activeKit?.name) }]}>** {activeKit?.name} **</Text>
                     </View>
                   </View>
                 </>
@@ -1511,7 +1510,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* ── ACTIVE KIT SHOWCASE ── */}
-        {activeKit && activeKit.name !== 'Chaos Theory' && (
+        {activeKit && activeKit.name !== 'Chaos Theory' && activeKit.name !== 'Liquid Metal Candy' && (
           <View style={{ marginHorizontal: 16, marginBottom: 16 }}>
             <View style={[s.glossyCard, {
               flex: 1,
@@ -1845,14 +1844,11 @@ export default function ProfileScreen() {
             ].map((st, i) => (
               <View key={i} style={[
                 s.statCard,
-                activeKit?.name === 'Liquid Metal Candy' && s.lmcStatCard,
+                activeKit?.name === 'Liquid Metal Candy' && s.lmcStatCard && { borderColor: getRarityColor(activeKit.name), borderWidth: 1 },
                 activeKit?.name === 'Golden Bushido' && {
-                  borderColor: '#354458',
-                  borderWidth: 1.5,
-                  backgroundColor: '#0D0D0D',
                   overflow: 'hidden',
                 },
-                activeKit && activeKit.name !== 'Liquid Metal Candy' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Phantom Void' && i === 0 && { borderColor: activeKit.colors[activeKit.colors.length - 1] + '44' }
+                activeKit && activeKit.name !== 'Liquid Metal Candy' && activeKit.name !== 'Golden Bushido' && activeKit.name !== 'Phantom Void' && i === 0 && { borderColor: getRarityColor(activeKit?.name) + '80' }
               ]}>
                 {activeKit?.name === 'Liquid Metal Candy' && (
                   <>
@@ -1863,14 +1859,26 @@ export default function ProfileScreen() {
                         width: 320, height: 320,
                         // top: i < 2 ? -30 : -160,
                         // left: i % 2 === 0 ? -30 : -160,
-                        borderRadius: 18,
                       }}
                       resizeMode="cover"
                     />
+                    <BlurView
+                      intensity={40}
+                      tint="dark"
+                      style={StyleSheet.absoluteFill}
+                    />
+
+                    {/* Gradient Overlay */}
                     <LinearGradient
-                      colors={['rgba(0,0,0,0.72)', 'rgba(0,0,0,0.50)', 'rgba(0,0,0,0.30)']}
-                      start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-                      style={[StyleSheet.absoluteFill, { borderRadius: 18 }]}
+                      colors={[
+                        'rgba(0,0,0,1)',
+                        'rgba(0,0,0,0.75)',
+                        'rgba(0,0,0,0.35)',
+                        'transparent',
+                      ]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 0, y: 1 }}
+                      style={StyleSheet.absoluteFill}
                     />
                   </>
                 )}
@@ -2227,7 +2235,7 @@ const s = StyleSheet.create({
   // },
   statEmoji: { fontSize: 26, marginBottom: 4 },
   statValue: { fontSize: 26, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5 },
-  statLabel: { fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.4 },
+  statLabel: { fontSize: 11, color: '#fff', fontWeight: '300', textTransform: 'uppercase', letterSpacing: 0.4 },
 
   // Sections
   section: { marginHorizontal: 16, marginTop: 20 },
@@ -2310,12 +2318,13 @@ const s = StyleSheet.create({
 
   // Liquid Metal Candy specific styles
   lmcPremiumBtn: {
-    width: 34, height: 34, borderRadius: 17,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)',
-    justifyContent: 'center', alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1, borderColor: getRarityColor('Liquid Metal Candy') + '80',
+    backgroundColor: getRarityColor('Liquid Metal Candy') + '80',
   },
-  lmcPremiumBtnTxt: { fontSize: 13, fontWeight: '800', color: '#000000' },
+  lmcPremiumBtnTxt: { fontSize: 13, fontWeight: '800', color: '#fff' },
   spPremiumBtn: {
     paddingHorizontal: 14,
     paddingVertical: 7,
@@ -2329,9 +2338,8 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
   },
-  gbPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#000000', letterSpacing: 0.2 },
+  gbPremiumBtnTxt: { fontSize: 13, fontWeight: '700', color: '#fff', letterSpacing: 0.2 },
   ctPremiumBtn: {
     paddingHorizontal: 14,
     paddingVertical: 7,
@@ -2429,7 +2437,6 @@ const s = StyleSheet.create({
     gap: 14,
     overflow: 'hidden',
     zIndex: 5,
-    borderRadius: 20,
   },
   glossyCard: {
     backgroundColor: "rgba(20, 20, 20, 0.9)",
